@@ -18,8 +18,8 @@
                         'class' => '',
                         'id' => '',
                     ),
-                    'display_format' => 'd/m/Y g:i a',
-                    'return_format' => 'd/m/Y g:i a',
+                    'display_format' => 'd/m/Y H:i:s',
+                    'return_format' => 'd/m/Y H:i:s',
                     'first_day' => 1,
                 ),
                 array(
@@ -35,8 +35,8 @@
                         'class' => '',
                         'id' => '',
                     ),
-                    'display_format' => 'd/m/Y g:i a',
-                    'return_format' => 'd/m/Y g:i a',
+                    'display_format' => 'd/m/Y H:i:s',
+                    'return_format' => 'd/m/Y H:i:s',
                     'first_day' => 1,
                 ),
                 array(
@@ -60,7 +60,7 @@
                     'elements' => '',
                     'min' => 1,
                     'max' => '',
-                    'return_format' => 'object',
+                    'return_format' => 'id',
                 ),
                 array(
                     'key' => 'field_5d4a8cdad75e0',
