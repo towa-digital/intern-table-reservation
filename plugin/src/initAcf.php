@@ -18,8 +18,8 @@
                         'class' => '',
                         'id' => '',
                     ),
-                    'display_format' => 'd/m/Y H:i:s',
-                    'return_format' => 'd/m/Y H:i:s',
+                    'display_format' => 'm/d/Y H:i:s',
+                    'return_format' => 'm/d/Y H:i:s',
                     'first_day' => 1,
                 ),
                 array(
@@ -35,8 +35,8 @@
                         'class' => '',
                         'id' => '',
                     ),
-                    'display_format' => 'd/m/Y H:i:s',
-                    'return_format' => 'd/m/Y H:i:s',
+                    'display_format' => 'm/d/Y H:i:s',
+                    'return_format' => 'm/d/Y H:i:s',
                     'first_day' => 1,
                 ),
                 array(
@@ -143,7 +143,7 @@
                     'name' => 'ip',
                     'type' => 'text',
                     'instructions' => '',
-                    'required' => 1,
+                    'required' => 0,
                     'conditional_logic' => 0,
                     'wrapper' => array(
                         'width' => '',
