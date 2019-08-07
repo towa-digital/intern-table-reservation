@@ -1,0 +1,22 @@
+{
+  "name": "plugin",
+  "version": "1.0.0",
+  "description": "You can find the Documentation [here]('https://github.com/towa-digital/intern-table-reservation/tree/master/docs').",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/towa-digital/intern-table-reservation.git",
+  "author": "niklasmischi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/towa-digital/intern-table-reservation/issues"
+  },
+  "homepage": "https://github.com/towa-digital/intern-table-reservation#readme",
+  "dependencies": {
+    "vue-resource": "^1.5.1"
+  }
+}

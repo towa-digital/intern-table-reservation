@@ -1,0 +1,10 @@
+{
+    "name": "nikla/plugin",
+    "authors": [
+        {
+            "name": "niklas-mischi",
+            "email": "niklas.mischi@gmail.com"
+        }
+    ],
+    "require": {}
+}
