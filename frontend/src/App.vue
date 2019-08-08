@@ -2,6 +2,7 @@
   <div id="app">
    
     <InputForm />
+    <ApiTest />
     
     
   </div>
@@ -9,12 +10,14 @@
 
 <script>
 import InputForm from './components/InputForm.vue'
+import ApiTest from './components/ApiTest.vue'
 
 
 export default {
   name: 'app',
   components: {
-   InputForm
+   InputForm,
+   ApiTest
   }
 }
 </script>
