@@ -9,7 +9,7 @@
             <th>Im Außenbereich</th>
         </tr>
         <tr v-for="table in table" v-bind:key="table">
-          <td>{{ table.slug }}</td>
+          <td>{{ table.title.rendered }}</td>
           <td>{{ table.acf.seats }}</td>
           <td>{{ table.acf.isOutside }}</td>
         </tr>
