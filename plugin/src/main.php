@@ -12,48 +12,25 @@
 require_once("initCpt.php");
 require_once("initAcf.php");
 
+require("adminPanel/addReservation.php");
+require("adminPanel/addTable.php");
+require("adminPanel/reservationList.php");
+require("adminPanel/tableList.php");
+
+
 add_action("admin_menu", "setup_admin_menu");
-
 function setup_admin_menu() {
-    add_menu_page("Tischverwaltung", "Tischverwaltung", "manage_options", "tablev", "admin_menu_init");
-    add_submenu_page("tablev", "Tisch erstellen", "Tisch erstellen", "manage_options", "", "create_table");
+    $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "manage_options", "managereservations", "show_reservationList");
+    add_action("admin_print_styles-".$reservationList , "applyStyle_reservationList");
+
+    $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "manage_options", "", "show_addReservation");
+    add_action("admin_print_styles-".$addReservation , "applyStyle_addReservation");
+
+    $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "manage_options", "managetables", "show_tableList");
+    add_action("admin_print_styles-".$tableList , "applyStyle_tableList");
+
+    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "manage_options", "a", "show_addTable");
+    add_action("admin_print_styles-".$addTable , "applyStyle_addTable");
 }
 
-function admin_menu_init() {?>
-<h1>Hallo Welt!</h1>
-
-<?php
-}
-
-function create_table(){
-/*    // bestehende Tische ausgeben
-    $query = new WP_Query(array(
-        'post_type' => 'table',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-    ));
-    
-    
-    while ($query->have_posts()) {
-        $query->the_post();
-        $post_id = get_the_ID();
-        echo $post_id." ".get_the_title()." ".get_field("seats");
-        echo "<br>";
-    }
-    
-    wp_reset_query();
-
-    // Neuen Tisch einfügen
-    $id = wp_insert_post(array(
-        'post_title'=>'random3', 
-        'post_type'=>'table', 
-        'post_content'=>'demo text',
-        'post_status'=>'publish'
-      ));
-    if($id) {
-        add_post_meta($id, "outside", 1);
-        add_post_meta($id, "seats", 5);
-    }
-    echo "Successfully inserted!";*/
-}
 ?>
