@@ -1,0 +1,92 @@
+form {
+    display: flex;
+}
+
+form h2 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+form h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+#formContent {
+    flex-grow: 8;
+}
+
+.formData {
+    width: 100%;
+}
+
+.data {
+    background-color: white;
+}
+
+.data td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top: 1px solid rgb(238, 238, 238);
+}
+
+.data tr:first-child td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-top: none;
+}
+
+.data h2, .data h3 {
+    margin-left: 10px;
+}
+
+.titleData {
+    margin-bottom: 45px;
+}
+
+input {
+    width: 100%;
+}
+
+.titleData input {
+    font-size: 22px;
+}
+
+.data input, .data select {
+    margin-left: 10px;
+}
+
+.data input:not([type=checkbox]) {
+    width: calc(100% - 20px);
+}
+
+#publish {
+    flex-grow: 2;
+    background-color: white;
+    height: 100%;
+    margin-left: 20px;
+}
+
+#publish button {
+    margin-left: 10px;
+    width: calc(100% - 20px);
+    border-width: 1px;
+    border-radius: 2px;
+    background: #0085ba;
+    box-shadow: 0 1px 0 #006799;
+    border-color: #0073ba #006799 #006799;
+    color: #fff;
+    text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+@media(max-width: 1000px) {
+    form {
+        flex-direction: column;
+    }
+    #publish {
+        margin-left: 0px;
+        margin-top: 50px;
+    }
+}
