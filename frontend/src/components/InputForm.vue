@@ -6,15 +6,27 @@
       </td>
     </tr>
     <tr class="text">
-      <td>Name</td>
       <td>Personenanzahl</td>
+      <td>Tisch</td>
     </tr>
     <tr>
       <td>
-        <InputFormName />
+        <InputFormNumberOfPersons />
       </td>
       <td>
-        <InputFormNumberOfPersons />
+        <InputFormTable />
+      </td>
+    </tr>
+    <tr>
+      <td>Vorame</td>
+      <td>Nachname</td>
+    </tr>
+    <tr>
+      <td>
+        <InputFormName msg="Max" />
+      </td>
+      <td>
+        <InputFormName msg="Mustermann" />
       </td>
     </tr>
     <tr class="text">
@@ -61,6 +73,7 @@ import InputFormEmail from "./InputFormComponents/InputFormEmail";
 import InputFormDate from "./InputFormComponents/InputFormDate";
 import InputFormTime from "./InputFormComponents/InputFormTime";
 import InputFormSubmit from "./InputFormComponents/InputFormSubmit";
+import InputFormTable from "./InputFormComponents/InputFormTable";
 
 export default {
   name: "InputForm",
@@ -71,7 +84,8 @@ export default {
     InputFormEmail,
     InputFormDate,
     InputFormTime,
-    InputFormSubmit
+    InputFormSubmit,
+    InputFormTable
   }
 };
 </script>
@@ -91,9 +105,8 @@ input {
 }
 
 input:hover {
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid #da3743;
 }
-
 
 .btn:hover {
   background: #e15b64;
@@ -101,16 +114,36 @@ input:hover {
 }
 
 table {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    padding: 4%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 4%;
 }
 
 h2 {
-    text-align: center;
+  text-align: center;
 
-    padding-bottom: 3%;
+  padding-bottom: 3%;
 
-    border-bottom: 0.5px solid lightgrey;
+  border-bottom: 0.5px solid lightgrey;
+}
+
+select {
+  width: 100%;
+
+  border-left: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: 0.5px solid lightgrey;
+
+  font-size: 15px;
+
+  padding-bottom: 4.9%;
+  padding-top: 2%;
+
+  margin-bottom: 3%;
+}
+
+select:hover{
+  border-bottom: 2px solid #da3743;
 }
 
 </style>

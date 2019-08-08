@@ -1,13 +1,17 @@
 <template>
     <form>
-        <input type="text" name="name" placeholder="Name...">
+
+        <input type="text" name="name" :placeholder="msg">
     </form>
     
 </template>
 
 <script>
 export default {
-    name: "InputFormPersons"
+    name: "InputFormPersons",
+    props: {
+        msg: String
+    }
 }
 </script>
 

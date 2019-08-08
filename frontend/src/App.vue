@@ -22,8 +22,8 @@ export default {
 <style>
 
   body {
-    width: 20%;
-    margin-left: 40%;
+    width: 30%;
+    margin-left: 35%;
     font-family: sans-serif;
 
   }
