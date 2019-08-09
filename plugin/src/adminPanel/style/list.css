@@ -4,5 +4,23 @@
 
 .content {
     width: 100%;
-    background-color: red;
+}
+
+#main table {
+    border-collapse: collapse;
+}
+
+#main tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+#main tr:nth-child(even) {
+    background-color: white;
+}
+
+#main th {
+    text-align: left;
+}
+
+#main input:not([type=checkbox]) {
+    width: calc(100% - 5px);
 }
