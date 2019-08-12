@@ -8,6 +8,7 @@
  * Author URI: 
  */
 
+ define('WP_DEBUG', true);
 // Setup von CPT und ACF
 require_once("initCpt.php");
 require_once("initAcf.php");

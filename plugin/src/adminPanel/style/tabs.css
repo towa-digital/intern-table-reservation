@@ -1,0 +1,25 @@
+.tabLinkContainer {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    border: 1px solid #23282d;
+    background-color: #23282d;
+}
+
+.tabLinkContainer button {
+    color: white;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    float: left;
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 10px 20px;
+
+}
+
+.tabLinkContainer button:hover, .activeTabBtn {
+    background-color: #ddd;
+    color: black;
+}

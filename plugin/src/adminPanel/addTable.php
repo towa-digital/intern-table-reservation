@@ -1,5 +1,7 @@
 <?php
 require_once(__DIR__."/../queryDatabase.php");
+require_once(__DIR__."/../verification.php");
+
 
 
 function applyStyle_addTable() {
@@ -7,7 +9,7 @@ function applyStyle_addTable() {
 }
 
 function show_addTable() {
-    $required = array("title", "numberOfSeats", "isOutside");
+    $required = array("title", "numberOfSeats");
 
     $isset = true;
     $empty = false;
@@ -29,16 +31,15 @@ function show_addTable() {
     if($isset) {
         if(! $empty) {
             $title = $_POST["title"];
-            $isOutside = $_POST["isOutside"];
+            $isOutside = $_POST["isOutside"] === null ? false : true;
             $numberOfSeats = $_POST["numberOfSeats"];
 
-            // stelle sicher, dass title noch nicht existiert
-
-            // stelle sicher, dass isOutside ein boolescher Wert ist
-
-            // stelle sicher, dass numberOfSeats eine Zahl ist
-
-            addTable($title, $isOutside, $numberOfSeats);
+            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats);
+            if($errorMsg === null) {
+                echo '<p class="formError">'.$errorMsg.'</p>';
+            } else {
+                addTable($title, $isOutside, $numberOfSeats);
+            }
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
