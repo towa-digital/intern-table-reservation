@@ -1,91 +1,144 @@
 <template>
-  <table>
-    <tr>
-      <td colspan="2">
-        <h2>Platzreservierung</h2>
-      </td>
-    </tr>
-    <tr class="text">
-      <td>Personenanzahl</td>
-      <td>Tisch</td>
-    </tr>
-    <tr>
-      <td>
-        <InputFormNumberOfPersons />
-      </td>
-      <td>
-        <InputFormTable />
-      </td>
-    </tr>
-    <tr>
-      <td>Vorame</td>
-      <td>Nachname</td>
-    </tr>
-    <tr>
-      <td>
-        <InputFormName msg="Max" />
-      </td>
-      <td>
-        <InputFormName msg="Mustermann" />
-      </td>
-    </tr>
-    <tr class="text">
-      <td>Telefonnummer</td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <InputFormPhonenumber />
-      </td>
-    </tr>
-    <tr>
-      <td class="text">E-Mail</td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <InputFormEmail />
-      </td>
-    </tr>
-    <tr class="text">
-      <td>Datum</td>
-      <td>Uhrzeit</td>
-    </tr>
-    <tr>
-      <td>
-        <InputFormDate />
-      </td>
-      <td>
-        <InputFormTime />
-      </td>
-    </tr>
-    <tr class="submit">
-      <td colspan="2">
-        <InputFormSubmit />
-      </td>
-    </tr>
-  </table>
+  <div>
+    <table>
+      <tr>
+        <td colspan="2">
+          <h2>Platzreservierung</h2>
+        </td>
+      </tr>
+      <tr class="text">
+        <td>Personenanzahl</td>
+        <td>Tisch</td>
+      </tr>
+      <tr>
+        <td>
+          <InputFormNumberOfPersons v-model="numberofpersons" />
+        </td>
+        <td>
+          <InputFormTable v-model="table" />
+        </td>
+      </tr>
+      <tr>
+        <td>Vorame</td>
+        <td>Nachname</td>
+      </tr>
+      <tr>
+        <td>
+          <InputFormPersons msg="Max" title="firstname" v-model="firstname" />
+        </td>
+        <td>
+          <InputFormPersons msg="Mustermann" title="lastname" v-model="lastname" />
+        </td>
+      </tr>
+      <tr class="text">
+        <td>Telefonnummer</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <InputFormPhonenumber v-model="phonenumber" />
+        </td>
+      </tr>
+      <tr>
+        <td class="text">E-Mail</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <InputFormEmail v-model="email" />
+        </td>
+      </tr>
+      <tr class="text">
+        <td>Datum</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <InputFormDate v-model="date" @input="makeTimestamp" />
+        </td>
+      </tr>
+      <tr class="submit">
+        <td colspan="2">
+          <input type="submit" value="Tisch finden" class="btn" v-on:click="addReservation" />
+        </td>
+      </tr>
+    </table>
+    <div v-bind:key="reservation.id" v-for="reservation in reservations">
+      <h3>{{ reservation.name }}</h3>
+    </div>
+  </div>
 </template>
 
 <script>
-import InputFormName from "./InputFormComponents/InputFormName";
+const axios = require('axios');
+
+import InputFormPersons from "./InputFormComponents/InputFormName";
 import InputFormNumberOfPersons from "./InputFormComponents/InputFormNumberOfPersons";
 import InputFormPhonenumber from "./InputFormComponents/InputFormPhonenumber";
 import InputFormEmail from "./InputFormComponents/InputFormEmail";
 import InputFormDate from "./InputFormComponents/InputFormDate";
-import InputFormTime from "./InputFormComponents/InputFormTime";
-import InputFormSubmit from "./InputFormComponents/InputFormSubmit";
 import InputFormTable from "./InputFormComponents/InputFormTable";
 
 export default {
   name: "InputForm",
   components: {
-    InputFormName,
+    InputFormPersons,
     InputFormNumberOfPersons,
     InputFormPhonenumber,
     InputFormEmail,
     InputFormDate,
-    InputFormTime,
-    InputFormSubmit,
     InputFormTable
+  },
+  props: ["reservations"],
+  data() {
+    return {
+      numberofpersons: "",
+      table: "",
+      firstname: "",
+      lastname: "",
+      email: "",
+      phonenumber: "",
+      date: ""
+    };
+  },
+
+  methods: {
+    addReservation(timestamp) {
+      // this.$http.post('http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation', {
+      //   from: timestamp,
+      //   tables: this.table,
+      //   firstname: this.firstname,
+      //   lastname: this.lastname,
+      //   phonenumber: this.phonenumber,
+      //   mail: this.mail
+      // }).then(response => {
+      //   alert(response.status)
+      // }, response => {
+      //   alert(response.status)
+      // })
+
+      axios
+        .post(
+          "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
+          {
+            from: timestamp,
+            tables: this.table,
+            firstname: this.firstname,
+            lastname: this.lastname,
+            phonenumber: this.phonenumber,
+            mail: this.mail
+          }
+        )
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    makeTimestamp() {
+      var d = new Date(this.date).getTime();
+      const timestamp = Math.floor(d / 1000);
+
+      return timestamp;
+    }
   }
 };
 </script>
@@ -142,10 +195,18 @@ select {
   margin-bottom: 3%;
 }
 
-select:hover{
+select:hover {
   border-bottom: 2px solid #da3743;
 }
 
+.btn {
+  padding: 3%;
+  margin-top: 3%;
+  border: none;
+  background: #da3743;
+  color: #fff;
+  cursor: pointer;
+}
 </style>
 
 

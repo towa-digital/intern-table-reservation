@@ -1,8 +1,8 @@
 <template>
   <div id="app">
    
-    <InputForm />
-    <ApiTest />
+    <InputForm v-bind:reservations="reservations" v-on:add-reservation="addReservation"/>
+    <!-- <ApiTest /> -->
     
     
   </div>
@@ -10,14 +10,29 @@
 
 <script>
 import InputForm from './components/InputForm.vue'
-import ApiTest from './components/ApiTest.vue'
+// import ApiTest from './components/ApiTest.vue'
 
 
 export default {
   name: 'app',
   components: {
    InputForm,
-   ApiTest
+  //  ApiTest
+  },
+  data() {
+    return{
+      reservations: [{
+        name: "Niklas"
+      },
+      {
+        name: "Elias"
+      }]
+    }
+  },
+  methods: {
+    addReservation(newReservation) {
+      this.reservations = [...this.reservations, newReservation];
+    }
   }
 }
 </script>

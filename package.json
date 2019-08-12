@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/towa-digital/intern-table-reservation#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "vue-resource": "^1.5.1"
   }
 }
