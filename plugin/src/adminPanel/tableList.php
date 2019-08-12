@@ -41,7 +41,7 @@ function show_tableList() {
 
 <div id="main">
     <h1 class="inline">Alle Tische</h1>
-    <a href="admin.php?page=addtable" class="button">Neuen Tisch erstellen</a>
+    <a href="admin.php?page=addtable" class="button" id="addtable">Neuen Tisch erstellen</a>
     <form method="post">
         <table class="content">
             <tr>
@@ -58,11 +58,11 @@ function show_tableList() {
                     echo '<td class="m_isOutside">'.($r["isOutside"] ? "ja" : "nein").'</td>';
                     echo '<td class="m_numberOfSeats">'.$r["seats"].'</td>';
 
-                    echo '<td><button type="submit" name="tableToDelete" value="'.$r["id"].'">Löschen</button>';
+                    echo '<td><button type="submit" name="tableToDelete" id="deleteBtn_" value="'.$r["id"].'">Löschen</button>';
 
-                    echo ' <button type="button" id="editBtn_'.$r["id"].'" onclick="edit('.$r["id"].')">Bearbeiten</button>';
-                    echo ' <button type="submit" id="saveBtn_'.$r["id"].'" class="hidden" name="tableToEdit" value="'.$r["id"].'">Speichern</button>';
-                    echo ' <button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden">Abbrechen</button></td>';
+                    echo ' <button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')">Bearbeiten</button>';
+                    echo ' <button type="submit"  id="saveBtn_'.$r["id"].'" class="hidden edit" name="tableToEdit" value="'.$r["id"].'">Speichern</button>';
+                    echo ' <button type="button"  id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit">Abbrechen</button></td>';
 
                     echo '</tr>';
                 }

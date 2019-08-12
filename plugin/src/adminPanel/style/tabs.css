@@ -1,25 +1,22 @@
 .tabLinkContainer {
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-    overflow: hidden;
-    border: 1px solid #23282d;
-    background-color: #23282d;
-}
-
-.tabLinkContainer button {
-    color: white;
-    background-color: inherit;
-    border: none;
-    outline: none;
-    float: left;
-    transition: 0.3s;
-    cursor: pointer;
-    padding: 10px 20px;
+    margin-bottom: 1% !important;
+    vertical-align: middle !important;
+    border: none !important;
+    background: #da3743 !important;
+    color: #fff !important;
+    margin-top: 0.5%;
 
 }
 
-.tabLinkContainer button:hover, .activeTabBtn {
-    background-color: #ddd;
-    color: black;
+.tabLinkContainer button, .activeTabBtn {
+    background: #da3743 !important;
+    border: none !important;
+    cursor: pointer !important;
+    color: #fff;
+    padding: 1%;
+}
+
+.tabLinkContainer button:hover {
+    background: #e15b64 !important;
+    border: none !important;
 }

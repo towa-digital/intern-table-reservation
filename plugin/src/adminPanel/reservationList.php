@@ -93,7 +93,7 @@ function show_reservationList() {
     <div id="current" class="tabElement">
         <p id="jsError" class="hidden"></h1>
         <h1 class="inline">Aktuelle Reservierungen</h1>
-        <a href="admin.php?page=addreservation" class="button">Neue Reservierung erstellen</a>
+        <a href="admin.php?page=addreservation" class="button" id="addreservation">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
                 <tr>
@@ -130,11 +130,11 @@ function show_reservationList() {
                     echo '<td class="m_mail">'.$r["mail"].'</td>';
                     echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
 
-                    echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'">Löschen</button>';
+                    echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit">Löschen</button>';
 
-                    echo '<button type="button" id="editBtn_'.$r["id"].'" onclick="edit('.$r["id"].')">Bearbeiten</button>';
-                    echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden" name="reservationToEdit" value="'.$r["id"].'">Speichern</button>';
-                    echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden">Abbrechen</button></td>';
+                    echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit"onclick="edit('.$r["id"].')">Bearbeiten</button>';
+                    echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'">Speichern</button>';
+                    echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit">Abbrechen</button></td>';
 
                     echo '</tr>';
                 }

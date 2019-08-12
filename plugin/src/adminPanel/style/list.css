@@ -24,3 +24,57 @@
 #main input:not([type=checkbox]) {
     width: calc(100% - 5px);
 }
+
+#addtable, #addreservation{
+
+    margin-bottom: 1%;
+    margin-left: 3%;
+    vertical-align: middle;
+    border: none;
+    background: #da3743;
+    color: #fff;
+    cursor: pointer;
+}
+
+#addtable:hover {
+    background: #e15b64;
+    border: none;
+}
+
+#editBtn_, #deleteBtn_ {
+    margin-bottom: 1%;
+    margin-left: 3%;
+    vertical-align: middle;
+    border: none;
+    background: #da3743;
+    color: #fff;
+    cursor: pointer;
+
+    padding: 3px 7px;
+    border-radius: 4px;
+
+}
+
+#editBtn_:hover, #deleteBtn_:hover {
+    background: #e15b64;
+    border: none;
+}
+
+.edit {
+    margin-bottom: 1%;
+    margin-left: 3%;
+    vertical-align: middle;
+    border: none;
+    background: #da3743;
+    color: #fff;
+    cursor: pointer;
+
+    padding: 3px 7px;
+    border-radius: 4px;
+}
+
+.edit:hover {
+    background: #e15b64;
+    border: none;
+}
+
