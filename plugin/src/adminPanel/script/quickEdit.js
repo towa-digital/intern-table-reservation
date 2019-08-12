@@ -23,7 +23,7 @@ function edit(id) {
     document.getElementById("cancelBtn_"+id).classList.remove("hidden");
     
 
-    formContentSetter(document.getElementById("row_"+id));
+    formContentSetter(document.getElementById("row_"+id), id);
     
 }
 

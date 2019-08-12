@@ -11,6 +11,12 @@ function applyStyle_addReservation() {
 
 
 function show_addReservation() {
+    //AJAX
+    wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+    wp_enqueue_script("loadAvailableTables_script", plugins_url("script/loadAvailableTables.js", __FILE__));
+    wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
+
+
     $required = array("table", "from", "to", "firstname", "lastname", "mail", "phonenumber");
 
     $isset = true;
@@ -31,7 +37,7 @@ function show_addReservation() {
 
     if($isset) {
         if(! $empty) {
-            $table = $_POST["table"];
+            $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
             $firstname = $_POST["firstname"];
@@ -39,10 +45,10 @@ function show_addReservation() {
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
 
-            $errorMsg = verifyReservation($table, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+            $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
             
             if($errorMsg === null) {
-                addReservation(array($table), $from, $to, $firstname, $lastname, $mail, $phonenumber);
+                addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -50,8 +56,12 @@ function show_addReservation() {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
     }
+
+
+
 ?>
 <div id="main">
+    <p id="jsError" class="hidden"></h1>
     <h1>Reservierung hinzufügen</h1>
     <form method="post">
         <div id="formContent">
@@ -61,22 +71,19 @@ function show_addReservation() {
                 </td></tr>
                 <tr><td>
                     <h3>Beginn der Reservierung</h3>
-                    <input type="datetime-local" name="from" />
+                    <input type="datetime-local" name="from" id="from" oninput="onDateChange(this, document.getElementById('to'), 0)" />
                 </td></tr>
                 <tr><td>
                     <h3>Ende der Reservierung</h3>
-                    <input type="datetime-local" name="to" />
+                    <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" />
                 </td></tr>
                 <tr><td>
                     <h3>Tisch</h3>
-                    <select name="table">
-                        <?php
-                            $allTables = getTables();
-                            foreach($allTables as $table) {
-                                echo '<option value="'.$table["id"].'">'.$table["title"].'</option>';
-                            }
-                        ?>
-                    </select>
+                    <div class="selectTableParent">
+                        <select name="table[]" class="selectTable hidden"></select>
+                    </div>
+                    <button type="button" class="add_selectTable hidden" onclick="addElement()">Add</button>
+                    <p class="selectTableError">Bitte erst Datum wählen!</p>
                 </td></tr>
                 <tr><td>
                     <h3>Vorname</h3>

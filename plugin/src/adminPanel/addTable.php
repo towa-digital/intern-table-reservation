@@ -36,9 +36,10 @@ function show_addTable() {
 
             $errorMsg = verifyTable($title, $isOutside, $numberOfSeats);
             if($errorMsg === null) {
-                echo '<p class="formError">'.$errorMsg.'</p>';
-            } else {
                 addTable($title, $isOutside, $numberOfSeats);
+            } else {
+                echo '<p class="formError">'.$errorMsg.'</p>';
+
             }
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';

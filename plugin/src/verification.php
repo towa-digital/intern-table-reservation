@@ -12,8 +12,38 @@ function verifyTable($title, $isOutside, $numberOfSeats, $id = 0) {
     return null;
 }
 
-function verifyReservation($table, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id = 0) {
+function verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id = 0) {
     $errorMsg = null;
+
+    // stelle sicher, dass keine Duplikate in tables enthalten sind
+    $duplicate = false;
+    for($c1 = 0; $c1 < count($tables); $c1++) {
+        for($c2 = 0; $c2 < count($tables); $c2++) {
+            if($c1 != $c2 && $tables[$c1] == $tables[$c2]) {
+                $duplicate = true;
+                break 2;
+            }
+        }
+    }
+
+    // iteriere über tables und stelle sicher, dass jede ID im Array tatsächlich einem Tisch zugeordnet ist
+    $allAreTables = true;
+    foreach($tables as $t) {
+        if(get_post_type($t) != "tables") {
+            $allAreTables = false;
+        }
+    }
+
+    // iteriere über tables und stelle sicher, dass jeder Tisch frei ist
+    $allReservations = getReservations();
+    $allTablesFree = true;
+    foreach($tables as $t) {
+        if(! isTableFree($t, $from, $to, $allReservations, $id)) {
+            $allTablesFree = false;
+        }
+    }
+
+
     // stelle sicher, dass falls eine ID übergeben wurde, diese einer Reservierung zugeordnet ist
     if($id != 0 && get_post_type($id) != "reservations") {
         $errorMsg = "Die ID der Reservierung, die bearbeitet werden soll, ist keiner Reservierung zugeordnet.";
@@ -36,14 +66,24 @@ function verifyReservation($table, $from, $to, $firstname, $lastname, $mail, $ph
         $errorMsg = "Die Reservierdauer darf nicht größer als eine Woche sein.";
     }
 
+    // stelle sicher, dass mindestens ein Tisch reserviert ist
+    else if (count($tables) == 0) {
+        $errorMsg = "Mindestens ein Tisch muss reserviert werden!";
+    }
+
+    // stelle sicher, dass keine Duplikate in der Liste sind
+    else if($duplicate) {
+        $errorMsg = "Ein Tisch darf nicht doppelt reserviert werden.";
+    }
+
     // stelle sicher, dass die übergebene ID des Tisches tatsächlich ein Tisch ist
-    else if (get_post_type($table) != "tables") {
-        $errorMsg = "Die ID des übergebenenen Tisch ist keinem Tisch zugeordnet.";
+    else if (! $allAreTables) {
+        $errorMsg = "Die ID von mindestens einem Tisch ist keinem Tisch zugeordnet.";
     }
 
     // stelle sicher, dass Tisch frei ist
-    else if (! isTableFree($table, $from, $to, getReservations(), $id)) {
-        $errorMsg = "Der gewünschte Tisch ist zum angegebenen Zeitpunkt leider nicht frei.";
+    else if (! $allTablesFree) {
+        $errorMsg = "Mindestens ein Tisch ist zum gewünschten Zeitpunkt nicht frei.";
     }
 
     // stelle sicher, dass eine gültige E-Mail-Adresse eingegeben wurde

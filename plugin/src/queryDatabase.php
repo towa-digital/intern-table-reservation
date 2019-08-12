@@ -163,11 +163,11 @@
         update_field("tables", $tables, $id);
         update_field("from", date("Y-m-d H:i:s", $from), $id);
         update_field("to", date("Y-m-d H:i:s", $to), $id);
-        update_field("firstname", $firstname, $id);
-        update_field("lastname", $lastname, $id);
-        update_field("mail", $mail, $id);
-        update_field("phonenumber", $phonenumber, $id);
-        update_field("ip", $_SERVER["REMOTE_ADDR"], $id);
+        update_field("firstname", sanitize_text_field($firstname), $id);
+        update_field("lastname", sanitize_text_field($lastname), $id);
+        update_field("mail", sanitize_email($mail), $id);
+        update_field("phonenumber", sanitize_text_field($phonenumber), $id);
+        update_field("ip", $_SERVER["HTTP_X_FORWARDED_FOR"], $id);
 
         return $id; 
     }
@@ -188,7 +188,7 @@
 
         $id = wp_insert_post(array(
             'ID' => $tableToUpdate,
-            'post_title'=>$title, 
+            'post_title'=> sanitize_text_field($title), 
             'post_type'=>'tables', 
             'post_content'=>'',
             'post_status'=>'publish'
@@ -239,19 +239,20 @@
     /**
      * Gibt wie getTables() ein Array aus allen Tischen zurück, allerdings werden alle Tische gefiltert, welche in der gewünschten Zeitspanne nicht frei sind.
      */
-    function getFreeTables($startTime, $endTime) {
+    function getFreeTables($startTime, $endTime, $reservationId = 0) {
         if($startTime > $endTime) throw new Exception("Die Startzeit darf nicht größer sein als die Endzeit.");
 
+        $freeTables = array();
         $allTables = getTables();
         $allReservations = getReservations();
 
         // falls der Tisch nicht frei ist, wird er aus dem Array mit allen Tischen entfernt
         foreach($allTables as $elemKey => $table) {
-            if(! isTableFree($table, $startTime, $endTime, $allReservations)) {
-                unset($allTables[$elemKey]);
+            if(isTableFree($table["id"], $startTime, $endTime, $allReservations, $reservationId)) {
+                $freeTables[] = $allTables[$elemKey];
             }
         }
 
-        return $allTables;
+        return $freeTables;
     }
  ?>

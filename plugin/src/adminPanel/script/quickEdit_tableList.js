@@ -1,4 +1,4 @@
-initQuickEdit(function(rowElement) {
+initQuickEdit(function(rowElement, id) {
     var title = rowElement.getElementsByClassName("m_title")[0].innerHTML;
     var isOutside = (rowElement.getElementsByClassName("m_isOutside")[0].innerHTML == "ja") ? true : false;
     var numberOfSeats = rowElement.getElementsByClassName("m_numberOfSeats")[0].innerHTML;

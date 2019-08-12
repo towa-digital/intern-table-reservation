@@ -17,12 +17,17 @@ function show_reservationList() {
     // Tab-Feature hinzufügen
     wp_enqueue_script("tab_script", plugins_url("script/tabs.js", __FILE__));
 
+    //AJAX
+    wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+    wp_enqueue_script("loadAvailableTables_script", plugins_url("script/loadAvailableTables.js", __FILE__));
+    wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
+
 
     if(isset($_POST["reservationToDelete"])) {
         deleteReservation($_POST["reservationToDelete"]);
     }
 
-    $required = array("reservationToEdit", "table", "from", "to", "firstname", "lastname", "mail", "phonenumber");
+    $required = array("reservationToEdit", "table", "from", "to", "firstname", "lastname");
     $isset = true;
     $error = false;
     foreach($required as $field) {
@@ -41,7 +46,7 @@ function show_reservationList() {
     if($isset) {
         if(! $empty) {
             $id = $_POST["reservationToEdit"];
-            $table = $_POST["table"];
+            $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
             $firstname = $_POST["firstname"];
@@ -49,10 +54,10 @@ function show_reservationList() {
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
 
-            $errorMsg = verifyReservation($table, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
+            $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
 
             if($errorMsg === null) {
-                addReservation(array($table), $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
+                addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -66,13 +71,15 @@ function show_reservationList() {
     echo '<script>const allTables ='.json_encode($allTables).';</script>';
 
     /*
-        * Aufsteigende Sortierung nach der Differenz zwischen der Beginnzeit der Reservierung und der aktuellen Zeit. 
-        */
+     * Aufsteigende Sortierung nach der Differenz zwischen der Beginnzeit der Reservierung und der aktuellen Zeit. 
+     */
     usort($allReservations, function($a, $b) {
         if($a < $b) return -1;
         else if ($a == $b) return 0;
         else return 1;
     });
+
+    var_dump(getFreeTables(mktime(10, 0, 0, 10, 10, 2019), mktime(12, 0, 0, 10, 10, 2019), 107));
 ?>
 
 
@@ -82,8 +89,9 @@ function show_reservationList() {
         <button onclick="openTab(this, 'past')" class="tabListBtn">Vergangene Reservierungen</button>
     </div>
     <div id="current" class="tabElement">
+        <p id="jsError" class="hidden"></h1>
         <h1 class="inline">Aktuelle Reservierungen</h1>
-        <button>Neue Reservierung erstellen</button>
+        <a href="admin.php?page=addreservation" class="button">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
                 <tr>
@@ -104,8 +112,10 @@ function show_reservationList() {
                     echo '<tr id="row_'.$r["id"].'">';
             
                     echo '<td class="m_tables">';
-                    foreach($r["tableIds"] as $tableId) {
-                        echo getTableById($tableId)["title"].',';
+                    for($c = 0; $c < count($r["tableIds"]); $c++) {
+                        $tableId = $r["tableIds"][$c];
+
+                        echo getTableById($tableId)["title"].($c != count($r["tableIds"]) - 1 ? "," : "");
                     }
                     echo '</td>';
 
@@ -123,14 +133,14 @@ function show_reservationList() {
                     echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden">Abbrechen</button></td>';
 
                     echo '</tr>';
-                    }
+                }
                 ?>
             </table>
         </form>
     </div>
     <div id="past" class="tabElement hidden">
-    <h1 class="inline">Vergangene Reservierungen</h1>
-        <button>Neue Reservierung erstellen</button>
+        <h1 class="inline">Vergangene Reservierungen</h1>
+        <a href="admin.php?page=addreservation" class="button">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
                 <tr>

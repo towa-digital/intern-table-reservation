@@ -37,8 +37,8 @@ function show_tableList() {
 ?>
 
 <div id="main">
-    <h1>Alle Tische</h1>
-    <button>Neuen Tisch erstellen</button>
+    <h1 class="inline">Alle Tische</h1>
+    <a href="admin.php?page=addtable" class="button">Neuen Tisch erstellen</a>
     <form method="post">
         <table class="content">
             <tr>
