@@ -8,7 +8,9 @@
  * Author URI: 
  */
 
- define('WP_DEBUG', true);
+define('WP_DEBUG', true);
+define('RESERVATION_DURATION', 30 * 60);
+
 // Setup von CPT und ACF
 require_once("initCpt.php");
 require_once("initAcf.php");
@@ -49,7 +51,7 @@ function loadAvailableTables() {
 }
 
 add_action("rest_api_init", function() {
-    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<to>\d+)", array(
+    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)", array(
         "methods" => "GET",
         "callback" => "rest_getFreeTables"
     ));
@@ -60,7 +62,7 @@ add_action("rest_api_init", function() {
 });
 function rest_getFreeTables($request) {
     $from = $request["from"];
-    $to = $request["to"];
+    $to = $from + RESERVATION_DURATION;
 
     if($from > $to) {
         return new WP_Error('invalid_date', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
@@ -82,7 +84,7 @@ function rest_getFreeTables($request) {
 
 function rest_saveNewReservation($request) {
     $from = $request["from"];
-    $to = $request["to"];
+    $to = $from + RESERVATION_DURATION;
     $tables = $request["tables"];
     $firstname = $request["firstname"];
     $lastname = $request["lastname"];
