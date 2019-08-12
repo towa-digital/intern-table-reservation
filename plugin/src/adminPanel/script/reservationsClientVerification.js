@@ -19,6 +19,11 @@ function onDateChange(fromElement, toElement, reservationId) {
     $(".selectTableError").html("Bitte erst Datum wählen!");
     $(".add_selectTable").addClass("hidden");
 
+    // falls existent, deaktiviere Speichern-Btn
+    if($("#publishBtn") !== undefined) {
+        $("#publishBtn").prop("disabled", true);
+    }
+
     // lese eingegebene Datumswerte aus
     var from = fromElement.value;
     var to = toElement.value;
@@ -29,12 +34,20 @@ function onDateChange(fromElement, toElement, reservationId) {
     // Validierung
     var fromDate = new Date(from);
     var toDate = new Date(to);
-    if(fromDate > toDate) {
+    if(fromDate.getTime() > toDate.getTime()) {
         showError("Das Beginndatum darf nicht nach dem Enddatum liegen.");
         return;
     }
-    if(fromDate < new Date()) {
+    if(fromDate.getTime() < new Date().getTime()) {
         showError("Das Beginndatum darf nicht in der Vergangenheit liegen");
+        return;
+    }
+    if(fromDate.getTime() < new Date(new Date().getTime() + 30 * 60000).getTime()) {
+        showError("Das Beginndatum muss mindestens 30 Minuten in der Zukunft liegen.");
+        return;
+    }
+    if(fromDate.getTime() > new Date(new Date().getTime() + 365 / 2 * 24 * 60 * 60 * 1000)) {
+        showError("Das Beginndatum darf nicht weiter als ein halbes Jahr in der Zukunft liegen");
         return;
     }
 
@@ -44,14 +57,19 @@ function onDateChange(fromElement, toElement, reservationId) {
     $(".selectTableError").html("");
     $(".add_selectTable").removeClass("hidden");
 
-        // verfügbare Tische per AJAX laden
-        loadAvailableTables(from, to, reservationId, function(allTables) {
-            freeTables = allTables.slice();
-            allFreeTables = allTables.slice();
+    // falls existent, aktiviere Speichern-Btn
+    if($("#publishBtn") !== undefined) {
+        $("#publishBtn").prop("disabled", false);
+    }
+
+    // verfügbare Tische per AJAX laden
+    loadAvailableTables(from, to, reservationId, function(allTables) {
+        freeTables = allTables.slice();
+        allFreeTables = allTables.slice();
     
-            updateDropdownMenus();
+        updateDropdownMenus();
             
-        });
+    });
     
 }
 
@@ -94,14 +112,12 @@ function updateDropdownMenus() {
         }
     }
 
-    console.log(freeTables);
-
     // entferne alle option-Tags aus den Dropdown-Menüs
     $(".selectTable").empty();
 
     // iteriere über alle Dropdown-Menüs
     for(var i = 0; i < allSelectElems.length; i++) {
-        allSelectElems[i].innerHTML += "<option disabled selected value>Bitte wählen!</option>";
+        allSelectElems[i].innerHTML += "<option selected value>Tisch nicht ausgewählt</option>";
 
         // füge zuerst, wenn vorhanden, das ausgewählte Element als option-Tag ein
         // wir wissen, dass dies nicht in freeTables enthalten sein kann, da es aus diesem Array gelöscht worden ist
@@ -111,15 +127,6 @@ function updateDropdownMenus() {
 
         // iteriere über alle freien Tische
         for(var c = 0; c < freeTables.length; c++) {
-        /*    // wenn die ID des Tisches dieselbe ist wie die, die vorher im entsprechenden Dropdown-Menü ausgewählt war
-            // soll dieses Element wieder ausgewählt werden
-            var shouldSelect = selectedIds[i].value == freeTables[c]["id"];
-
-            
-
-
-            // option-Tag ans Dropdown-Menü anhängen
-            allSelectElems[i].innerHTML += '<option value="'+freeTables[c]["id"]+'" '+(shouldSelect ? 'selected' : '')+'>'+freeTables[c]["title"]+'</option>';    */
             allSelectElems[i].innerHTML += '<option value="'+freeTables[c]["id"]+'">'+freeTables[c]["title"]+'</option>';        
     
         }
@@ -127,9 +134,3 @@ function updateDropdownMenus() {
     } 
 }
 
-
-/*function updateDropdownMenus() {
-    freeTables = allFreeTables.slice();
-
-    
-}*/

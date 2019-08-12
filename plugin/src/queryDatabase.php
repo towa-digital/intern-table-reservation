@@ -163,6 +163,13 @@
             'post_status'=>'publish'
         ));
 
+        // entferne leere Werte aus tables
+        foreach($tables as $key => $value) {
+            if($value == "") {
+                array_splice($tables, $key, 1);
+            }
+        }
+
         update_field("tables", $tables, $id);
         update_field("from", date("Y-m-d H:i:s", $from), $id);
         update_field("to", date("Y-m-d H:i:s", $to), $id);

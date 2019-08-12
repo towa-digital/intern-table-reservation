@@ -5,7 +5,8 @@ require_once(__DIR__."/../verification.php");
 
 
 function applyStyle_addReservation() {
-    wp_enqueue_style("stylesheet_name", plugins_url("style/form.css", __FILE__));
+    wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
+    wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
 
 }
 
@@ -40,7 +41,7 @@ function show_addReservation() {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
-            $numberOfSeats = $_POST["numberOfSeats"];
+            $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
             $mail = $_POST["mail"];
@@ -75,7 +76,7 @@ function show_addReservation() {
                     <input type="datetime-local" name="from" id="from" oninput="onDateChange(this, document.getElementById('to'), 0)" />
                 </td></tr>
                 <tr><td>
-                    <h3>Ende der Reservierung</h3><span class="required">*</span>
+                    <h3 class="inline">Ende der Reservierung</h3><span class="required">*</span>
                     <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" />
                 </td></tr>
                 <tr><td>
@@ -83,11 +84,11 @@ function show_addReservation() {
                     <input type="number" name="numberOfSeats" />
                 </td></tr>
                 <tr><td>
-                    <h3>Tisch</h3>
+                    <h3 class="inline">Tisch</h3><span class="required">*</span>
                     <div class="selectTableParent">
                         <select name="table[]" class="selectTable hidden"></select>
                     </div>
-                    <button type="button" class="add_selectTable hidden" onclick="addElement()">Add</button>
+                    <button type="button" class="add_selectTable hidden" onclick="addElement()">Hinzufügen</button>
                     <p class="selectTableError">Bitte erst Datum wählen!</p>
                 </td></tr>
                 <tr><td>
@@ -113,7 +114,7 @@ function show_addReservation() {
                 <h2>Speichern</h2>
             </td></tr>
             <tr><td>
-                <button>Speichern</button>
+                <button id="publishBtn" disabled>Speichern</button>
             </td></tr>   
         </table> 
     </form>

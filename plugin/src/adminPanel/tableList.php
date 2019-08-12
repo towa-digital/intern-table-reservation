@@ -8,6 +8,9 @@ function applyStyle_tableList() {
 }
 
 function show_tableList() {
+    //AJAX
+   wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+
     // Quick-Edit-Feature hinzufügen
     wp_enqueue_script("quickEdit_script", plugins_url("script/quickEdit.js", __FILE__));
     wp_enqueue_script("quickEdit_tableList_script", plugins_url("script/quickEdit_tableList.js", __FILE__));
@@ -15,7 +18,7 @@ function show_tableList() {
     if(isset($_POST["tableToDelete"])) {
         deleteTable($_POST["tableToDelete"]);
     }
-    var_dump($_POST);
+
     if(isset($_POST["tableToEdit"]) && isset($_POST["title"]) && isset($_POST["numberOfSeats"])) {
         if(empty($_POST["tableToEdit"]) || empty($_POST["title"]) || empty($_POST["numberOfSeats"])) {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';

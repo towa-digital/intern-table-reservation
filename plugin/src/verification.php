@@ -1,13 +1,16 @@
 <?php
 
-function verifyTable($title, $isOutside, $numberOfSeats, $id = 0) {
+function verifyTable(string $title, bool $isOutside, int $numberOfSeats, int $id = 0) {
     // falls id übergeben, stelle sicher dass ID ein Tisch ist
+    if($id !== 0 && get_post_type($id) != "tables") {
+        return "Die ID des Tisches, der bearbeitet werden soll, ist keinem Tisch zugeordet.";
+    }
 
     // stelle sicher, dass title noch nicht existiert
-
-    // stelle sicher, dass isOutside ein boolescher Wert ist
-
-    // stelle sicher, dass numberOfSeats eine Zahl ist
+    $existingPage = get_page_by_title($title, OBJECT, 'tables');
+    if($existingPage !== null && $existingPage->ID != $id) {
+        return "Ein Tisch mit diesem Namen existiert bereits.";
+    }
 
     return null;
 }

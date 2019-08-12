@@ -12,7 +12,7 @@ function applyStyle_reservationList() {
 function show_reservationList() {
     //AJAX
     wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
-    
+
     // Quick-Edit-Feature hinzufügen
     wp_enqueue_script("quickEdit_script", plugins_url("script/quickEdit.js", __FILE__));
     wp_enqueue_script("quickEdit_reservationList_script", plugins_url("script/quickEdit_reservationList.js", __FILE__));
@@ -51,14 +51,14 @@ function show_reservationList() {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
-            $numberOfSeats = $_POST["numberOfSeats"];
+            $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
 
             $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
-
+            var_dump($numberOfSeats);
             if($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
             } else {
@@ -103,8 +103,8 @@ function show_reservationList() {
                     <th style="width=16%">Anzahl Plätze</th>
                     <th style="width=16%">Vorname</th>
                     <th style="width=16%">Nachname</th>
-                    <th style="width=16%">Telefonnummer</th>
                     <th style="width=16%">E-Mail</th>
+                    <th style="width=16%">Telefonnummer</th>
                     <th></th>
                 </tr>
                 <?php           
@@ -124,7 +124,7 @@ function show_reservationList() {
 
                     echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
                     echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
-                    echo '<td class="m_numberOfSeats">'.$r["numberOfSeats"].'</td>';
+                    echo '<td class="m_numberOfSeats">'.($r["numberOfSeats"] == 0 ? "" : $r["numberOfSeats"]).'</td>';
                     echo '<td class="m_firstname">'.$r["firstname"].'</td>';
                     echo '<td class="m_lastname">'.$r["lastname"].'</td>';
                     echo '<td class="m_mail">'.$r["mail"].'</td>';
@@ -154,8 +154,8 @@ function show_reservationList() {
                     <th style="width=16%">Anzahl Plätze</th>
                     <th style="width=16%">Vorname</th>
                     <th style="width=16%">Nachname</th>
-                    <th style="width=16%">Telefonnummer</th>
                     <th style="width=16%">E-Mail</th>
+                    <th style="width=16%">Telefonnummer</th>
                     <th></th>
                 </tr>
                 <?php           

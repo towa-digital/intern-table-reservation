@@ -5,7 +5,8 @@ require_once(__DIR__."/../verification.php");
 
 
 function applyStyle_addTable() {
-    wp_enqueue_style("stylesheet_name", plugins_url("style/form.css", __FILE__));
+    wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
+    wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
 }
 
 function show_addTable() {
@@ -52,7 +53,7 @@ function show_addTable() {
     <form method="post">
         <div id="formContent">
             <div class="titleData">
-                <input type="text" name="title" class="title" />
+                <input type="text" name="title" class="title" placeholder="Bezeichnung des Tisches" />
             </div>
             <table class="data formData">
                 <tr><td>
@@ -62,7 +63,7 @@ function show_addTable() {
                     <input type="checkbox" name="isOutside" id="isOutside" /><label for="isOutside">Ist der Tisch im Außenbereich?</label>
                 </td></tr>
                 <tr><td>
-                    <h3>Anzahl Sitzplätze</h3>
+                    <h3 class="inline">Anzahl Sitzplätze</h3><span class="required">*</span>
                     <input type="number" name="numberOfSeats" />
                 </td></tr>
                     

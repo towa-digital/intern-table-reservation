@@ -29,8 +29,8 @@
 
 .button {
     background-color: #1c87c9;
-         border: none;
-         color: white;
+    border: none;
+    color: white;
          padding: 20px 34px;
          text-align: center;
          text-decoration: none;
@@ -40,6 +40,7 @@
          cursor: pointer;
 }
 .required {
+    padding-left: 5px;
     color: red;
     font-weight: bolder;
 }

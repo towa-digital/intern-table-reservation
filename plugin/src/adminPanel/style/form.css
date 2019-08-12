@@ -81,6 +81,15 @@ input {
     padding-bottom: 3px;
 }
 
+#publish button:disabled {
+    opacity: 0.4;
+}
+
+.selectTableError {
+    margin-left: 10px;
+    font-style: italic;
+}
+
 @media(max-width: 1000px) {
     form {
         flex-direction: column;
