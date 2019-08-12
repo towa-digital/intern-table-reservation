@@ -17,7 +17,7 @@ function show_addReservation() {
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 
 
-    $required = array("table", "from", "to", "firstname", "lastname", "mail", "phonenumber");
+    $required = array("table", "from", "to", "numberOfSeats", "firstname", "lastname", "mail", "phonenumber");
 
     $isset = true;
     $error = false;
@@ -40,15 +40,16 @@ function show_addReservation() {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
+            $numberOfSeats = $_POST["numberOfSeats"];
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
 
-            $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+            $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
             
             if($errorMsg === null) {
-                addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+                addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -76,6 +77,10 @@ function show_addReservation() {
                 <tr><td>
                     <h3>Ende der Reservierung</h3><span class="required">*</span>
                     <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" />
+                </td></tr>
+                <tr><td>
+                    <h3>Anzahl Plätze</h3>
+                    <input type="number" name="numberOfSeats" />
                 </td></tr>
                 <tr><td>
                     <h3>Tisch</h3>

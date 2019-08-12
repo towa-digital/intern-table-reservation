@@ -49,7 +49,8 @@ Beginndatum liegt in der Vergangenheit: (Status-Code: 500)
 		firstname: [string],
 		lastname: [string],
 		mail: [string],
-		phonenumber: [string]
+		phonenumber: [string],
+		seats: [integer]
 	}
 	
 
@@ -64,7 +65,8 @@ Beispiel:
     	firstname: "Max",
     	lastname: "Mustermann",
     	mail: "max@mustermann.de",
-    	phonenumber: "06641050678"
+    	phonenumber: "06641050678",
+		seats: 5
     }
 	    
 **Rückgabe:** (Status-Code: 200)

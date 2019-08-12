@@ -49,15 +49,16 @@ function show_reservationList() {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $to = strtotime($_POST["to"]);
+            $numberOfSeats = $_POST["numberOfSeats"];
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
 
-            $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
+            $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
 
             if($errorMsg === null) {
-                addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber, $id);
+                addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -79,7 +80,6 @@ function show_reservationList() {
         else return 1;
     });
 
-    var_dump(getFreeTables(mktime(10, 0, 0, 10, 10, 2019), mktime(12, 0, 0, 10, 10, 2019), 107));
 ?>
 
 
@@ -98,6 +98,7 @@ function show_reservationList() {
                     <th style="width=50%">Tische</th>
                     <th style="width=16%">von</th>
                     <th style="width=16%">bis</th>
+                    <th style="width=16%">Anzahl Plätze</th>
                     <th style="width=16%">Vorname</th>
                     <th style="width=16%">Nachname</th>
                     <th style="width=16%">Telefonnummer</th>
@@ -121,6 +122,7 @@ function show_reservationList() {
 
                     echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
                     echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
+                    echo '<td class="m_numberOfSeats">'.$r["numberOfSeats"].'</td>';
                     echo '<td class="m_firstname">'.$r["firstname"].'</td>';
                     echo '<td class="m_lastname">'.$r["lastname"].'</td>';
                     echo '<td class="m_mail">'.$r["mail"].'</td>';
@@ -147,6 +149,7 @@ function show_reservationList() {
                     <th style="width=50%">Tische</th>
                     <th style="width=16%">von</th>
                     <th style="width=16%">bis</th>
+                    <th style="width=16%">Anzahl Plätze</th>
                     <th style="width=16%">Vorname</th>
                     <th style="width=16%">Nachname</th>
                     <th style="width=16%">Telefonnummer</th>
@@ -168,6 +171,7 @@ function show_reservationList() {
 
                     echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
                     echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
+                    echo '<td class="m_numberOfSeats">'.$r["numberOfSeats"].'</td>';
                     echo '<td class="m_firstname">'.$r["firstname"].'</td>';
                     echo '<td class="m_lastname">'.$r["lastname"].'</td>';
                     echo '<td class="m_mail">'.$r["mail"].'</td>';
