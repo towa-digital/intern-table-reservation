@@ -1,5 +1,17 @@
-# Tischreservierung
+# Readme
 
-## Docs
 
-You can find the Documentation [here]('https://github.com/towa-digital/intern-table-reservation/tree/master/docs').
+With this plugin you can easily enable your customers to reserve tables via your website. As an admin you can easily accept and manage these reservations.
+
+## Documentation
+
+* [Setup & Installation]('#')
+* [Features]('#')
+* [API]('#')
+
+## Testing
+
+## Contributors
+
+Niklas Mischi <br>
+Elias Horner
