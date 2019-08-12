@@ -55,12 +55,21 @@ add_action("rest_api_init", function() {
     ));
 });
 function rest_getFreeTables($request) {
-    /*$returnArr = getFreeTables(
-        strtotime($request["from"]),
-        strtotime($request["to"]),
+    $from = $request["from"];
+    $to = $request["to"];
+
+    if($from > $to) {
+        return new WP_Error('invalid_date', "from darf nicht größer als to sein.");
+    }
+    if($from <= time()) {
+        return new WP_Error("begin_date_in_past", "Das Beginndatum der Reservierung darf nicht in der Vergangenheit liegen.");
+    }
+    
+    $returnArr = getFreeTables(
+        $from,
+        $to,
         0
-    );*/
-    $returnArr = array($request["from"], $request["to"]);
+    );
     $response = new WP_REST_Response($returnArr);
     $response->set_status(200);
 
