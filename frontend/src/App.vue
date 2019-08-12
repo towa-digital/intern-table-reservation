@@ -40,8 +40,7 @@ export default {
 <style>
 
   body {
-    width: 30%;
-    margin-left: 35%;
+    width: 100%;
     font-family: sans-serif;
 
   }

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <table>
+  <div class="wrapper">
+    <table v-if="!submitted">
       <tr>
         <td colspan="2">
           <h2>Platzreservierung</h2>
@@ -59,15 +59,23 @@
           <input type="submit" value="Tisch finden" class="btn" v-on:click="addReservation" />
         </td>
       </tr>
+      <tr>
+        <td colspan="2">
+          <div v-if="error && !submitted" class="centered">
+            <h3>{{ errormessage }}</h3>
+          </div>
+        </td>
+      </tr>
     </table>
-    <div v-bind:key="reservation.id" v-for="reservation in reservations">
-      <h3>{{ reservation.name }}</h3>
+
+    <div v-if="submitted" class="centered">
+      <h3>Vielen Dank für deine Reservierung</h3>
     </div>
   </div>
 </template>
 
 <script>
-const axios = require('axios');
+const axios = require("axios");
 
 import InputFormPersons from "./InputFormComponents/InputFormName";
 import InputFormNumberOfPersons from "./InputFormComponents/InputFormNumberOfPersons";
@@ -95,13 +103,15 @@ export default {
       lastname: "",
       email: "",
       phonenumber: "",
-      date: ""
+      date: "",
+      submitted: false,
+      errormessage: "",
+      error: false
     };
   },
 
   methods: {
-    addReservation(timestamp) {
-
+    addReservation: function() {
       axios
         .post(
           "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
@@ -115,11 +125,12 @@ export default {
             numberOfSeats: this.numberofpersons
           }
         )
-        .then(function(response) {
-          console.log(response);
+        .then(() => {
+          this.submitted = true;
         })
-        .catch(function(error) {
-          if(error.response) alert(error.response.data.message);
+        .catch(error => {
+          if (error.response) this.errormessage = error.response.data.message;
+          this.error = true;
         });
     },
     makeTimestamp() {
@@ -160,6 +171,11 @@ table {
   padding: 4%;
 }
 
+.wrapper {
+  width: 30%;
+  margin-left: 35%;
+}
+
 h2 {
   text-align: center;
 
@@ -195,6 +211,10 @@ select:hover {
   background: #da3743;
   color: #fff;
   cursor: pointer;
+}
+
+.centered {
+  text-align: center;
 }
 </style>
 
