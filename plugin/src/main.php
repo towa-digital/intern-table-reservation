@@ -84,19 +84,23 @@ function rest_getFreeTables($request) {
 
 function rest_saveNewReservation($request) {
     $from = $request["from"];
+
     $to = $from + RESERVATION_DURATION;
-    $tables = $request["tables"];
+
+    $tables = array($request["tables"]);
     $firstname = $request["firstname"];
     $lastname = $request["lastname"];
     $mail = $request["mail"];
     $phonenumber = $request["phonenumber"];
 
-    $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+
+    $errorMsg = verifyReservation($tables, $from, $to, 10, $firstname, $lastname, $mail, $phonenumber);
+
     if($errorMsg !== null) {
         return new WP_Error("verification_error", $errorMsg);
     }
 
-    addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+    addReservation($tables, $from, $to, 10, $firstname, $lastname, $mail, $phonenumber);
 }
 
 ?>

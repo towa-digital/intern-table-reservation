@@ -13,10 +13,10 @@ function verifyTable($title, $isOutside, $numberOfSeats, $id = 0) {
 }
 
 function verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id = 0) {
-    if($from === "") {
+    if($from == "") {
         return "Das Beginndatum muss angegeben sein!";
     }
-    if($to === "") {
+    if($to == "") {
         return "Das Enddatum muss angegeben sein!";
     }
 
