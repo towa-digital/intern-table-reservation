@@ -50,7 +50,7 @@ Beginndatum liegt in der Vergangenheit: (Status-Code: 500)
 		lastname: [string],
 		mail: [string],
 		phonenumber: [string],
-		seats: [integer]
+		numberOfSeats: [integer]
 	}
 	
 
@@ -66,7 +66,7 @@ Beispiel:
     	lastname: "Mustermann",
     	mail: "max@mustermann.de",
     	phonenumber: "06641050678",
-		seats: 5
+		numberOfSeats: 5
     }
 	    
 **Rückgabe:** (Status-Code: 200)
