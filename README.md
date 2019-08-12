@@ -13,5 +13,5 @@ With this plugin you can easily enable your customers to reserve tables via your
 
 ## Contributors
 
-Niklas Mischi
+Niklas Mischi <br>
 Elias Horner
