@@ -101,18 +101,6 @@ export default {
 
   methods: {
     addReservation(timestamp) {
-      // this.$http.post('http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation', {
-      //   from: timestamp,
-      //   tables: this.table,
-      //   firstname: this.firstname,
-      //   lastname: this.lastname,
-      //   phonenumber: this.phonenumber,
-      //   mail: this.mail
-      // }).then(response => {
-      //   alert(response.status)
-      // }, response => {
-      //   alert(response.status)
-      // })
 
       axios
         .post(
