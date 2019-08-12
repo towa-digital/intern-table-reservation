@@ -42,6 +42,7 @@
      * - from: Beginn der Reservierung, als UNIX-Timestamp (Anzahl Sekunden seit 1.1.1970 00:00:00 UTC)
      * - to: Ende der Reservierung, als UNIX-Timestamp (Anzahl Sekunden seit 1.1.1970 00:00:00 UTC)
      * - tableIds: Array bestehend aus allen Tisch-IDs, die von der Reservierung betroffen sind
+     * - numberOfSeats: Anzahl Plätze
      * - firstname: Vorname
      * - lastname: Nachname
      * - mail: E-Mail, als String
@@ -64,6 +65,7 @@
                 "id" => get_the_ID(),
                 "from" => strtotime(get_field("from")),
                 "to" => strtotime(get_field("to")),
+                "numberOfSeats" => get_field("numberOfSeats"),
                 "tableIds" => get_field("tables"),
                 "firstname" => get_field("firstname"),
                 "lastname" => get_field("lastname"),
@@ -140,6 +142,7 @@
      * - tables: Array aus allen von der Reservierung betroffenen Tischen
      * - from: Beginn der Reservierung als UNIX-Timestamp
      * - to: Ende der Reservierung als UNIX-Timestamp
+     * - numberOfSeats: Anzahl Plätze
      * - firstname: Vorname
      * - lastname: Nachname
      * - mail: E-Mail
@@ -149,7 +152,7 @@
      * 
      * Gibt die ID der erstellten/aktualisierten Reservierung zurück. 
      */
-    function addReservation(array $tables, int $from, int $to, string $firstname, string $lastname, string $mail, string $phonenumber, int $reservationToUpdate = 0) {
+    function addReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, int $reservationToUpdate = 0) {
         if($reservationToUpdate !== 0 && get_post_type($reservationToUpdate) != "reservations") throw new Exception("reservationToUpdate ist keiner Reservierung zugeordnet");
 
         $id = wp_insert_post(array(
@@ -163,6 +166,7 @@
         update_field("tables", $tables, $id);
         update_field("from", date("Y-m-d H:i:s", $from), $id);
         update_field("to", date("Y-m-d H:i:s", $to), $id);
+        update_field("numberOfSeats", $numberOfSeats, $id);
         update_field("firstname", sanitize_text_field($firstname), $id);
         update_field("lastname", sanitize_text_field($lastname), $id);
         update_field("mail", sanitize_email($mail), $id);

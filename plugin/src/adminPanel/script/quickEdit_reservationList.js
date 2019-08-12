@@ -7,6 +7,7 @@ initQuickEdit(function(rowElement, id) {
     var tables = rowElement.getElementsByClassName("m_tables")[0].innerHTML;
     var from = rowElement.getElementsByClassName("m_from")[0].innerHTML;
     var to = rowElement.getElementsByClassName("m_to")[0].innerHTML;
+    var numberOfSeats = rowElement.getElementsByClassName("m_numberOfSeats")[0].innerHTML;
     var firstname = rowElement.getElementsByClassName("m_firstname")[0].innerHTML;
     var lastname = rowElement.getElementsByClassName("m_lastname")[0].innerHTML;
     var mail = rowElement.getElementsByClassName("m_mail")[0].innerHTML;
@@ -15,6 +16,7 @@ initQuickEdit(function(rowElement, id) {
     rowElement.removeChild(rowElement.getElementsByClassName("m_tables")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_from")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_to")[0]);
+    rowElement.removeChild(rowElement.getElementsByClassName("m_numberOfSeats")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_firstname")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_lastname")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_mail")[0]);
@@ -37,6 +39,7 @@ initQuickEdit(function(rowElement, id) {
 
     content += '<td><input type="datetime-local" name="from" class="from" value="'+convertDateTime(from)+'" oninput="onDateChange(document.getElementsByClassName(\"from\")[0], document.getElementsByClassName(\"to\")[0], '+id+')" /></td>';
     content += '<td><input type="datetime-local" name="to" class="to" value="'+convertDateTime(to)+'" oninput="onDateChange(document.getElementsByClassName(\"from\")[0], document.getElementsByClassName(\"to\")[0], '+id+')"/></td>';
+    content += '<td><input type="number" name="numberOfSeats" value="'+numberOfSeats+'" /></td>';
     content += '<td><input type="text" name="firstname" value="'+firstname+'" /></td>';
     content += '<td><input type="text" name="lastname" value="'+lastname+'" /></td>';
     content += '<td><input type="text" name="mail" value="'+mail+'" /></td>';

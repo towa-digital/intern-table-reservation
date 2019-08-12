@@ -156,6 +156,27 @@
                     'append' => '',
                     'maxlength' => '',
                 ),
+                array(
+                    'key' => 'field_5d513bc84a83a',
+                    'label' => 'Anzahl Sitzplätze',
+                    'name' => 'numberOfSeats',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'default_value' => '',
+                    'placeholder' => '',
+                    'prepend' => '',
+                    'append' => '',
+                    'min' => '',
+                    'max' => '',
+                    'step' => '',
+                ),
             ),
             'location' => array(
                 array(

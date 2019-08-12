@@ -39,3 +39,7 @@
          margin: 4px 2px;
          cursor: pointer;
 }
+.required {
+    color: red;
+    font-weight: bolder;
+}
