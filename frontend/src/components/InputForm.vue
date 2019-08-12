@@ -118,12 +118,13 @@ export default {
         .post(
           "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
           {
-            from: timestamp,
+            from: this.makeTimestamp(),
             tables: this.table,
             firstname: this.firstname,
             lastname: this.lastname,
             phonenumber: this.phonenumber,
-            mail: this.mail
+            mail: this.email,
+            numberOfSeats: this.numberofpersons
           }
         )
         .then(function(response) {
