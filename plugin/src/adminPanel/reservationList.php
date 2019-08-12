@@ -10,6 +10,9 @@ function applyStyle_reservationList() {
 }
 
 function show_reservationList() {
+    //AJAX
+    wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+    
     // Quick-Edit-Feature hinzufügen
     wp_enqueue_script("quickEdit_script", plugins_url("script/quickEdit.js", __FILE__));
     wp_enqueue_script("quickEdit_reservationList_script", plugins_url("script/quickEdit_reservationList.js", __FILE__));
@@ -17,8 +20,7 @@ function show_reservationList() {
     // Tab-Feature hinzufügen
     wp_enqueue_script("tab_script", plugins_url("script/tabs.js", __FILE__));
 
-    //AJAX
-    wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+    
     wp_enqueue_script("loadAvailableTables_script", plugins_url("script/loadAvailableTables.js", __FILE__));
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 

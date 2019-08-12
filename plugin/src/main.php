@@ -92,15 +92,15 @@ function rest_saveNewReservation($request) {
     $lastname = $request["lastname"];
     $mail = $request["mail"];
     $phonenumber = $request["phonenumber"];
+    $numberOfSeats = $request["numberOfSeats"];
 
-
-    $errorMsg = verifyReservation($tables, $from, $to, 10, $firstname, $lastname, $mail, $phonenumber);
+    $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
 
     if($errorMsg !== null) {
         return new WP_Error("verification_error", $errorMsg);
     }
 
-    addReservation($tables, $from, $to, 10, $firstname, $lastname, $mail, $phonenumber);
+    addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
 }
 
 ?>

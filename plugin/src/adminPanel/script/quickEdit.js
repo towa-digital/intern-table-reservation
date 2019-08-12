@@ -29,6 +29,8 @@ function edit(id) {
 
 
 function cancelEdit() {
+    if(activeEdit === null) return;
+
     var id = activeEdit["id"];
 
     document.getElementById("editBtn_"+id).classList.remove("hidden");
@@ -39,3 +41,11 @@ function cancelEdit() {
 
     activeEdit = null;
 }
+
+$(document).ready(function() {
+    $(document).keydown(function(event) {
+        if(event.keyCode == 27) {
+            cancelEdit();
+        }
+    });
+});
