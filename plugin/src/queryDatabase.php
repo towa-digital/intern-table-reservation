@@ -212,7 +212,7 @@
      *   
      */
     function isTableFree($tableId, $startTime, $endTime, $allReservations, $reservationId = 0) {
-        if(get_post_type($tableId) != "tables") throw new Exception("tableId ist nicht die ID eines Tisches");
+        if(get_post_type($tableId) != "tables") throw new Exception(get_post_type($tableId) ."tableId (".$tableId.")ist nicht die ID eines Tisches");
         if($startTime > $endTime) throw new Exception("Die Startzeit darf nicht größer sein als die Endzeit.");
 
         foreach($allReservations as $reservation) {

@@ -38,7 +38,7 @@ function setup_admin_menu() {
 add_action("wp_ajax_my_action", "loadAvailableTables");
 
 function loadAvailableTables() {
-	global $wpdb; // this is how you get access to the database
+	global $wpdb; 
 
 	$startTime = strtotime($_POST['from']);
     $endTime = strtotime($_POST['to']);
@@ -53,18 +53,22 @@ add_action("rest_api_init", function() {
         "methods" => "GET",
         "callback" => "rest_getFreeTables"
     ));
+    register_rest_route("tischverwaltung/v1", "savenewreservation/", array(
+        "methods" => "POST",
+        "callback" => "rest_saveNewReservation"
+    ));
 });
 function rest_getFreeTables($request) {
     $from = $request["from"];
     $to = $request["to"];
 
     if($from > $to) {
-        return new WP_Error('invalid_date', "from darf nicht größer als to sein.");
+        return new WP_Error('invalid_date', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
     }
     if($from <= time()) {
         return new WP_Error("begin_date_in_past", "Das Beginndatum der Reservierung darf nicht in der Vergangenheit liegen.");
     }
-    
+
     $returnArr = getFreeTables(
         $from,
         $to,
@@ -74,6 +78,23 @@ function rest_getFreeTables($request) {
     $response->set_status(200);
 
     return $response;
+}
+
+function rest_saveNewReservation($request) {
+    $from = $request["from"];
+    $to = $request["to"];
+    $tables = $request["tables"];
+    $firstname = $request["firstname"];
+    $lastname = $request["lastname"];
+    $mail = $request["mail"];
+    $phonenumber = $request["phonenumber"];
+
+    $errorMsg = verifyReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
+    if($errorMsg !== null) {
+        return new WP_Error("verification_error", $errorMsg);
+    }
+
+    addReservation($tables, $from, $to, $firstname, $lastname, $mail, $phonenumber);
 }
 
 ?>

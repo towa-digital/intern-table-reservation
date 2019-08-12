@@ -70,11 +70,11 @@ function show_addReservation() {
                     <h2>Reservierungsdaten</h2>
                 </td></tr>
                 <tr><td>
-                    <h3>Beginn der Reservierung</h3>
+                    <h3 class="inline">Beginn der Reservierung</h3><span class="required">*</span>
                     <input type="datetime-local" name="from" id="from" oninput="onDateChange(this, document.getElementById('to'), 0)" />
                 </td></tr>
                 <tr><td>
-                    <h3>Ende der Reservierung</h3>
+                    <h3>Ende der Reservierung</h3><span class="required">*</span>
                     <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" />
                 </td></tr>
                 <tr><td>
