@@ -27,7 +27,7 @@
     display: inline-block;
 }
 
-/* .button {
+/*.button {
     background-color: #1c87c9;
     border: none;
     color: white;
@@ -39,6 +39,25 @@
          margin: 4px 2px;
          cursor: pointer;
 } */
+
+
+.btn {
+    vertical-align: middle;
+    border: none;
+    background: rgba(218,55,66,1);
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 5px 7px;
+}
+
+
+.btn:hover {
+    background: #e15b64;
+    border: none;
+    color: #fff;
+}
+
 .required {
     padding-left: 5px;
     color: red;

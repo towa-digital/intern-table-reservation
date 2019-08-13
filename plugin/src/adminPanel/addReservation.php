@@ -18,7 +18,7 @@ function show_addReservation() {
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 
 
-    $required = array("table", "from", "to", "numberOfSeats", "firstname", "lastname", "mail", "phonenumber");
+    $required = array("table", "from", "numberOfSeats", "firstname", "lastname", "mail", "phonenumber");
 
     $isset = true;
     $error = false;
@@ -40,7 +40,13 @@ function show_addReservation() {
         if(! $empty) {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
-            $to = strtotime($_POST["to"]);
+            $useDefaultEndTime = $_POST["useDefaultEndTime"] === null ? false : true;
+
+            if(! $useDefaultEndTime && !isset($_POST["to"])) {
+                echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+            }
+
+            $to = $useDefaultEndTime ? $from + 30 * 60 : strtotime($_POST["to"]);
             $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
@@ -76,8 +82,10 @@ function show_addReservation() {
                     <input type="datetime-local" name="from" id="from" oninput="onDateChange(this, document.getElementById('to'), 0)" />
                 </td></tr>
                 <tr><td>
-                    <h3 class="inline">Ende der Reservierung</h3><span class="required">*</span>
-                    <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" />
+                    <h3 class="inline">Ende der Reservierung</h3><span class="required">*</span><br />
+                    <input type="checkbox" name="useDefaultEndTime" id="useDefaultEndTime" onchange="onDateChange(document.getElementById('from'), document.getElementById('to'), 0); $('#to').prop('disabled', this.checked)" checked />
+                    <label for="useDefaultEndTime">Soll die standardmäßige Reservierungsdauer verwendet werden?</label>
+                    <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" style="margin-top: 15px;margin-bottom: 15px;" disabled />
                 </td></tr>
                 <tr><td>
                     <h3>Anzahl Plätze</h3>

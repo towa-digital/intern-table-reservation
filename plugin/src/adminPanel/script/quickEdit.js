@@ -19,6 +19,7 @@ function edit(id) {
     };
 
     document.getElementById("editBtn_"+id).classList.add("hidden");
+    document.getElementById("deleteBtn_"+id).classList.add("hidden");
 	document.getElementById("saveBtn_"+id).classList.remove("hidden");
     document.getElementById("cancelBtn_"+id).classList.remove("hidden");
     
@@ -34,6 +35,7 @@ function cancelEdit() {
     var id = activeEdit["id"];
 
     document.getElementById("editBtn_"+id).classList.remove("hidden");
+    document.getElementById("deleteBtn_"+id).classList.remove("hidden");
 	document.getElementById("saveBtn_"+id).classList.add("hidden");
     document.getElementById("cancelBtn_"+id).classList.add("hidden");
 

@@ -1,8 +1,10 @@
-function loadAvailableTables(from, to, reservationId, callback) {
+function loadAvailableTables(from, to, useDefaultEndTime, reservationId, callback) {
+    console.log(useDefaultEndTime);
     var data = {
         'action': 'my_action',
         'from': from,
         'to': to,
+        'useDefaultEndTime': useDefaultEndTime ? 1 : 0,
         'reservationId': reservationId
     };
 

@@ -13,6 +13,10 @@ function show_reservationList() {
     //AJAX
     wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 
+    //FontAwesome
+    wp_enqueue_script("fontawesome", "https://kit.fontawesome.com/2c9e55113a.js");
+
+
     // Quick-Edit-Feature hinzufügen
     wp_enqueue_script("quickEdit_script", plugins_url("script/quickEdit.js", __FILE__));
     wp_enqueue_script("quickEdit_reservationList_script", plugins_url("script/quickEdit_reservationList.js", __FILE__));
@@ -58,7 +62,7 @@ function show_reservationList() {
             $phonenumber = $_POST["phonenumber"];
 
             $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
-            var_dump($numberOfSeats);
+
             if($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
             } else {
@@ -93,19 +97,19 @@ function show_reservationList() {
     <div id="current" class="tabElement">
         <p id="jsError" class="hidden"></h1>
         <h1 class="inline">Aktuelle Reservierungen</h1>
-        <a href="admin.php?page=addreservation" class="button" id="addreservation">Neue Reservierung erstellen</a>
+        <a href="admin.php?page=addreservation" class="btn">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
                 <tr id="head">
-                    <th style="width=50%">Tische</th>
-                    <th style="width=16%">von</th>
-                    <th style="width=16%">bis</th>
-                    <th style="width=16%">Anzahl Plätze</th>
-                    <th style="width=16%">Vorname</th>
-                    <th style="width=16%">Nachname</th>
-                    <th style="width=16%">E-Mail</th>
-                    <th style="width=16%">Telefonnummer</th>
-                    <th></th>
+                    <th style="width: 35%; max-width: 35%">Tische</th>
+                    <th style="width: 12.5%">von</th>
+                    <th style="width: 12.5%">bis</th>
+                    <th style="width: 7%">Anzahl Plätze</th>
+                    <th style="width: 7%">Vorname</th>
+                    <th style="width: 7%">Nachname</th>
+                    <th style="width: 7%">E-Mail</th>
+                    <th style="width: 7%">Telefonnummer</th>
+                    <th style="width: 6%"></th>
                 </tr>
                 <?php           
                 $dateFormat = "d.m.Y H:i";
@@ -130,11 +134,11 @@ function show_reservationList() {
                     echo '<td class="m_mail">'.$r["mail"].'</td>';
                     echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
 
-                    echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit">Löschen</button>';
+                    echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit" id="deleteBtn_'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
 
-                    echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit"onclick="edit('.$r["id"].')">Bearbeiten</button>';
-                    echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'">Speichern</button>';
-                    echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit">Abbrechen</button></td>';
+                    echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')"><i class="fa fa-pencil"></i></button>';
+                    echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'"><i class="fa fa-floppy-o"></i></button>';
+                    echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit"><i class="fa fa-times"></i></button></td>';
 
                     echo '</tr>';
                 }
@@ -144,7 +148,7 @@ function show_reservationList() {
     </div>
     <div id="past" class="tabElement hidden">
         <h1 class="inline">Vergangene Reservierungen</h1>
-        <a href="admin.php?page=addreservation" class="button">Neue Reservierung erstellen</a>
+        <a href="admin.php?page=addreservation" class="btn">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
                 <tr id="head">

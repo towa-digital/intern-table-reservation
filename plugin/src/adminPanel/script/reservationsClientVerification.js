@@ -1,3 +1,5 @@
+const DEFAULT_RESERVATION_DURATION_MS = 30 * 60 * 1000;
+
 var allFreeTables = [];
 var freeTables = [];
 
@@ -28,12 +30,16 @@ function onDateChange(fromElement, toElement, reservationId) {
     var from = fromElement.value;
     var to = toElement.value;
 
+    // falls die Checkbox, dass die standardmäßige Reservierungsdauer verwendet werden soll, existiert und angehakt ist, flag setzen
+    var useDefaultEndTime = $("#useDefaultEndTime").length && $("#useDefaultEndTime").is(":checked");
+
+
     // falls ein Datum noch nicht eingegeben wurde, mache nichts
-    if(from == "" || to == "") return;
+    if(from == "" || (to == "" && !useDefaultEndTime)) return;
 
     // Validierung
     var fromDate = new Date(from);
-    var toDate = new Date(to);
+    var toDate = (useDefaultEndTime) ? new Date(fromDate.getTime() + DEFAULT_RESERVATION_DURATION_MS) : new Date(to);
     if(fromDate.getTime() > toDate.getTime()) {
         showError("Das Beginndatum darf nicht nach dem Enddatum liegen.");
         return;
@@ -63,7 +69,7 @@ function onDateChange(fromElement, toElement, reservationId) {
     }
 
     // verfügbare Tische per AJAX laden
-    loadAvailableTables(from, to, reservationId, function(allTables) {
+    loadAvailableTables(from, to, useDefaultEndTime, reservationId, function(allTables) {
         freeTables = allTables.slice();
         allFreeTables = allTables.slice();
     

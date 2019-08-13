@@ -25,17 +25,17 @@ initQuickEdit(function(rowElement, id) {
     var tableArray = tables.split(",");
 
     var content = "";
-    content += "<td><div class='selectTableParent'>";
+    content += "<td><div class='selectTableParent inline'>";
     for(var i = 0; i < tableArray.length; i++) {
         var titleToSelect = tableArray[i];
 
         content += "<select class='selectTable' name='table[]' onchange='updateDropdownMenus()'>";
-      /*  for(var counter = 0; counter < allTables.length; counter++) {
+        for(var counter = 0; counter < allTables.length; counter++) {
             content += "<option value='"+allTables[counter]["id"]+"' "+(titleToSelect == allTables[counter]["title"] ? "selected" : "") +">"+allTables[counter]["title"]+"</option>";
-        }*/
+        }
         content += "</select>";
     }
-    content += "<p class='selectTableError hidden'>Bitte erst Datum wählen!</p><button type='button' id='editBtn_' onclick='addElement("+id+")'>Tisch hinzufügen</button></div></td>";
+    content += "</div><p class='selectTableError hidden'>Bitte erst Datum wählen!</p><button type='button' class='edit' onclick='addElement("+id+")'><i class='fa fa-plus'></i></button></td>";
 
     content += '<td><input type="datetime-local" name="from" class="from" value="'+convertDateTime(from)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')" /></td>';
     content += '<td><input type="datetime-local" name="to" class="to" value="'+convertDateTime(to)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')"/></td>';

@@ -40,10 +40,11 @@ function setup_admin_menu() {
 add_action("wp_ajax_my_action", "loadAvailableTables");
 
 function loadAvailableTables() {
-	global $wpdb; 
+    global $wpdb; 
 
-	$startTime = strtotime($_POST['from']);
-    $endTime = strtotime($_POST['to']);
+    
+    $startTime = strtotime($_POST['from']);
+    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + 30 * 60 : strtotime($_POST['to']);
     $reservationId = $_POST["reservationId"];
 
     echo json_encode(getFreeTables($startTime, $endTime, $reservationId));
