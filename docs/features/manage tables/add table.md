@@ -9,7 +9,7 @@ First enter the wordpress dashboard. When you have done that, you will find the 
 ### There are two possibilities to get to the "Create Table" - Page
 #### 1. directly in the menu
 
-there is a direct link under the menuitem "manage reservations" <br>
+there is a direct link under the menuitem "Tische verwalten" <br>
 
 ![menu](./../../docimg/newtable1.png)
 
