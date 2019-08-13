@@ -10,6 +10,6 @@ Once you have clicked on the plugin, a page with a list of all reservations appe
 
 ![menu](./../../docimg/updatereservation1.png)
 
-Once you have clicked on this icon you can change the data. Just tip in the new data and click on the save icon (1) on the right side. When you want to cancel just click the x (2).
+Once you have clicked on this icon you can change the data. Just tip in the new data and click on the save icon (1) on the right side. When you want to cancel just click the x (2). On the Butten with the + (3) you can add more tables to one reservation.
 
 ![menu](./../../docimg/updatereservation2.png)
