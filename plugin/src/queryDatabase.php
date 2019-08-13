@@ -178,7 +178,7 @@
         update_field("lastname", sanitize_text_field($lastname), $id);
         update_field("mail", sanitize_email($mail), $id);
         update_field("phonenumber", sanitize_text_field($phonenumber), $id);
-        update_field("ip", $_SERVER["HTTP_X_FORWARDED_FOR"], $id);
+        update_field("ip", $_SERVER["REMOTE_ADDR"], $id);
 
         return $id; 
     }

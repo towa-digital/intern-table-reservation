@@ -19,6 +19,7 @@ require("adminPanel/addReservation.php");
 require("adminPanel/addTable.php");
 require("adminPanel/reservationList.php");
 require("adminPanel/tableList.php");
+require("adminPanel/optionsPage.php");
 
 require_once("queryDatabase.php");
 
@@ -37,6 +38,14 @@ function setup_admin_menu() {
     add_action("admin_print_styles-".$addTable , "applyStyle_addTable");
 }
 
+add_action("admin_menu", "setup_options_page");
+function setup_options_page() {
+    add_options_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "administrator", "config", "show_optionsPage");
+
+    add_action('admin_init', 'initSettings');
+}
+
+
 add_action("wp_ajax_my_action", "loadAvailableTables");
 
 function loadAvailableTables() {
@@ -44,7 +53,7 @@ function loadAvailableTables() {
 
     
     $startTime = strtotime($_POST['from']);
-    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + 30 * 60 : strtotime($_POST['to']);
+    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (get_option("defaultReservationDuration") * 60) : strtotime($_POST['to']);
     $reservationId = $_POST["reservationId"];
 
     echo json_encode(getFreeTables($startTime, $endTime, $reservationId));
@@ -63,7 +72,7 @@ add_action("rest_api_init", function() {
 });
 function rest_getFreeTables($request) {
     $from = $request["from"];
-    $to = $from + RESERVATION_DURATION;
+    $to = $from + (get_option("defaultReservationDuration") * 60);
 
     if($from > $to) {
         return new WP_Error('invalid_date', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
@@ -86,7 +95,7 @@ function rest_getFreeTables($request) {
 function rest_saveNewReservation($request) {
     $from = $request["from"];
 
-    $to = $from + RESERVATION_DURATION;
+    $to = $from + (get_option("defaultReservationDuration") * 60);
 
     $tables = array($request["tables"]);
     $firstname = $request["firstname"];

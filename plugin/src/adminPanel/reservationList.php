@@ -101,14 +101,14 @@ function show_reservationList() {
         <form method="post">
             <table class="content">
                 <tr id="head">
-                    <th style="width: 35%; max-width: 35%">Tische</th>
-                    <th style="width: 12.5%">von</th>
-                    <th style="width: 12.5%">bis</th>
+                    <th style="width: 15%; max-width: 15%">Tische</th>
+                    <th style="width: 7%">von</th>
+                    <th style="width: 7%">bis</th>
                     <th style="width: 7%">Anzahl Plätze</th>
-                    <th style="width: 7%">Vorname</th>
-                    <th style="width: 7%">Nachname</th>
-                    <th style="width: 7%">E-Mail</th>
-                    <th style="width: 7%">Telefonnummer</th>
+                    <th style="width: 14.5%">Vorname</th>
+                    <th style="width: 14.5%">Nachname</th>
+                    <th style="width: 14.5%">E-Mail</th>
+                    <th style="width: 14.5%">Telefonnummer</th>
                     <th style="width: 6%"></th>
                 </tr>
                 <?php           

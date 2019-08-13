@@ -37,8 +37,8 @@ initQuickEdit(function(rowElement, id) {
     }
     content += "</div><p class='selectTableError hidden'>Bitte erst Datum wählen!</p><button type='button' class='edit' onclick='addElement("+id+")'><i class='fa fa-plus'></i></button></td>";
 
-    content += '<td><input type="datetime-local" name="from" class="from" value="'+convertDateTime(from)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')" /></td>';
-    content += '<td><input type="datetime-local" name="to" class="to" value="'+convertDateTime(to)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')"/></td>';
+    content += '<td><input type="datetime-local" name="from" class="from" value="'+convertDateTime(from)+'" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Beginn der Reservierung" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')" /></td>';
+    content += '<td><input type="datetime-local" name="to" class="to" value="'+convertDateTime(to)+'" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ende der Reservierung" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')"/></td>';
     content += '<td><input type="number" name="numberOfSeats" value="'+numberOfSeats+'" /></td>';
     content += '<td><input type="text" name="firstname" value="'+firstname+'" /></td>';
     content += '<td><input type="text" name="lastname" value="'+lastname+'" /></td>';
