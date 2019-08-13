@@ -44,7 +44,7 @@ function show_tableList() {
     <a href="admin.php?page=addtable" class="button" id="addtable">Neuen Tisch erstellen</a>
     <form method="post">
         <table class="content">
-            <tr>
+            <tr id="head">
                 <th style="width=50%">Titel</th>
                 <th style="width=16%">ist draußen?</th>
                 <th style="width=16%">Platzanzahl</th>

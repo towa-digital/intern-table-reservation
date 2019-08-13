@@ -96,7 +96,7 @@ function show_reservationList() {
         <a href="admin.php?page=addreservation" class="button" id="addreservation">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
-                <tr>
+                <tr id="head">
                     <th style="width=50%">Tische</th>
                     <th style="width=16%">von</th>
                     <th style="width=16%">bis</th>
@@ -147,7 +147,7 @@ function show_reservationList() {
         <a href="admin.php?page=addreservation" class="button">Neue Reservierung erstellen</a>
         <form method="post">
             <table class="content">
-                <tr>
+                <tr id="head">
                     <th style="width=50%">Tische</th>
                     <th style="width=16%">von</th>
                     <th style="width=16%">bis</th>
