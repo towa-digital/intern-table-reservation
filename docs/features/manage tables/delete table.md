@@ -6,6 +6,6 @@ You can find the tutorial [here](https://github.com/towa-digital/intern-table-re
 
 ### Delete Tables
 
-Once you have clicked on the plugin, a page with a list of all tables appears. The only thing you have to do to delete the table, is to click on the little trash icon on the right hand side. <br>
+Once you have clicked on the plugin, a page with a list of all tables appears. The only thing you have to do to delete the table, is to click on the little trash icon (1) on the right hand side. <br>
 
 ![menu](./../../docimg/deletetable1.png)
