@@ -2,7 +2,7 @@
 
 ### Get to the Plugin
 
-You can find the tutorial [here](https://github.com/towa-digital/intern-table-reservation/blob/master/docs/features/manage%20tables/add%20table.md)
+You can find the tutorial [here](https://github.com/towa-digital/intern-table-reservation/blob/master/docs/features/manage%20reservations/add%20reservation%20(backend).md)
 
 ### Delete Reservations
 
