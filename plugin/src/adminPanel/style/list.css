@@ -65,7 +65,7 @@
     margin-left: 3%;
     vertical-align: middle;
     border: none;
-    background: #da3743;
+    background: #da3743 !important;
     color: #fff;
     cursor: pointer;
 

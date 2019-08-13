@@ -35,7 +35,7 @@ initQuickEdit(function(rowElement, id) {
         }*/
         content += "</select>";
     }
-    content += "<p class='selectTableError hidden'>Bitte erst Datum wählen!</p><button type='button' onclick='addElement("+id+")'>Add</button></div></td>";
+    content += "<p class='selectTableError hidden'>Bitte erst Datum wählen!</p><button type='button' id='editBtn_' onclick='addElement("+id+")'>Tisch hinzufügen</button></div></td>";
 
     content += '<td><input type="datetime-local" name="from" class="from" value="'+convertDateTime(from)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')" /></td>';
     content += '<td><input type="datetime-local" name="to" class="to" value="'+convertDateTime(to)+'" oninput="onDateChange(document.getElementsByClassName(\'from\')[0], document.getElementsByClassName(\'to\')[0], '+id+')"/></td>';
