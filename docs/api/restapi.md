@@ -1,7 +1,9 @@
 # REST-API-Dokumentation
 ## Abfragen der freien Tische zu gegebener Zeit
 **Zugriffsmethode:** GET
+
 **URL:** tischverwaltung/v1/freetables/\<from\>
+
 **Parameter:**
  - \<from\> ist die gewünschte Beginnzeit der Reservierung, als ganzzahliger Unix-Zeitstempel (Anzahl Sekunden seit 1.1.1970 00:00)
 
@@ -37,7 +39,9 @@ Beginndatum liegt in der Vergangenheit: (Status-Code: 500)
 ## Einfügen einer neuen Reservierung
 
 **Zugriffsmethode:** POST
+
 **URL:** tischverwaltung/v1/savenewreservation/
+
 **Parameter:**
 
     {

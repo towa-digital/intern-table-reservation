@@ -1,50 +1,50 @@
-# Inputform
+## Add Reservation (Frontend)
 
-![Inputform](./../docimg/InputForm.png)
+![Inputform](./../../docimg/InputForm.png)
 
 Alle Teilcomponents der Eingabefläche befinden sich in [ **/frontend/src/components/InputFormComponents/** ](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/InputFormComponents)
 
-## 1 - Eingabefeld für den Namen
+### 1 - Eingabefeld für den Namen
 
-### Component
+#### Component
 
 InputFormName.vue
 
-## 2 - Eingabefeld für die Antahl der Personen
+### 2 - Eingabefeld für die Antahl der Personen
 
-### Component
+#### Component
 
 InputFormNumberOfPersons.vue
 
-## 3 - Eingabefeld für die Telefonnummer
+### 3 - Eingabefeld für die Telefonnummer
 
-### Component
+#### Component
 
 InputFormPhonenumber.vue
 
-## 4 - Eingabefeld für die E-Mailadresse
+### 4 - Eingabefeld für die E-Mailadresse
 
-### Component
+#### Component
 
 InputFormEmail.vue
 
-## 5 - Eingabefeld für das Datum
+### 5 - Eingabefeld für das Datum
 
-### Component
+#### Component
 
 InputFormDate.vue
 
-## 6 - Eingabefeld für die Uhrzeit
+### 6 - Eingabefeld für die Uhrzeit
 
-### Component
+#### Component
 
 InputFormTime.vue
 
-## 7 - Submit-Button
+### 7 - Submit-Button
 
 Button um die Reservierung abzuschließen.
 
-### Component
+#### Component
 
 InputFormSubmit.vue
 
