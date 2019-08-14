@@ -2,10 +2,11 @@
 ## Abfragen der freien Tische zu gegebener Zeit
 **Zugriffsmethode:** GET
 
-**URL:** tischverwaltung/v1/freetables/\<from\>
+**URL:** tischverwaltung/v1/freetables/\<from\>/\<numberOfSeats\>
 
 **Parameter:**
  - \<from\> ist die gewünschte Beginnzeit der Reservierung, als ganzzahliger Unix-Zeitstempel (Anzahl Sekunden seit 1.1.1970 00:00)
+ - \<numberOfSeats\> ist die Anzahl an benötigten Plätzen
 
 **Rückgabe:** (Status-Code: 200)
 
@@ -94,3 +95,4 @@ Dieser Fehler tritt in folgenden Fällen auf:
  - das tables-array enthält Duplikate
  - ein Tisch ist zum gewünschten Zeitpunkt nicht frei
  - es wurde keine gültige E-Mail-Adresse übergeben
+ - der Parameter tables ist kein Array

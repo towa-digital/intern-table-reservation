@@ -117,7 +117,7 @@ export default {
           "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
           {
             from: this.makeTimestamp(),
-            tables: this.table,
+            tables: JSON.stringify([this.table]),
             firstname: this.firstname,
             lastname: this.lastname,
             phonenumber: this.phonenumber,
