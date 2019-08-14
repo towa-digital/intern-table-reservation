@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <table v-if="!submitted">
+    <table v-if="!submitstatus">
       <tr>
         <td colspan="2">
           <h2>Platzreservierung</h2>
@@ -12,10 +12,10 @@
       </tr>
       <tr>
         <td>
-          <InputFormNumberOfPersons v-model="numberofpersons" />
+          <InputFormNumberOfPersons v-model="reservation.numberOfSeats" />
         </td>
         <td>
-          <InputFormTable v-model="table" />
+          <InputFormTable v-model="reservation.tables" />
         </td>
       </tr>
       <tr>
@@ -24,10 +24,10 @@
       </tr>
       <tr>
         <td>
-          <InputFormPersons msg="Max" title="firstname" v-model="firstname" />
+          <InputFormPersons msg="Max" title="firstname" v-model="reservation.firstname" />
         </td>
         <td>
-          <InputFormPersons msg="Mustermann" title="lastname" v-model="lastname" />
+          <InputFormPersons msg="Mustermann" title="lastname" v-model="reservation.lastname" />
         </td>
       </tr>
       <tr class="text">
@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td colspan="2">
-          <InputFormPhonenumber v-model="phonenumber" />
+          <InputFormPhonenumber v-model="reservation.phonenumber" />
         </td>
       </tr>
       <tr>
@@ -43,7 +43,7 @@
       </tr>
       <tr>
         <td colspan="2">
-          <InputFormEmail v-model="email" />
+          <InputFormEmail v-model="reservation.mail" />
         </td>
       </tr>
       <tr class="text">
@@ -51,31 +51,31 @@
       </tr>
       <tr>
         <td colspan="2">
-          <InputFormDate v-model="date" @input="makeTimestamp" />
+          <InputFormDate v-model="reservation.date" @input="makeTimestamp" />
         </td>
       </tr>
       <tr class="submit">
         <td colspan="2">
-          <input type="submit" value="Tisch finden" class="btn" v-on:click="addReservation" />
+          <input type="submit" value="Tisch finden" class="btn" v-on:click="onSubmit" />
         </td>
       </tr>
       <tr>
         <td colspan="2">
-          <div v-if="error && !submitted" class="centered">
+          <div  class="centered" v-if="errorstatus">
             <h3>{{ errormessage }}</h3>
           </div>
         </td>
       </tr>
     </table>
 
-    <div v-if="submitted" class="centered">
+    <div v-if="submitstatus" class="centered">
       <h3>Vielen Dank für deine Reservierung</h3>
     </div>
   </div>
 </template>
 
 <script>
-const axios = require("axios");
+import { mapGetters, mapActions } from 'vuex'
 
 import InputFormPersons from "./InputFormComponents/InputFormName";
 import InputFormNumberOfPersons from "./InputFormComponents/InputFormNumberOfPersons";
@@ -97,45 +97,35 @@ export default {
   props: ["reservations"],
   data() {
     return {
-      numberofpersons: "",
-      table: "",
-      firstname: "",
-      lastname: "",
-      email: "",
-      phonenumber: "",
-      date: "",
-      submitted: false,
-      errormessage: "",
-      error: false
+      reservation: {
+        from: "",
+        numberOfSeats: "",
+        tables: "",
+        firstname: "",
+        lastname: "",
+        mail: "",
+        date: "",
+        phonenumber: "",
+        submitted: false,
+        errormessage: "",
+        error: false
+      }
     };
   },
-
+  computed: mapGetters(["errormessage", "errorstatus", "submitstatus"]),
   methods: {
-    addReservation: function() {
-      axios
-        .post(
-          "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
-          {
-            from: this.makeTimestamp(),
-            tables: this.table,
-            firstname: this.firstname,
-            lastname: this.lastname,
-            phonenumber: this.phonenumber,
-            mail: this.email,
-            numberOfSeats: this.numberofpersons
-          }
-        )
-        .then(() => {
-          this.submitted = true;
-        })
-        .catch(error => {
-          if (error.response) this.errormessage = error.response.data.message;
-          this.error = true;
-        });
+    ...mapActions(['addReservation']),
+    onSubmit(e) {
+      e.preventDefault();
+      this.addReservation({
+        reservation: this.reservation
+      })
     },
     makeTimestamp() {
-      var d = new Date(this.date).getTime();
+      var d = new Date(this.reservation.date).getTime();
       const timestamp = Math.floor(d / 1000);
+
+      this.reservation.from = timestamp
 
       return timestamp;
     }
