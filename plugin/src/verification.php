@@ -15,7 +15,7 @@ function verifyTable(string $title, bool $isOutside, int $numberOfSeats, int $id
     return null;
 }
 
-function verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id = 0) {
+function verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id = 0, $frontend = false) {
     if($from == "") {
         return "Das Beginndatum muss angegeben sein!";
     }
@@ -59,21 +59,20 @@ function verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $las
     }
 
 
+
     // stelle sicher, dass falls eine ID übergeben wurde, diese einer Reservierung zugeordnet ist
     if($id != 0 && get_post_type($id) != "reservations") {
         return "Die ID der Reservierung, die bearbeitet werden soll, ist keiner Reservierung zugeordnet.";
     }
 
-    // stelle sicher, dass gülitge Datumsangaben eingegeben wurden
-    if($from < time() + (30 * 60) || $from > time() + ((365 / 2) * 24 * 60 * 60)) {
-        return "Das Beginndatum darf nicht weniger als 30 Minuten und nicht mehr als ein halbes Jahr in der Zukunft liegen.";
-    } else if ($from < time() + (30 * 60) || $from > time() + ((365 / 2) * 24 * 60 * 60)) {
-        return "Das Enddatum darf nicht weniger als 30 Minuten und nicht mehr als ein halbes Jahr in der Zukunft liegen.";
+    // stelle sicher, dass die Reservierung beginnt, bevor sie aufhört
+    if ($from > $to) {
+        return "Das Beginndatum darf nicht nach dem Enddatum liegen.";
     }
 
-    // stelle sicher, dass die Reservierung beginnt, bevor sie aufhört
-   if ($from > $to) {
-       return "Das Beginndatum darf nicht vor dem Enddatum liegen.";
+    // stelle sicher, dass gülitge Datumsangaben eingegeben wurden
+    if($from < time() + (get_option("canReservateInMinutes") * 60) || $from > time() + ((365 / 2) * 24 * 60 * 60)) {
+        return "Das Beginndatum darf nicht weniger als ".get_option("canReservateInMinutes")." Minuten und nicht mehr als ein halbes Jahr in der Zukunft liegen.";
     }
 
     // stelle sicher, dass die Reservierung nicht länger als eine Woche dauert
@@ -101,12 +100,34 @@ function verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $las
         return "Mindestens ein Tisch ist zum gewünschten Zeitpunkt nicht frei.";
     }
 
+    // stelle sicher, dass Anzahl Personen nicht negativ ist
+    if($numberOfSeats <= 0) {
+        return "Die Anzahl der Personen muss größer gleich 1 sein";
+    }
+
+    // falls Abfrage aus Frontend erfolgt, stelle sicher, dass die Reservierung nicht mehr als X Plätze umfasst
+    if($frontend && $numberOfSeats > get_option("maxAmountOfPersons")) {
+        return "Du kannst keine Reservierung für über ".get_option("maxAmountOfPersons")." Personen aufgeben.";
+    }
+
+    // zähle die Sitzplätze an allen Tischen und prüfe, ob die Reservierung für mehr Leute gedacht ist
+    $availableSeats = 0;
+    foreach($tables as $t) {
+        $availableSeats += $t["seats"];
+    }
+    if($availableSeats < $numberOfSeats) {
+        return "Die gebuchten Tische haben nicht die gewünschte Anzahl an Sitzplätzen";
+    }
+
+    // prüfe, ob die Anzahl zu reservierender Plätze über der Anzahl benötigten Plätze liegt
+    if($availableSeats > $numberOfSeats + get_option("maxUnusedSeatsPerReservation")) {
+        return "Du hast mehr als ".get_option("maxUnusedSeatsPerReservation")." Plätze reserviert als benötigt.";
+    }
+
     // stelle sicher, dass eine gültige E-Mail-Adresse eingegeben wurde
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Die E-Mail-Adresse ist nicht gültig.";
     }
-
-    // stelle sicher, dass eine gültige Telefonnummer eingegeben wurde
 
     return null;
 }

@@ -257,7 +257,7 @@
         $allTables = getTables();
         $allReservations = getReservations();
 
-        // falls der Tisch nicht frei ist, wird er aus dem Array mit allen Tischen entfernt
+        // falls der Tisch frei ist, wird er ins Array mit den verfügbaren Tischen aufgenommen
         foreach($allTables as $elemKey => $table) {
             if(isTableFree($table["id"], $startTime, $endTime, $allReservations, $reservationId)) {
                 $freeTables[] = $allTables[$elemKey];
@@ -265,5 +265,26 @@
         }
 
         return $freeTables;
+    }
+
+    function getSuitableTables($startTime, $endTime, $numberOfSeats, $reservationId = 0) {
+        $freeTables = getFreeTables($startTime, $endTime, $reservationId);
+
+        $suitableTables = array();
+        foreach($freeTables as $elemKey => $table) {
+            // füge alle Tische hinzu, bei denen nicht mehr Plätze frei bleiben würden, als maxUnusedSeatsPerReservation gestattet
+            if($table["seats"] <= $numberOfSeats + get_option("maxUnusedSeatsPerReservation")) {
+                $suitableTables[] = $table;
+            }
+        }
+
+        // falls alle Tische in Summe nicht ausreichen, keinen Tisch zurückgeben
+        $suitableTables_seatSum = 0;
+        foreach($suitableTables as $table) {
+            $suitableTables_seatSum += $table["seats"];
+        }
+
+        if($suitableTables_seatSum < $numberOfSeats) return array();
+        else return $suitableTables;
     }
  ?>
