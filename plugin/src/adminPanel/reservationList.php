@@ -81,8 +81,8 @@ function show_reservationList() {
      * Aufsteigende Sortierung nach der Differenz zwischen der Beginnzeit der Reservierung und der aktuellen Zeit. 
      */
     usort($allReservations, function($a, $b) {
-        if($a < $b) return -1;
-        else if ($a == $b) return 0;
+        if($a["from"] < $b["from"]) return -1;
+        else if ($a["from"] == $b["from"]) return 0;
         else return 1;
     });
 

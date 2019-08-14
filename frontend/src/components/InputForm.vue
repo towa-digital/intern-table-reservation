@@ -114,12 +114,36 @@ export default {
   },
   computed: mapGetters(["errormessage", "errorstatus", "submitstatus"]),
   methods: {
+<<<<<<< HEAD
     ...mapActions(['addReservation']),
     onSubmit(e) {
       e.preventDefault();
       this.addReservation({
         reservation: this.reservation
       })
+=======
+    addReservation: function() {
+      axios
+        .post(
+          "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
+          {
+            from: this.makeTimestamp(),
+            tables: JSON.stringify([this.table]),
+            firstname: this.firstname,
+            lastname: this.lastname,
+            phonenumber: this.phonenumber,
+            mail: this.email,
+            numberOfSeats: this.numberofpersons
+          }
+        )
+        .then(() => {
+          this.submitted = true;
+        })
+        .catch(error => {
+          if (error.response) this.errormessage = error.response.data.message;
+          this.error = true;
+        });
+>>>>>>> 4b8394cffba9a5b1c33132ab1620fb1cb6a37651
     },
     makeTimestamp() {
       var d = new Date(this.reservation.date).getTime();
