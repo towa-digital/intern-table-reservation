@@ -258,7 +258,7 @@ h2 {
   border-bottom: 0.5px solid lightgrey;
 }
 
-/* select {
+select {
   width: 100%;
 
   border-left: none;
@@ -276,7 +276,7 @@ h2 {
 
 select:hover {
   border-bottom: 2px solid #da3743;
-} */
+}
 
 .btn {
   padding: 3%;

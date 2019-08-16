@@ -2,7 +2,7 @@
   <form>
     <select ref="input" :value="value" @change="updateValue">
       <option disable selected value>Bitte Tisch auswählen</option>
-      <option v-for="table in allTables" v-bind:key="table.id" >{{ table.id }}</option>
+      <option v-for="table in allTables" v-bind:key="table.id" v-bind:value="table.id">{{ table.title }} ({{table.seats}} Plätze) </option>
     </select>
   </form>
 </template>
@@ -32,7 +32,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+td {
+  width: 33%;
+}
 </style>
 
 
