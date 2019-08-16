@@ -119,8 +119,6 @@ function rest_getFreeTables($request) {
 
 
 function rest_saveNewReservation($request) {
-    return new WP_Error(get_option("defaultReservationDuration", "Fehler"), getDefaultReservationDuration());
-
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
     $tables = json_decode($request["tables"], true);
