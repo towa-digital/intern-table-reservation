@@ -1,4 +1,6 @@
 <?php
+    require_once("options.php");
+    
     /**
      * Gibt ein Array zurück, welches alle in der Datenbank enthaltenen Tische enthält.
      * Jedes der Elemente im Array ist ebenfalls ein (assoziatives) Array, welches folgende Schlüssle enthält:
@@ -273,7 +275,7 @@
         $suitableTables = array();
         foreach($freeTables as $elemKey => $table) {
             // füge alle Tische hinzu, bei denen nicht mehr Plätze frei bleiben würden, als maxUnusedSeatsPerReservation gestattet
-            if($table["seats"] <= $numberOfSeats + get_option("maxUnusedSeatsPerReservation")) {
+            if($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation()) {
                 $suitableTables[] = $table;
             }
         }

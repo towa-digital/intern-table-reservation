@@ -1,30 +1,35 @@
 <?php
 
+require_once(__DIR__."/../options.php");
+
 function initSettings() {
     register_setting("tischverwaltung", "defaultReservationDuration", array(
             "sanitize_callback" => function($value) {
                 return validateInteger($value, "defaultReservationDuration");
             },
-            "default" => 60,
             "type" => "integer"
         )
     );
+    add_option("defaultReservationDuration", 60);
+
     register_setting("tischverwaltung", "maxAmountOfPersons", array(
             "sanitize_callback" => function($value) {
                 return validateInteger($value, "maxAmountOfPersons", 1);
             },
-            "default" => 5,
             "type" => "integer"
         )       
-    );
+    ); 
+    add_option("maxAmountOfPersons", 5);
+
     register_setting("tischverwaltung", "maxUnusedSeatsPerReservation", array(
             "sanitize_callback" => function($value) {
                 return validateInteger($value, "maxUnusedSeatsPerReservation");
             },
-            "default" => 2,
             "type" => "integer"
         )
     );
+    add_option("maxUnusedSeatsPerReservation", 2);
+
     /**
      * Hiermit ist einstellbar, dass der Benutzer nur eine 
      */
@@ -32,10 +37,36 @@ function initSettings() {
             "sanitize_callback" => function($value) {
                 return validateInteger($value, "canReservateInMinutes");
             },
-            "default" => 30,
             "type" => "integer"
         )
     );
+    add_option("canReservateInMinutes", 30);
+
+    register_setting("tischverwaltung", "tooManyPersonsError", array(
+            "default" => ""
+    ));
+
+    register_setting("tischverwaltung", "openingHours", array(
+            "default" => genDefaultOpeningHours(),
+            "sanitize_callback" => "sanitizeOpeningHours",
+
+    ));
+    add_option("openingHours", genDefaultOpeningHours());
+    error_log("update done");
+}
+
+function genDefaultOpeningHours() {
+    $toReturn = array();
+    for($c = 0; $c < 7; $c++) {
+        $toReturn[] = array(
+            array(
+                "from" => 11 * 60 * 60,
+                "to" => 13 * 60 * 60
+            )
+        );
+    }
+
+    return $toReturn;
 }
 
 function validateInteger($value, $slug, $minValue = 0) {
@@ -47,6 +78,44 @@ function validateInteger($value, $slug, $minValue = 0) {
     }
 
     return $value;
+}
+
+function sanitizeOpeningHours($value) {
+    error_log("Sanitize");
+    error_log(print_r($value, true));
+
+    foreach($value as $dayKey => $day) {
+        foreach($day as $elemKey => $elem) {
+            $from = $elem["from"];
+            $to = $elem["to"];
+
+            if(intval($from) > 0 && intval($to) > 0) continue;
+
+            $fromSplit = explode(":", $from);
+            $toSplit = explode(":", $to);
+
+            if(intval($fromSplit[0]) != $fromSplit[0] || intval($fromSplit[1]) != $fromSplit[1] || 
+                intval($toSplit[0]) != $toSplit[0] || intval($toSplit[1]) != $toSplit[1] ||
+                count($fromSplit) != 2 || count($toSplit) != 2) {
+                    add_settings_error("openingHours", "invalidTimes", "Bitte gib die Öffnungszeiten im Fomat HH:mm");
+                    return get_option("openingHours");
+            }
+
+            $value[$dayKey][$elemKey]["from"] = intval($fromSplit[0]) * 60 + intval($fromSplit[1]);
+            $value[$dayKey][$elemKey]["to"] = intval($toSplit[0] * 60 + $toSplit[1]);
+        }
+    }
+
+    error_log(print_r($value, true));
+
+    return $value;
+}
+
+function secondsToValueString($seconds) {
+    $h = floor($seconds / (60 * 60));
+    $m = floor(($seconds / 60) - ($h * 60));
+
+    return str_pad($h, 2, '0', STR_PAD_LEFT).":".str_pad($m, 2, '0', STR_PAD_LEFT);
 }
 
 
@@ -62,13 +131,25 @@ function show_optionsPage() {
     // Script für Öffnungszeiten
     wp_enqueue_script("openingHours_script", plugins_url("script/openingHours.js", __FILE__));
 
+    $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "canReservateInMinutes");
+    $err = false;
+    foreach($required as $r) {
+        if(! isset($_POST[$r]) || empty($_POST[$r])) {
+            echo 'Bitte fülle alle Pflichtfelder aus.';
+            $err = true;
+            break;
+        }
+    }
+
+    if(! $err) {
+        echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"],  $_POST["openingHours"]);
+    }
+    
 ?>
 <div id="main">
     <h1>Tischverwaltung</h1>
-    <form method="post" action="options.php">
+    <form method="post">
         <div id="formContent">
-            <?php settings_fields( 'tischverwaltung' ); ?>
-            <?php do_settings_sections( 'tischverwaltung' ); ?>
 
             <table class="data formData">
                 <tr><td>
@@ -76,20 +157,58 @@ function show_optionsPage() {
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Dauer einer Reservierung in Minuten</h3>
-                    <input type="number" name="defaultReservationDuration" value="<?php echo esc_attr(get_option('defaultReservationDuration')); ?>" />                
+                    <input type="number" name="defaultReservationDuration" value="<?php echo getDefaultReservationDuration(); ?>" />                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Anzahl Plätze, die pro Reservierung maximal gebucht werden können</h3>
-                    <input type="number" name="maxAmountOfPersons" value="<?php echo esc_attr(get_option('maxAmountOfPersons')); ?>" />  
+                    <input type="number" name="maxAmountOfPersons" value="<?php echo getMaxAmountOfPersons(); ?>" />  
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Anzahl Plätze, die pro Reservierung maximal ungenutzt bleiben dürfen (damit nicht eine einzelne Person Tisch für 10 Personen bucht)</h3>
-                    <input type="number" name="maxUnusedSeatsPerReservation" value="<?php echo esc_attr(get_option('maxUnusedSeatsPerReservation')); ?>" />                
+                    <input type="number" name="maxUnusedSeatsPerReservation" value="<?php echo getMaxUnusedSeatsPerReservation(); ?>" />                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Dauer in Minuten, die zwischen Reservierung und Beginnzeit der Reservierung mindestens liegen muss</h3>
-                    <input type="number" name="canReservateInMinutes" value="<?php echo esc_attr(get_option('canReservateInMinutes')); ?>" />                
+                    <input type="number" name="canReservateInMinutes" value="<?php echo getCanReservateInMinutes(); ?>" />                
                 </td></tr>
+            </table>
+            <table class="data formData">
+                <tr><td>
+                    <h2>Fehlermeldungen</h2>
+                </td></tr>               
+                <tr><td>
+                    <h3 class="inline">Fehlermeldung bei zu vielen Personen</h3>
+                    <input type="text" name="tooManyPersonsError" value="<?php echo getTooManyPersonsError(); ?>" />                
+                </td></tr>
+                <tr><td>
+                    <h3 class="inline">Fehlermeldung, wenn keine freien Tische verfügbar sind</h3>
+                    <input type="text" name="noFreeTablesError" value="<?php echo getNoFreeTablesError(); ?>" />                
+                </td></tr>
+            </table>
+            <table class="data formData">
+                <tr><td>
+                    <h2>Öffnungszeiten</h2>
+                </td></tr>
+                <?php
+
+                    $weekDays = array("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
+                    
+                    foreach(getOpeningHours() as $key => $day) {
+                        echo '<br>DAY:';
+                        var_dump($day);
+                        echo '<tr><td>';
+                        echo '<h3 class="inline">'.$weekDays[$key].'</h3>';
+                        echo '<div id="timePickerParent_'.$key.'">';
+                        foreach($day as $entryKey => $entry) {
+                            echo '<div>';
+                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry->from)."'>";
+                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry->to)."'>";
+                            echo '</div>';
+                        }
+                        echo "</div><button type='button' onclick='addTimePicker($key)'>Add</button></td></tr>";
+                    }
+
+                ?>
             </table>
         </div>
         <table class="data" id="publish">
@@ -100,41 +219,7 @@ function show_optionsPage() {
                 <button>Speichern</button>
             </td></tr>   
         </table> 
-
-     <!--   <h2>Öffnungszeiten</h2>
-        <table class="form-table">
-            <tr valign="top">
-                <th scope="row">Montag</th>
-                <td>
-                    <div id="timePickerParent_0"> 
-                        <div>
-                            <input type="time" name="openingHours[0][0][from]">
-                            <span>-</span>
-                            <input type="time" name="openingHours[0][0][to]">
-                        </div>
-                    </div>
-                    <button type="button" onclick="addTimePicker(0)">+</button>
-                </td>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Dienstag</th>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Mittwoch</th>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Donnerstag</th>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Freitag</th>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Samstag</th>
-            </tr>
-            <tr valign="top">
-                <th scope="row">Sonntag</th>
-            </tr>-->
-            
+     
     </form>
 </div>
 <?php } ?>

@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__."/../queryDatabase.php");
 require_once(__DIR__."/../verification.php");
+require_once(__DIR__."/../options.php");
 
 
 function applyStyle_reservationList() {
@@ -88,7 +89,10 @@ function show_reservationList() {
 
 ?>
 
-
+<script>
+    const DEFAULT_RESERVATION_DURATION = <?php echo getDefaultReservationDuration(); ?>;
+    const CAN_RESERVATE_IN_MINUTES = <?php echo getCanReservateInMinutes(); ?>;
+</script>
 <div id="main">
     <div class="tabLinkContainer">
         <button onclick="openTab(this, 'current')" class="activeTabBtn tabListBtn">Aktuelle Reservierungen</button>

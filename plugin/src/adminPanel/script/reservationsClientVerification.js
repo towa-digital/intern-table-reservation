@@ -1,5 +1,3 @@
-const DEFAULT_RESERVATION_DURATION_MS = 30 * 60 * 1000;
-
 var allFreeTables = [];
 var freeTables = [];
 
@@ -39,7 +37,7 @@ function onDateChange(fromElement, toElement, reservationId) {
 
     // Validierung
     var fromDate = new Date(from);
-    var toDate = (useDefaultEndTime) ? new Date(fromDate.getTime() + DEFAULT_RESERVATION_DURATION_MS) : new Date(to);
+    var toDate = (useDefaultEndTime) ? new Date(fromDate.getTime() + DEFAULT_RESERVATION_DURATION * 60 * 1000) : new Date(to);
     if(fromDate.getTime() > toDate.getTime()) {
         showError("Das Beginndatum darf nicht nach dem Enddatum liegen.");
         return;
@@ -48,7 +46,7 @@ function onDateChange(fromElement, toElement, reservationId) {
         showError("Das Beginndatum darf nicht in der Vergangenheit liegen");
         return;
     }
-    if(fromDate.getTime() < new Date(new Date().getTime() + 30 * 60000).getTime()) {
+    if(fromDate.getTime() < new Date(new Date().getTime() + CAN_RESERVATE_IN_MINUTES * 60 * 1000).getTime()) {
         showError("Das Beginndatum muss mindestens 30 Minuten in der Zukunft liegen.");
         return;
     }
@@ -104,10 +102,7 @@ function updateDropdownMenus() {
         var selectElem = allSelectElems[c];
         var selectedOption = selectElem.options[selectElem.selectedIndex];
         
-        selectedIds.push({
-            "id": selectedOption === undefined ? -1 : selectedOption.value,
-            "title": selectedOption === undefined ? "" : selectedOption.text
-        });
+        selectedIds.push(selectedOption === undefined ? -1 : selectedOption.value);
 
         if(selectedOption !== undefined) {
             for( var i = 0; i < freeTables.length; i++){ 
@@ -121,19 +116,27 @@ function updateDropdownMenus() {
     // entferne alle option-Tags aus den Dropdown-Menüs
     $(".selectTable").empty();
 
+    console.log(freeTables);
+
     // iteriere über alle Dropdown-Menüs
     for(var i = 0; i < allSelectElems.length; i++) {
         allSelectElems[i].innerHTML += "<option selected value>Tisch nicht ausgewählt</option>";
 
         // füge zuerst, wenn vorhanden, das ausgewählte Element als option-Tag ein
         // wir wissen, dass dies nicht in freeTables enthalten sein kann, da es aus diesem Array gelöscht worden ist
-        if(selectedIds[i].id != -1) {
-            allSelectElems[i].innerHTML += '<option value="'+selectedIds[i].id+'" selected>'+selectedIds[i].title+'</option>';        
+        if(selectedIds[i] != -1) {
+            tableObj = undefined;
+
+            for(var a = 0; a < allFreeTables.length; a++) {
+                if(allFreeTables[a]["id"] == selectedIds[i]) tableObj = allFreeTables[a];
+            }
+
+            if(tableObj) allSelectElems[i].innerHTML += '<option value="'+tableObj.id+'" selected>'+tableObj.title+'</option>';        
         }        
 
         // iteriere über alle freien Tische
         for(var c = 0; c < freeTables.length; c++) {
-            allSelectElems[i].innerHTML += '<option value="'+freeTables[c]["id"]+'">'+freeTables[c]["title"]+'</option>';        
+            allSelectElems[i].innerHTML += '<option value="'+freeTables[c]["id"]+'">'+freeTables[c]["title"]+' ('+freeTables[c]["seats"]+' Plätze)</option>';        
     
         }
     

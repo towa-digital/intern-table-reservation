@@ -49,5 +49,8 @@ $(document).ready(function() {
         if(event.keyCode == 27) {
             cancelEdit();
         }
+        if(event.keyCode == 13) {
+            event.preventDefault();
+        }
     });
 });

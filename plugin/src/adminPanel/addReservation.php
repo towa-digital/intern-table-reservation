@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__."/../queryDatabase.php");
 require_once(__DIR__."/../verification.php");
+require_once(__DIR__."/../options.php");
 
 
 
@@ -46,7 +47,7 @@ function show_addReservation() {
                 echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
             }
 
-            $to = $useDefaultEndTime ? $from + (get_option("defaultReservationDuration") * 60) : strtotime($_POST["to"]);
+            $to = $useDefaultEndTime ? $from + (getDefaultReservationDuration() * 60) : strtotime($_POST["to"]);
             $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
@@ -68,6 +69,11 @@ function show_addReservation() {
 
 
 ?>
+<script>
+    const DEFAULT_RESERVATION_DURATION = <?php echo getDefaultReservationDuration(); ?>;
+    const CAN_RESERVATE_IN_MINUTES = <?php echo getCanReservateInMinutes(); ?>;
+</script>
+
 <div id="main">
     <p id="jsError" class="hidden"></p>
     <h1>Reservierung hinzufügen</h1>
