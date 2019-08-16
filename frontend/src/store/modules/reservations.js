@@ -23,7 +23,7 @@ const actions = {
         "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
         {
           from: reservation.reservation.from,
-          tables: reservation.reservation.tables,
+          tables: JSON.stringify([reservation.reservation.tables]),
           firstname: reservation.reservation.firstname,
           lastname: reservation.reservation.lastname,
           phonenumber: reservation.reservation.phonenumber,
