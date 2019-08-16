@@ -107,8 +107,11 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     }
 
     // stelle sicher, dass Anzahl Personen nicht negativ ist
-    if($numberOfSeats <= 0) {
+    if($frontend && $numberOfSeats <= 0) {
         return "Die Anzahl der Personen muss größer gleich 1 sein";
+    }
+    if($numberOfSeats < 0) {
+        return "Die Anzahl der Personen darf nicht negativ sein";
     }
 
     if($frontend && $numberOfSeats > getMaxAmountOfPersons()) {
