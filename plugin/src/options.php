@@ -18,9 +18,17 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         return "Mindestdauer zwischen Reservierung und Reservierungsbeginn muss eine Ganzzahl größer als 0 sein.";
     }
 
+    var_dump($openingHours);
     
     // Validierung der Öffnungszeiten
-    foreach($openingHours as $dayKey => $day) {
+    for($dayKey = 0; $dayKey < 7; $dayKey++) {
+        $day = $openingHours[$dayKey];
+        
+        if($day == null) {
+            $openingHours[$dayKey] = array();
+            continue;
+        }
+
         foreach($day as $elemKey => $elem) {
             $from = $elem["from"];
             $to = $elem["to"];
@@ -90,7 +98,7 @@ function getOpeningHours() {
         $r = array();
         for($c = 0; $c < 7; $c++) {
             $r[] = array(
-                (object) array(
+                array(
                     "from" => 11 * 60 * 60,
                     "to" => 13 * 60 * 60
                 )
@@ -99,8 +107,34 @@ function getOpeningHours() {
 
         return $r;
     } else {
-        return json_decode($r);
+        return json_decode($r, true);
     }
+}
+
+function getOpeningHoursOnWeekday(int $timestamp) {
+    $weekday = date("w", $timestamp);
+    
+    /**
+     * bei $weekday entspricht eine 0 einem Sonntag. Wir wollen aber, dass die 0
+     * einem Montag entspricht, somit ist eine Umwandlung notwendig
+     */
+    $conversionArr = array(6, 0, 1, 2, 3, 4, 5);
+    $weekday = $conversionArr[$weekday];
+    return getOpeningHours()[$weekday];
+}
+
+function isOpen($timestamp) {
+    $openingHours = getOpeningHoursOnWeekday($timestamp);
+
+    $secondsSinceMidnight = ((intval(date("G", $timestamp)) * 60) + intval(date("i", $timestamp))) * 60;
+
+    foreach($openingHours as $timeSlot) {
+        if($secondsSinceMidnight >= $timeSlot["from"] && $secondsSinceMidnight <= $timeSlot["to"]) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function storeImpl($key, $value) {

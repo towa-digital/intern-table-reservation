@@ -9,6 +9,7 @@
  */
 
 define('WP_DEBUG', true);
+date_default_timezone_set("Europe/Zurich");
 
 // Setup von CPT und ACF
 require_once("initCpt.php");
@@ -70,11 +71,17 @@ add_action("rest_api_init", function() {
         "methods" => "POST",
         "callback" => "rest_saveNewReservation"
     ));
+    register_rest_route("tischverwaltung/v1", "gettimeslots/(?P<timestamp>\d+)", array(
+        "methods" => "GET",
+        "callback" => "rest_getTimeSlots"
+    ));
 });
 
 
 
 function rest_getFreeTables($request) {
+    date_default_timezone_set("Europe/Zurich");
+
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
     $persons = $request["numberOfSeats"];
@@ -87,6 +94,9 @@ function rest_getFreeTables($request) {
     }
     if($from <= time() + getCanReservateInMinutes() * 60) {
         return new WP_Error("invalid_data", "Das Beginndatum der Reservierung muss mindestens ".getCanReservateInMinutes(). " Minuten in der Zukunft liegen");
+    }
+    if(! isOpen($from)) {
+        return new WP_Error("invalid_data", "Es kann keine Reservierung außerhalb der Öffnungszeiten getätigt werden.");
     }
     if($from > time() + ((365 / 2) * 24 * 60 * 60)) {
         return new WP_Error("invalid_data", "Das Beginndatum darf nicht länger als ein halbes Jahr in der Zukunft liegen.");
@@ -115,10 +125,16 @@ function rest_getFreeTables($request) {
     return $response;
 }
 
+function rest_getTimeSlots($request) {
+    date_default_timezone_set("Europe/Zurich");
 
+    $timestamp = $request["timestamp"];
+}
 
 
 function rest_saveNewReservation($request) {
+    date_default_timezone_set("Europe/Zurich");
+
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
     $tables = json_decode($request["tables"], true);

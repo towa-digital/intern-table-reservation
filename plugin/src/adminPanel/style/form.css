@@ -98,6 +98,10 @@ input {
     font-style: italic;
 }
 
+#openingHours input {
+    width: 40%;
+}
+
 @media(max-width: 1000px) {
     form {
         -webkit-box-orient: vertical;

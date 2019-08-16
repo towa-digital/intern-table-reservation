@@ -132,17 +132,28 @@ function show_optionsPage() {
     wp_enqueue_script("openingHours_script", plugins_url("script/openingHours.js", __FILE__));
 
     $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "canReservateInMinutes");
-    $err = false;
-    foreach($required as $r) {
-        if(! isset($_POST[$r]) || empty($_POST[$r])) {
-            echo 'Bitte fülle alle Pflichtfelder aus.';
-            $err = true;
+    $isset = true;
+    $error = false;
+    foreach($required as $field) {
+        // prüfe, ob mindestens ein Feld nicht gesetzt ist
+        if(! isset($_POST[$field])) {
+            $isset = false;
+            break;
+        }
+
+        // Prüfe, ob mindestens ein Feld leer ist
+        if(empty($_POST[$field])) {
+            $error = true;
             break;
         }
     }
 
-    if(! $err) {
-        echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"],  $_POST["openingHours"]);
+    if($isset) {
+        if(! $empty) {
+            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"],  $_POST["openingHours"]);
+        } else {
+            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+        }
     }
     
 ?>
@@ -185,7 +196,7 @@ function show_optionsPage() {
                     <input type="text" name="noFreeTablesError" value="<?php echo getNoFreeTablesError(); ?>" />                
                 </td></tr>
             </table>
-            <table class="data formData">
+            <table id="openingHours" class="data formData">
                 <tr><td>
                     <h2>Öffnungszeiten</h2>
                 </td></tr>
@@ -193,16 +204,21 @@ function show_optionsPage() {
 
                     $weekDays = array("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
                     
-                    foreach(getOpeningHours() as $key => $day) {
-                        echo '<br>DAY:';
-                        var_dump($day);
+                    $openingHoursArr = getOpeningHours();
+
+                    for($key = 0; $key < 7; $key++) {
+                        $day = $openingHoursArr[$key];
+                        
+                        
                         echo '<tr><td>';
                         echo '<h3 class="inline">'.$weekDays[$key].'</h3>';
                         echo '<div id="timePickerParent_'.$key.'">';
                         foreach($day as $entryKey => $entry) {
                             echo '<div>';
-                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry->from)."'>";
-                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry->to)."'>";
+                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
+                            echo '<span>-</span>';
+                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
+                            echo '<button type="button" onclick="removeTimePicker(this)">Remove</button>';
                             echo '</div>';
                         }
                         echo "</div><button type='button' onclick='addTimePicker($key)'>Add</button></td></tr>";
