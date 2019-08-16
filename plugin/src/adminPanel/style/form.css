@@ -68,6 +68,7 @@ input {
     -webkit-box-flex: 2;
         -ms-flex-positive: 2;
             flex-grow: 2;
+    min-width: 200px;
     background-color: white;
     height: 100%;
     margin-left: 20px;
@@ -107,5 +108,6 @@ input {
     #publish {
         margin-left: 0px;
         margin-top: 50px;
+        width: 100%;
     }
 }

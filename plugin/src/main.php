@@ -19,6 +19,7 @@ require("adminPanel/addReservation.php");
 require("adminPanel/addTable.php");
 require("adminPanel/reservationList.php");
 require("adminPanel/tableList.php");
+require("adminPanel/optionsPage.php");
 
 require_once("queryDatabase.php");
 
@@ -37,6 +38,15 @@ function setup_admin_menu() {
     add_action("admin_print_styles-".$addTable , "applyStyle_addTable");
 }
 
+add_action("admin_menu", "setup_options_page");
+function setup_options_page() {
+    $optionsPage = add_options_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "administrator", "config", "show_optionsPage");
+    add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");
+
+    add_action('admin_init', 'initSettings');
+}
+
+
 add_action("wp_ajax_my_action", "loadAvailableTables");
 
 function loadAvailableTables() {
@@ -44,7 +54,7 @@ function loadAvailableTables() {
 
     
     $startTime = strtotime($_POST['from']);
-    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + 30 * 60 : strtotime($_POST['to']);
+    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (get_option("defaultReservationDuration") * 60) : strtotime($_POST['to']);
     $reservationId = $_POST["reservationId"];
 
     echo json_encode(getFreeTables($startTime, $endTime, $reservationId));
@@ -52,7 +62,7 @@ function loadAvailableTables() {
 }
 
 add_action("rest_api_init", function() {
-    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)", array(
+    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<numberOfSeats>\d+)", array(
         "methods" => "GET",
         "callback" => "rest_getFreeTables"
     ));
@@ -61,20 +71,37 @@ add_action("rest_api_init", function() {
         "callback" => "rest_saveNewReservation"
     ));
 });
+
+
+
 function rest_getFreeTables($request) {
     $from = $request["from"];
-    $to = $from + RESERVATION_DURATION;
+    $to = $from + (get_option("defaultReservationDuration") * 60);
+    $persons = $request["numberOfSeats"];
 
     if($from > $to) {
-        return new WP_Error('invalid_date', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
+        return new WP_Error('invalid_data', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
     }
     if($from <= time()) {
-        return new WP_Error("begin_date_in_past", "Das Beginndatum der Reservierung darf nicht in der Vergangenheit liegen.");
+        return new WP_Error("invalid_data", "Das Beginndatum der Reservierung darf nicht in der Vergangenheit liegen.");
+    }
+    if($from <= time() + get_option("canReservateInMinutes") * 60) {
+        return new WP_Error("invalid_data", "Das Beginndatum der Reservierung muss mindestens ".get_option("canReservateInMinutes"). " Minuten in der Zukunft liegen");
+    }
+    if($from > time() + ((365 / 2) * 24 * 60 * 60)) {
+        return new WP_Error("invalid_data", "Das Beginndatum darf nicht länger als ein halbes Jahr in der Zukunft liegen.");
+    }
+    if($persons <= 0) {
+        return new WP_Error("invalid_data", "Die Anzahl der Personen muss größer gleich 1 sein.");
+    }
+    if($persons > get_option("maxAmountOfPersons")) {
+        return new WP_Error("tooMuchPersons", "Du kannst keine Reservierung für über ".get_option("maxAmountOfPersons")." Personen aufgeben.");
     }
 
-    $returnArr = getFreeTables(
+    $returnArr = getSuitableTables(
         $from,
         $to,
+        $persons,
         0
     );
     $response = new WP_REST_Response($returnArr);
@@ -83,19 +110,22 @@ function rest_getFreeTables($request) {
     return $response;
 }
 
+
+
+
 function rest_saveNewReservation($request) {
     $from = $request["from"];
 
-    $to = $from + RESERVATION_DURATION;
+    $to = $from + (get_option("defaultReservationDuration") * 60);
 
-    $tables = array($request["tables"]);
+    $tables = json_decode($request["tables"], true);
     $firstname = $request["firstname"];
     $lastname = $request["lastname"];
     $mail = $request["mail"];
     $phonenumber = $request["phonenumber"];
     $numberOfSeats = $request["numberOfSeats"];
 
-    $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+    $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, 0, true);
 
     if($errorMsg !== null) {
         return new WP_Error("verification_error", $errorMsg);

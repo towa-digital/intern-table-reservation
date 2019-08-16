@@ -46,7 +46,7 @@ function show_addReservation() {
                 echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
             }
 
-            $to = $useDefaultEndTime ? $from + 30 * 60 : strtotime($_POST["to"]);
+            $to = $useDefaultEndTime ? $from + (get_option("defaultReservationDuration") * 60) : strtotime($_POST["to"]);
             $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
             $firstname = $_POST["firstname"];
             $lastname = $_POST["lastname"];
@@ -69,7 +69,7 @@ function show_addReservation() {
 
 ?>
 <div id="main">
-    <p id="jsError" class="hidden"></h1>
+    <p id="jsError" class="hidden"></p>
     <h1>Reservierung hinzufügen</h1>
     <form method="post">
         <div id="formContent">
@@ -79,13 +79,13 @@ function show_addReservation() {
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Beginn der Reservierung</h3><span class="required">*</span>
-                    <input type="datetime-local" name="from" id="from" oninput="onDateChange(this, document.getElementById('to'), 0)" />
+                    <input type="datetime-local" name="from" id="from" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Beginn der Reservierung" oninput="onDateChange(this, document.getElementById('to'), 0)" />
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Ende der Reservierung</h3><span class="required">*</span><br />
                     <input type="checkbox" name="useDefaultEndTime" id="useDefaultEndTime" onchange="onDateChange(document.getElementById('from'), document.getElementById('to'), 0); $('#to').prop('disabled', this.checked)" checked />
                     <label for="useDefaultEndTime">Soll die standardmäßige Reservierungsdauer verwendet werden?</label>
-                    <input type="datetime-local" name="to" id="to" oninput="onDateChange(document.getElementById('from'), this, 0)" style="margin-top: 15px;margin-bottom: 15px;" disabled />
+                    <input type="datetime-local" name="to" id="to" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ende der Reservierung" oninput="onDateChange(document.getElementById('from'), this, 0)" style="margin-top: 15px;margin-bottom: 15px;" disabled />
                 </td></tr>
                 <tr><td>
                     <h3>Anzahl Plätze</h3>

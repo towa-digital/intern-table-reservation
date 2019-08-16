@@ -1,6 +1,6 @@
 ## Add Reservation (Frontend)
 
-![Inputform](./../../docimg/InputForm.png)
+![Inputform](./../../assets/InputForm.png)
 
 Alle Teilcomponents der Eingabefläche befinden sich in [ **/frontend/src/components/InputFormComponents/** ](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/InputFormComponents)
 

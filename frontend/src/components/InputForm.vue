@@ -76,8 +76,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+<<<<<<< HEAD
 
 const axios = require("axios");
+=======
+>>>>>>> db1e8d5f248167895f6293b61b9672f31920a6d3
 
 import InputFormPersons from "./InputFormComponents/InputFormName";
 import InputFormNumberOfPersons from "./InputFormComponents/InputFormNumberOfPersons";
@@ -129,12 +132,16 @@ export default {
 
       this.reservation.from = timestamp
 
+<<<<<<< HEAD
 
       console.log(timestamp)
 
+=======
+>>>>>>> db1e8d5f248167895f6293b61b9672f31920a6d3
       return timestamp;
     }
-  }
+  } 
+  
 };
 </script>
 
