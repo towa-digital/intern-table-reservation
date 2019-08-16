@@ -2,12 +2,14 @@
   <form>
     <select ref="input" :value="value" @change="updateValue">
       <option disable selected value>Bitte Tisch auswählen</option>
-      <option v-for="tables in table" v-bind:key="tables" >{{ tables.id }}</option>
+      <option v-for="table in allTables" v-bind:key="table.id" >{{ table.id }}</option>
     </select>
   </form>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "InputFormTable",
   data() {
@@ -24,20 +26,9 @@ export default {
     updateValue(event) {
       this.$emit("input", this.$refs.input.value);
       event.preventDefault();
-    }
-  },
-  created: function() {
-    this.$http.get("wp/v2/tables").then(
-      response => {
-        for (let tables in response.data) {
-          this.table.push(response.data[tables]);
-        }
-      },
-      error => {
-        alert(error);
-      }
-    );
-  }
+    },
+  }, computed: mapGetters(['allTables'])
+  
 };
 </script>
 
