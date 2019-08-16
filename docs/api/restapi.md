@@ -30,7 +30,6 @@ Angaben sind nicht korrekt: (Status-Code: 500)
 	}
 
 Dieser Fehlertritt in folgenden Fällen auf:
-- Das Beginndatum liegt vor dem Enddatum
 - Das Beginndatum der Reservierung liegt in der Vergangenheit
 - Das Beginndatum der Reservierung liegt weiter als ein halbes Jahr in der Zukunft
 - Das Beginndatum der Reservierung liegt nicht weiter als canReservateInMinutes in der Zukunft
@@ -42,13 +41,25 @@ Zu viele Personen betroffen: (Status-Code: 500)
 
     {
 	    "code": "tooMuchPersons",
-	    "message": "Du kannst keine Reservierung für über [maxAmountOfPersons] Personen aufgeben.",
+	    "message": "[Fehlermeldung",
 	    "data": null
 	}
 
 Dieser Fehler tritt in folgenden Fällen auf:
 - Die Anzahl der Personen überschreitet maxAmountOfPersons
 
+<br>
+
+Keine freien Tische gefunden: (Status-Code: 500)
+
+    {
+	    "code": "noSuitableTables",
+	    "message": "[Fehlermeldung]",
+	    "data": null
+	}
+
+Dieser Fehler tritt in folgenden Fällen auf:
+- Es wurden keine passendenden Tische gefunden. 
 	    
 ## Einfügen einer neuen Reservierung
 
