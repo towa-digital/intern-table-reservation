@@ -10,7 +10,7 @@
           </td>
         </tr>
         <tr class="text">
-          <td colspan="2">Personenanzahl</td>
+          <td colspan="2">Personenanzahl <a>*</a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -18,7 +18,7 @@
           </td>
         </tr>
         <tr class="text">
-          <td colspan="2">Datum</td>
+          <td colspan="2">Datum <a>*</a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -48,7 +48,7 @@
       <table v-if="reservation.stepTwo">
         <tr>
           <td colspan="2">
-            <h2>Verfügbare Tische</h2>
+            <h2>Verfügbare Tische <a>*</a></h2>
           </td>
         </tr>
 
@@ -76,7 +76,7 @@
           </td>
         </tr>
 
-        <!-- Ein Input Feld -->
+        <!-- Ein Inputfeld -->
 
         <tr v-if="!inputTwo">
           <td colspan="2">
@@ -125,8 +125,8 @@
           </td>
         </tr>
         <tr>
-          <td>Vorame</td>
-          <td>Nachname</td>
+          <td>Vorame <a>*</a></td>
+          <td>Nachname<a>*</a></td>
         </tr>
         <tr>
           <td>
@@ -137,7 +137,7 @@
           </td>
         </tr>
         <tr class="text">
-          <td>Telefonnummer</td>
+          <td>Telefonnummer <a>*</a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -158,6 +158,11 @@
           </td>
           <td>
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
+          </td>
+        </tr>
+         <tr v-if="inputErrorStepThree">
+          <td colspan="2">
+            <h3>Alle Felder mit <a>*</a> müssen ausgefüllt werden</h3>
           </td>
         </tr>
       </table>
@@ -227,7 +232,8 @@ export default {
         stepThree: false
       },
       inputTwo: false,
-      inputThree: false
+      inputThree: false,
+      inputErrorStepThree: false
     };
   },
   computed: mapGetters(["errormessage", "errorstatus", "submitstatus"]),
@@ -236,9 +242,15 @@ export default {
     ...mapActions(["fetchTables"]),
     onSubmit(e) {
       e.preventDefault();
-      this.addReservation({
+
+      if(this.reservation.firstname === "" || this.reservation.lastname === "" || this.reservation.phonenumber === ""){
+        this.inputErrorStepThree = true
+      } else {
+        this.addReservation({
         reservation: this.reservation
       });
+      }
+      
     },
     makeTimestamp() {
       var d = new Date(this.reservation.date).getTime();
@@ -271,10 +283,14 @@ export default {
       this.reservation.tables.push(this.reservation.tableOne, this.reservation.tableTwo, this.reservation.tableThree)
     },
     onBackOne() {
+      this.reservation.error = false; 
+
       this.reservation.stepTwo = false;
       this.reservation.stepOne = true;
     },
     onBackTwo() {
+      this.reservation.error = false;
+      
       this.reservation.stepTwo = true;
       this.reservation.stepThree = false;
     },
@@ -370,6 +386,10 @@ select:hover {
 
 .text {
   margin-top: 20px;
+}
+
+a {
+  color: #da3743;
 }
 </style>
 
