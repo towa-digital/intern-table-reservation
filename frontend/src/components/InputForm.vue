@@ -40,6 +40,7 @@
             </div>
           </td>
         </tr>
+        
       </table>
     </div>
 
@@ -52,12 +53,20 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td colspan="2">
             <InputFormTable v-model="reservation.tables" />
           </td>
         </tr>
         <tr class="submit">
-          <td colspan="2">
+          <td>
+            <input
+              type="submit"
+              value="Zurück"
+              class="btn"
+              v-on:click="onBackOne"
+            />
+          </td>
+          <td>
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
           </td>
         </tr>
@@ -101,14 +110,23 @@
           </td>
         </tr>
         <tr class="submit">
-          <td colspan="2">
+          <td>
             <input
               type="submit"
-              value="Reservierung fertigstellen"
+              value="Zurück"
+              class="btn"
+              v-on:click="onBackTwo"
+            />
+          </td>
+          <td>
+            <input
+              type="submit"
+              value="Fertigstellen"
               class="btn"
               v-on:click="onSubmit"
             />
           </td>
+          
         </tr>
       </table>
     </div>
@@ -212,6 +230,14 @@ export default {
     onGetReservation() {
       this.reservation.stepTwo = false;
       this.reservation.stepThree = true;
+    },
+    onBackOne() {
+      this.reservation.stepTwo = false;
+      this.reservation.stepOne = true;
+    },
+    onBackTwo() {
+      this.reservation.stepTwo = true;
+      this.reservation.stepThree = false;
     }
   }
 };
