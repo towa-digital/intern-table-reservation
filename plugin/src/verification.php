@@ -30,11 +30,7 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
 
 
     // entferne leere Werte aus dem Array
-    foreach($tables as $key => $value) {
-        if($value == "") {
-            array_splice($tables, $key, 1);
-        }
-    }
+    $tables = array_filter($tables);
 
     // stelle sicher, dass keine Duplikate in tables enthalten sind
     $duplicate = false;
@@ -83,6 +79,11 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     // stelle sicher, dass die Reservierung nicht länger als eine Woche dauert
     if (($to - $from) > (7 * 24 * 60 * 60)) {
         return "Die Reservierdauer darf nicht größer als eine Woche sein.";
+    }
+
+    // stelle sicher, dass die Reservierung innerhalb der Öffnungszeiten liegt
+    if($frontend && ! isOpen($from)) {
+        return "Es kann keine Reservierung außerhalb der Öffnungszeiten getätigt werden.";
     }
 
     // stelle sicher, dass mindestens ein Tisch reserviert ist
