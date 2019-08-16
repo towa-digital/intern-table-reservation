@@ -40,7 +40,6 @@
             </div>
           </td>
         </tr>
-        
       </table>
     </div>
 
@@ -52,19 +51,63 @@
             <h2>Verfügbare Tische</h2>
           </td>
         </tr>
+
+        <!-- Table 1 -->
+
         <tr>
           <td colspan="2">
-            <InputFormTable v-model="reservation.tables" />
+            <InputFormTable v-model="reservation.tableOne" />
           </td>
         </tr>
+
+        <!-- Table 2 -->
+
+        <tr>
+          <td colspan="2" v-if="inputTwo">
+            <InputFormTable v-model="reservation.tableTwo" />
+          </td>
+        </tr>
+
+        <!-- Table 3 -->
+
+        <tr>
+          <td colspan="2" v-if="inputThree">
+            <InputFormTable v-model="reservation.tableThree" />
+          </td>
+        </tr>
+
+        <!-- Ein Input Feld -->
+
+        <tr v-if="!inputTwo">
+          <td colspan="2">
+            <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputTwo" />
+          </td>
+        </tr>
+
+        <!-- Zwei Inputfelder -->
+
+        <tr v-if="inputTwo && !inputThree">
+          <td>
+            <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputThree" />
+          </td>
+          <td>
+            <input type="submit" value="Tisch entfernen" class="btn" v-on:click="removeInput" />
+          </td>
+        </tr>
+
+        <!-- Drei Inputfelder -->
+
+        <tr v-if="inputThree">
+          <td colspan="2">
+            <input type="submit" value="Tisch entfernen" class="btn" v-on:click="addInputTwo" />
+          </td>
+        </tr>
+
+        <!-- Standart Buttons -->
+
         <tr class="submit">
           <td>
-            <input
-              type="submit"
-              value="Zurück"
-              class="btn"
-              v-on:click="onBackOne"
-            />
+            <input type="submit" value="Zurück" class="btn" v-on:click="onBackOne" />
           </td>
           <td>
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
@@ -75,7 +118,7 @@
 
     <!-- Step 3 -->
     <div v-if="!submitstatus">
-      <table v-if="reservation.stepThree" >
+      <table v-if="reservation.stepThree">
         <tr>
           <td colspan="2">
             <h2>Kontaktdaten</h2>
@@ -111,22 +154,11 @@
         </tr>
         <tr class="submit">
           <td>
-            <input
-              type="submit"
-              value="Zurück"
-              class="btn"
-              v-on:click="onBackTwo"
-            />
+            <input type="submit" value="Zurück" class="btn" v-on:click="onBackTwo" />
           </td>
           <td>
-            <input
-              type="submit"
-              value="Fertigstellen"
-              class="btn"
-              v-on:click="onSubmit"
-            />
+            <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
           </td>
-          
         </tr>
       </table>
     </div>
@@ -146,7 +178,7 @@
         <tr class="text">
           <td>Datum:</td>
           <td>{{this.reservation.date}}</td>
-        </tr> -->
+        </tr>-->
       </table>
     </div>
   </div>
@@ -178,7 +210,10 @@ export default {
       reservation: {
         from: "",
         numberOfSeats: "",
-        tables: "",
+        tableOne: '',
+        tableTwo: '',
+        tableThree: '',
+        tables: [],
         firstname: "",
         lastname: "",
         mail: "",
@@ -190,7 +225,9 @@ export default {
         stepOne: true,
         stepTwo: false,
         stepThree: false
-      }
+      },
+      inputTwo: false,
+      inputThree: false
     };
   },
   computed: mapGetters(["errormessage", "errorstatus", "submitstatus"]),
@@ -230,6 +267,8 @@ export default {
     onGetReservation() {
       this.reservation.stepTwo = false;
       this.reservation.stepThree = true;
+
+      this.reservation.tables.push(this.reservation.tableOne, this.reservation.tableTwo, this.reservation.tableThree)
     },
     onBackOne() {
       this.reservation.stepTwo = false;
@@ -238,6 +277,18 @@ export default {
     onBackTwo() {
       this.reservation.stepTwo = true;
       this.reservation.stepThree = false;
+    },
+    addInputTwo() {
+      this.inputTwo = true;
+      this.inputThree = false;
+    },
+    removeInput() {
+      this.inputTwo = false;
+      this.InputThree = false;
+    },
+    addInputThree() {
+      this.inputTwo = true;
+      this.inputThree = true;
     }
   }
 };
@@ -313,15 +364,12 @@ select:hover {
   cursor: pointer;
 }
 
-.centered table{
+.centered table {
   border: 2px solid #da3743;
 }
-
-
 
 .text {
   margin-top: 20px;
 }
-
 </style>
 
