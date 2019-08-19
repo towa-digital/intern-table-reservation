@@ -64,11 +64,9 @@ const actions = {
       })
   },
   getTimeSlots: ({ commit }) => {
-    console.log("ey");
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
     .then((response) => {
       commit("onTimeSlotLoad", response.data);
-      console.log(response.data);
     }).catch(error => {
       alert(error);
     });
