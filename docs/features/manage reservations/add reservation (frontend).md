@@ -1,52 +1,51 @@
 ## Add Reservation (Frontend)
 
-![Inputform](./../../assets/InputForm.png)
-
 Alle Teilcomponents der Eingabefläche befinden sich in [ **/frontend/src/components/InputFormComponents/** ](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/InputFormComponents)
 
-### 1 - Eingabefeld für den Namen
+### Overall
 
-#### Component
+In the input-form, you can always go back by pushing the "zurück"-Button. 
+Items with * are required and can not be left empty. Items without * are optional fields.
 
-InputFormName.vue
+### 1 - Step One
 
-### 2 - Eingabefeld für die Antahl der Personen
+In this step, you have to enter how many seats (1) you need and when (2) you want to reserve for. To do so you have to input the Number of Persons and the Date.
 
-#### Component
+!["title"](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/stepone.png)
 
-InputFormNumberOfPersons.vue
-
-### 3 - Eingabefeld für die Telefonnummer
-
-#### Component
-
-InputFormPhonenumber.vue
-
-### 4 - Eingabefeld für die E-Mailadresse
-
-#### Component
-
-InputFormEmail.vue
-
-### 5 - Eingabefeld für das Datum
-
-#### Component
+#### Components used
 
 InputFormDate.vue
+InputFormNumberOfPersons.vue
 
-### 6 - Eingabefeld für die Uhrzeit
+### 2 - Step Two
 
-#### Component
+At the second step, you can choose between different possible tables. We filter the tables before they appear on the site, so you can only choose tables which are possible for the number of people and the time. 
 
-InputFormTime.vue
+!["title"](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/step2.1.png)
 
-### 7 - Submit-Button
+ When you want to reserve more than one table, you have the option to add a table (2). You can reserve up to three tables. 
 
-Button um die Reservierung abzuschließen.
+ !["title"](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/step2.2.png)
 
-#### Component
+#### Component used
 
-InputFormSubmit.vue
+InputFormTable.vue
+
+
+### 3 - Step Three
+
+When you have completed the first two steps, there is only one step left. In this step, you have to insert your data. When you have done that, click ok and the reservation is complete.
+
+!["title"](https://github.com/towa-digital/intern-table-reservation/tree/master/frontend/src/components/step3.png)
+
+#### Components
+
+InputFormName.vue
+InputFormPhonenumber.vue
+InputFormEmail.vue
+
+
 
 
 
