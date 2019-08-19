@@ -8,14 +8,16 @@ const state = {
   submitted: {
     submitstatus: false
   },
-  tables: []
+  tables: [],
+  timeSlots: []
 }
 
 const getters = {
   errormessage: state => state.error.errormessage,
   errorstatus: state => state.error.error,
   submitstatus: state => state.submitted.submitstatus,
-  allTables: state => state.tables
+  allTables: state => state.tables,
+  timeSlots: state => state.timeSlots
 }
 
 const actions = {
@@ -60,11 +62,25 @@ const actions = {
         reservation.reservation.stepOne = true;
         reservation.reservation.stepTwo = false;
       })
-  }
+  },
+  getTimeSlots: ({ commit }) => {
+    console.log("ey");
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
+    .then((response) => {
+      commit("onTimeSlotLoad", response.data);
+      console.log(response.data);
+    }).catch(error => {
+      alert(error);
+    });
+  },
+
 }
 
 
 const mutations = {
+  onTimeSlotLoad: (state, data) => {
+    state.timeSlots = data;
+  },
   reservationDenied: (state, data) => {
     state.error.errormessage = data;
     state.error.error = true;

@@ -24,6 +24,7 @@ require("adminPanel/optionsPage.php");
 require_once("queryDatabase.php");
 require_once("options.php");
 
+
 add_action("admin_menu", "setup_admin_menu");
 function setup_admin_menu() {
     $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "manage_options", "managereservations", "show_reservationList");
@@ -54,8 +55,8 @@ function loadAvailableTables() {
     global $wpdb; 
 
     
-    $startTime = strtotime($_POST['from']);
-    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (getDefaultReservationDuration() * 60) : strtotime($_POST['to']);
+    $startTime = $_POST['from'];
+    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (getDefaultReservationDuration() * 60) : localStringToUTCTimestamp($_POST['to']);
     $reservationId = $_POST["reservationId"];
 
     echo json_encode(getFreeTables($startTime, $endTime, $reservationId));
@@ -71,7 +72,7 @@ add_action("rest_api_init", function() {
         "methods" => "POST",
         "callback" => "rest_saveNewReservation"
     ));
-    register_rest_route("tischverwaltung/v1", "gettimeslots/(?P<timestamp>\d+)", array(
+    register_rest_route("tischverwaltung/v1", "gettimeslots/", array(
         "methods" => "GET",
         "callback" => "rest_getTimeSlots"
     ));
@@ -127,8 +128,37 @@ function rest_getFreeTables($request) {
 
 function rest_getTimeSlots($request) {
     date_default_timezone_set("Europe/Zurich");
+    $slotsToReturn = array();
 
-    $timestamp = $request["timestamp"];
+    $openingHours = getOpeningHours();
+
+    foreach($openingHours as $dayKey => $day) {
+        $slotsToReturn[$dayKey] = array();
+
+        foreach($day as $timeSlot) {
+            //from und to in UTC
+            $from = $timeSlot["from"];
+            $to = $timeSlot["to"];
+    
+    
+            // auf 15 Minuten runden
+            $minutes = 15 - (floor($from / 60) % 15);
+            if($minutes == 15) $minutes = 0;
+            $from += $minutes * 60;
+    
+            while($from < $to) {
+                $slotsToReturn[$dayKey][] = array(
+                    "display" => secondsToValueString($from),
+                    "timestamp" => $from,
+                );
+    
+                $from += 15 * 60;
+            }
+        }
+    }
+    
+
+    return $slotsToReturn;
 }
 
 

@@ -4,6 +4,9 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         $maxUnusedSeatsPerReservation, $canReservateInMinutes, $tooManyPersonsError,
         $noFreeTablesError, $openingHours) {
 
+    date_default_timezone_set("Europe/Zurich");
+
+
     // Validierung der ganzzahligen Werte
     if(intval($defaultReservationDuration) != $defaultReservationDuration && $defaultReservationDuration > 0) {
         return "Dauer einer Reservierung muss eine Ganzzahl größer als 0 sein.";
@@ -18,7 +21,6 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         return "Mindestdauer zwischen Reservierung und Reservierungsbeginn muss eine Ganzzahl größer als 0 sein.";
     }
 
-    var_dump($openingHours);
     
     // Validierung der Öffnungszeiten
     for($dayKey = 0; $dayKey < 7; $dayKey++) {
@@ -42,8 +44,30 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
                     return "Bitte gib die Öffnungszeiten im Format HH:MM an.";
             }
 
-            $openingHours[$dayKey][$elemKey]["from"] = intval($fromSplit[0]) * 60 * 60 + intval($fromSplit[1] * 60);
-            $openingHours[$dayKey][$elemKey]["to"] = intval($toSplit[0] * 60 * 60 + $toSplit[1] * 60);
+            $localFrom = intval($fromSplit[0]) * 60 * 60 + intval($fromSplit[1] * 60);
+            $localTo = intval($toSplit[0] * 60 * 60 + $toSplit[1] * 60);
+
+            $d = intval(date("Z"));
+
+            $utcFrom = $localFrom - $d;
+            $utcTo = $localTo - $d;
+
+            echo "$utcFrom $utcTo";
+
+            /*
+             * Bei der Umrechnung in UTC kann es passieren, dass wir einen negativen Zeitstempel erhalten,
+             * was wir allerdings nicht wollen. Deswegen konvertieren wir ihn zu einem positiven.
+             */
+         /*   if($utcFrom < 0) $utcFrom += 24 * 60 * 60;
+            if($utcTo < 0) $utcTo += 24 * 60 * 60;
+
+
+            if($utcFrom > 24 * 60 * 60) $utcFrom -= 24 * 60 * 60;
+            if($utcTo > 24 * 60 * 60) $utcTo -= 24 * 60 * 60;*/
+
+
+            $openingHours[$dayKey][$elemKey]["from"] = $utcFrom;
+            $openingHours[$dayKey][$elemKey]["to"] = $utcTo;
         }
     }
 
@@ -112,7 +136,13 @@ function getOpeningHours() {
 }
 
 function getOpeningHoursOnWeekday(int $timestamp) {
-    $weekday = date("w", $timestamp);
+    date_default_timezone_set("Europe/Zurich");
+
+    // wir benötigen den Tag in der lokalen Zeitzone
+    $datetime = new DateTime("@$timestamp");
+    $datetime->setTimezone(new DateTimeZone("Europe/Zurich"));
+    $weekday = $datetime->format("w");
+
     
     /**
      * bei $weekday entspricht eine 0 einem Sonntag. Wir wollen aber, dass die 0
@@ -120,13 +150,22 @@ function getOpeningHoursOnWeekday(int $timestamp) {
      */
     $conversionArr = array(6, 0, 1, 2, 3, 4, 5);
     $weekday = $conversionArr[$weekday];
+
     return getOpeningHours()[$weekday];
 }
 
+/**
+ * Diese Funktion prüft, ob der angegebene UNIX-Timestamp (Anzahl Sekunden seit 1.1.1970 00:00 UTC)
+ * innerhalb der Öffnungszeiten liegt. 
+ */
 function isOpen($timestamp) {
+    date_default_timezone_set("Europe/Zurich");
+
+
     $openingHours = getOpeningHoursOnWeekday($timestamp);
 
-    $secondsSinceMidnight = ((intval(date("G", $timestamp)) * 60) + intval(date("i", $timestamp))) * 60;
+    // in UTC
+    $secondsSinceMidnight = $timestamp % 86400;
 
     foreach($openingHours as $timeSlot) {
         if($secondsSinceMidnight >= $timeSlot["from"] && $secondsSinceMidnight <= $timeSlot["to"]) {
@@ -135,6 +174,23 @@ function isOpen($timestamp) {
     }
 
     return false;
+}
+
+/**
+ * Diese Funktion wandelt einen Zeitstempel (Anzahl Sekunden seit Mitternacht, in UTC)
+ * um in einen String (H:i) in der lokalen Zeitzone.
+ */
+function secondsToValueString(int $seconds) {
+    date_default_timezone_set("Europe/Zurich");
+
+    // Umrechnung in lokale Zeitzone
+    $seconds += intval(date("Z"));
+
+    $h = floor($seconds / (60 * 60));
+    $m = floor(($seconds / 60) - ($h * 60));
+
+    $ret = str_pad($h, 2, '0', STR_PAD_LEFT).":".str_pad($m, 2, '0', STR_PAD_LEFT);
+    return $ret;
 }
 
 function storeImpl($key, $value) {

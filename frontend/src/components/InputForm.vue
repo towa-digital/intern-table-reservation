@@ -302,7 +302,7 @@ export default {
     onFindTable() {
       // Check if there is a Input (Step 1)
 
-      if (this.reservation.from === "") {
+      if (this.reservation.date === "") {
         this.reservation.error = true;
         this.reservation.errormessage = "Bitte geben Sie ein Datum an!";
       } else if (this.reservation.numberOfSeats === "") {

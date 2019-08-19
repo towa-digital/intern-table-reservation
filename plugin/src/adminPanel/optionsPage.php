@@ -3,56 +3,7 @@
 require_once(__DIR__."/../options.php");
 
 function initSettings() {
-    register_setting("tischverwaltung", "defaultReservationDuration", array(
-            "sanitize_callback" => function($value) {
-                return validateInteger($value, "defaultReservationDuration");
-            },
-            "type" => "integer"
-        )
-    );
-    add_option("defaultReservationDuration", 60);
 
-    register_setting("tischverwaltung", "maxAmountOfPersons", array(
-            "sanitize_callback" => function($value) {
-                return validateInteger($value, "maxAmountOfPersons", 1);
-            },
-            "type" => "integer"
-        )       
-    ); 
-    add_option("maxAmountOfPersons", 5);
-
-    register_setting("tischverwaltung", "maxUnusedSeatsPerReservation", array(
-            "sanitize_callback" => function($value) {
-                return validateInteger($value, "maxUnusedSeatsPerReservation");
-            },
-            "type" => "integer"
-        )
-    );
-    add_option("maxUnusedSeatsPerReservation", 2);
-
-    /**
-     * Hiermit ist einstellbar, dass der Benutzer nur eine 
-     */
-    register_setting("tischverwaltung", "canReservateInMinutes", array(
-            "sanitize_callback" => function($value) {
-                return validateInteger($value, "canReservateInMinutes");
-            },
-            "type" => "integer"
-        )
-    );
-    add_option("canReservateInMinutes", 30);
-
-    register_setting("tischverwaltung", "tooManyPersonsError", array(
-            "default" => ""
-    ));
-
-    register_setting("tischverwaltung", "openingHours", array(
-            "default" => genDefaultOpeningHours(),
-            "sanitize_callback" => "sanitizeOpeningHours",
-
-    ));
-    add_option("openingHours", genDefaultOpeningHours());
-    error_log("update done");
 }
 
 function genDefaultOpeningHours() {
@@ -67,55 +18,6 @@ function genDefaultOpeningHours() {
     }
 
     return $toReturn;
-}
-
-function validateInteger($value, $slug, $minValue = 0) {
-    $value = intval($value);
-
-    if($value < $minValue) {
-        add_settings_error($slug, "lowerThanOne", "$slug darf nicht kleiner als $minValue sein");
-        return get_option($slug);
-    }
-
-    return $value;
-}
-
-function sanitizeOpeningHours($value) {
-    error_log("Sanitize");
-    error_log(print_r($value, true));
-
-    foreach($value as $dayKey => $day) {
-        foreach($day as $elemKey => $elem) {
-            $from = $elem["from"];
-            $to = $elem["to"];
-
-            if(intval($from) > 0 && intval($to) > 0) continue;
-
-            $fromSplit = explode(":", $from);
-            $toSplit = explode(":", $to);
-
-            if(intval($fromSplit[0]) != $fromSplit[0] || intval($fromSplit[1]) != $fromSplit[1] || 
-                intval($toSplit[0]) != $toSplit[0] || intval($toSplit[1]) != $toSplit[1] ||
-                count($fromSplit) != 2 || count($toSplit) != 2) {
-                    add_settings_error("openingHours", "invalidTimes", "Bitte gib die Öffnungszeiten im Fomat HH:mm");
-                    return get_option("openingHours");
-            }
-
-            $value[$dayKey][$elemKey]["from"] = intval($fromSplit[0]) * 60 + intval($fromSplit[1]);
-            $value[$dayKey][$elemKey]["to"] = intval($toSplit[0] * 60 + $toSplit[1]);
-        }
-    }
-
-    error_log(print_r($value, true));
-
-    return $value;
-}
-
-function secondsToValueString($seconds) {
-    $h = floor($seconds / (60 * 60));
-    $m = floor(($seconds / 60) - ($h * 60));
-
-    return str_pad($h, 2, '0', STR_PAD_LEFT).":".str_pad($m, 2, '0', STR_PAD_LEFT);
 }
 
 
@@ -205,6 +107,7 @@ function show_optionsPage() {
                     $weekDays = array("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
                     
                     $openingHoursArr = getOpeningHours();
+
 
                     for($key = 0; $key < 7; $key++) {
                         $day = $openingHoursArr[$key];

@@ -125,3 +125,52 @@ Dieser Fehler tritt in folgenden Fällen auf:
  - zu viele Plätze an den reservierten Tischen bleiben leer
  - es wurde keine gültige E-Mail-Adresse übergeben
  - der Parameter tables ist kein Array
+
+## Abfrage der zur Verfügung stehenden Uhrzeiten
+Ein normaler HTML-DateTimePicker hat leider den Nachteil, dass er weder in Safari noch in Internet Explorer funktioniert. Ferner ist damit die Eingabe der gewünschten Uhrzeit minutengenau möglich, was bei einer Reservierungssoftware eher unerwünscht ist (eine Reservierung auf 15:00 oder 15:15 anstatt 15:04 ist vollkommen ausreichend).
+
+
+**Zugriffsmethode:** GET
+
+**URL:** tischverwaltung/v1/gettimeslots/
+
+ **Rückgabe:** (Status-Code: 200)
+
+Das Feld "display" entspricht dem Zeitstempel als String, welcher dem Benutzer angezeigt werden kann. Das Feld "timestamp" repräsentiert den Zeitstempel als Anzahl Sekunden seit Mitternacht an diesem Tag.
+
+    [
+		[	// Montag
+			{
+				display: [string],
+				timestamp: [integer]
+			}, ...
+		],
+		[	// Dienstag
+			...
+		],
+		[	// Mittwoch
+			...
+		],
+		[	// Donnerstag
+			...
+		],
+		[	// Freitag
+			...
+		],
+		[	// Samstag
+			...
+		],
+		[	// Sonntag
+			...
+		],
+	]
+
+Beispiel:
+
+	[
+		{
+			display: "00:05",
+			timestamp: 300
+		}
+		, ...
+	]
