@@ -125,7 +125,7 @@
         </tr>
 
         <tr v-if="this.toFewTables">
-          <td>
+          <td colspan="2"> 
             <h3>Sie haben zu wenig Sitze für Ihre Gruppe</h3>
           </td>
         </tr>
@@ -255,10 +255,10 @@ export default {
       inputTwo: false,
       inputThree: false,
       inputErrorStepThree: false,
-      toFewTables: false
-      // tableOneNumberOfSeats: "",
-      // tableTwoNumberOfSeats: "",
-      // tableThreeNumberOfSeats: "",
+      toFewTables: false,
+      tableOneNumberOfSeats: "",
+      tableTwoNumberOfSeats: "",
+      tableThreeNumberOfSeats: ""
       // table: this.$store.getters.allTables
     };
   },
@@ -316,24 +316,27 @@ export default {
       }
     },
     onGetReservation() {
-      // getAllTables().forEach(function(data) {
-      //   if (this.reservation.tableOne == data.id) {
-      //     this.tableOneNumberOfSeats = data.seats;
-      //   } else if (this.reservation.tableTwo == data.id) {
-      //     this.tableTwoNumberOfSeats = data.seats;
-      //   } else if (this.reservation.tableThree == data.id) {
-      //     this.tableThreeNumberOfSeats = data.seats;
-      //   }
-      // });
 
-      // if (
-      //   this.tableOneNumberOfSeats +
-      //     this.tableTwoNumberOfSeats +
-      //     this.tableThreeNumberOfSeats <
-      //   this.reservation.numberOfSeats
-      // ) {
-      //   this.toFewTables = true;
-      // } else {
+      let that = this
+
+      this.getAllTables.forEach(function(data) {
+        if (that.reservation.tableOne == data.id) {
+          that.tableOneNumberOfSeats = data.seats;
+        } else if (that.reservation.tableTwo == data.id) {
+          that.tableTwoNumberOfSeats = data.seats;
+        } else if (that.reservation.tableThree == data.id) {
+          that.tableThreeNumberOfSeats = data.seats;
+        }
+      });
+
+      if (
+        this.tableOneNumberOfSeats +
+          this.tableTwoNumberOfSeats +
+          this.tableThreeNumberOfSeats <
+        this.reservation.numberOfSeats
+      ) {
+        this.toFewTables = true;
+      } else {
         this.reservation.stepTwo = false;
         this.reservation.stepThree = true;
 
@@ -342,7 +345,7 @@ export default {
           this.reservation.tableTwo,
           this.reservation.tableThree
         );
-      // }
+      }
     },
 
     // Back-Buttons
