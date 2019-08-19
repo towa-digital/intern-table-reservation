@@ -1,6 +1,7 @@
 <template>
   <form>
     <input
+      id="dateInput"
       ref="date"
       type="date"
       name="date"
@@ -9,6 +10,9 @@
       v-on:input="emitToParent"
     />
     <select name="time" ref="time" @change="emitToParent">
+      <option disabled selected value v-if="timeSlotsForCurrentWeekday.length != 0">Bitte Uhrzeit wählen.</option>
+            <option disabled selected value v-if="dateFieldValue == '' && timeSlotsForCurrentWeekday.length == 0">Bitte erst Datum wählen.</option>
+      <option disabled selected value v-if="dateFieldValue != '' && timeSlotsForCurrentWeekday.length == 0">nicht geöffnet</option>
       <option v-for="t in timeSlotsForCurrentWeekday" v-bind:key="t.display">{{t.display}}</option>
     </select>
   </form>
@@ -21,7 +25,8 @@ export default {
   name: "InputFormTime",
   data() {
     return {
-      timeSlotsForCurrentWeekday: []
+      timeSlotsForCurrentWeekday: [],
+      dateFieldValue: ""
     };
   },
   methods: {
@@ -32,6 +37,7 @@ export default {
     },
     updateDate(event) {
       const val = this.$refs.date.value;
+      this.dateFieldValue = val;
 
       if(this.$refs.date.value === "") {
         this.timeSlotsForCurrentWeekday = [];
