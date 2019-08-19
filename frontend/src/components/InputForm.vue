@@ -10,7 +10,10 @@
           </td>
         </tr>
         <tr class="text">
-          <td colspan="2">Personenanzahl <a>*</a></td>
+          <td colspan="2">
+            Personenanzahl
+            <a>*</a>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
@@ -18,7 +21,10 @@
           </td>
         </tr>
         <tr class="text">
-          <td colspan="2">Datum <a>*</a></td>
+          <td colspan="2">
+            Datum
+            <a>*</a>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
@@ -44,11 +50,15 @@
     </div>
 
     <!--Step 2 -->
+
     <div>
       <table v-if="reservation.stepTwo">
         <tr>
           <td colspan="2">
-            <h2>Verfügbare Tische <a>*</a></h2>
+            <h2>
+              Verfügbare Tische
+              <a>*</a>
+            </h2>
           </td>
         </tr>
 
@@ -113,6 +123,12 @@
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
           </td>
         </tr>
+
+        <tr v-if="this.toFewTables">
+          <td>
+            <h3>Sie haben zu wenig Sitze für Ihre Gruppe</h3>
+          </td>
+        </tr>
       </table>
     </div>
 
@@ -125,8 +141,14 @@
           </td>
         </tr>
         <tr>
-          <td>Vorame <a>*</a></td>
-          <td>Nachname<a>*</a></td>
+          <td>
+            Vorame
+            <a>*</a>
+          </td>
+          <td>
+            Nachname
+            <a>*</a>
+          </td>
         </tr>
         <tr>
           <td>
@@ -137,7 +159,10 @@
           </td>
         </tr>
         <tr class="text">
-          <td>Telefonnummer <a>*</a></td>
+          <td>
+            Telefonnummer
+            <a>*</a>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
@@ -160,15 +185,19 @@
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
           </td>
         </tr>
-         <tr v-if="inputErrorStepThree">
+        <tr v-if="inputErrorStepThree">
           <td colspan="2">
-            <h3>Alle Felder mit <a>*</a> müssen ausgefüllt werden</h3>
+            <h3>
+              Alle Felder mit
+              <a>*</a> müssen ausgefüllt werden
+            </h3>
           </td>
         </tr>
       </table>
     </div>
 
     <!-- Completed -->
+
     <div v-if="submitstatus" class="centered">
       <table>
         <tr>
@@ -176,14 +205,6 @@
             <h2>Vielen Dank für deine Reservation</h2>
           </td>
         </tr>
-        <!-- <tr class="text">
-          <td>Personenanzahl:</td>
-          <td> {{ this.reservation.numberOfSeats}}</td>
-        </tr>
-        <tr class="text">
-          <td>Datum:</td>
-          <td>{{this.reservation.date}}</td>
-        </tr>-->
       </table>
     </div>
   </div>
@@ -215,9 +236,9 @@ export default {
       reservation: {
         from: "",
         numberOfSeats: "",
-        tableOne: '',
-        tableTwo: '',
-        tableThree: '',
+        tableOne: "",
+        tableTwo: "",
+        tableThree: "",
         tables: [],
         firstname: "",
         lastname: "",
@@ -233,10 +254,20 @@ export default {
       },
       inputTwo: false,
       inputThree: false,
-      inputErrorStepThree: false
+      inputErrorStepThree: false,
+      toFewTables: false
+      // tableOneNumberOfSeats: "",
+      // tableTwoNumberOfSeats: "",
+      // tableThreeNumberOfSeats: "",
+      // table: this.$store.getters.allTables
     };
   },
-  computed: mapGetters(["errormessage", "errorstatus", "submitstatus"]),
+  computed: {
+    ...mapGetters(["errormessage", "errorstatus", "submitstatus"]),
+    getAllTables() {
+      return this.$store.getters.allTables
+    }
+  },
   methods: {
     ...mapActions(["addReservation"]),
     ...mapActions(["fetchTables"]),
@@ -245,14 +276,17 @@ export default {
 
       // Check if there is a Input (Step 3)
 
-      if(this.reservation.firstname === "" || this.reservation.lastname === "" || this.reservation.phonenumber === ""){
-        this.inputErrorStepThree = true
+      if (
+        this.reservation.firstname === "" ||
+        this.reservation.lastname === "" ||
+        this.reservation.phonenumber === ""
+      ) {
+        this.inputErrorStepThree = true;
       } else {
         this.addReservation({
-        reservation: this.reservation
-      });
+          reservation: this.reservation
+        });
       }
-      
     },
     makeTimestamp() {
       var d = new Date(this.reservation.date).getTime();
@@ -263,7 +297,7 @@ export default {
       return timestamp;
     },
 
-  // Switch between Steps
+    // Switch between Steps
 
     onFindTable() {
       // Check if there is a Input (Step 1)
@@ -282,28 +316,51 @@ export default {
       }
     },
     onGetReservation() {
-      this.reservation.stepTwo = false;
-      this.reservation.stepThree = true;
+      // getAllTables().forEach(function(data) {
+      //   if (this.reservation.tableOne == data.id) {
+      //     this.tableOneNumberOfSeats = data.seats;
+      //   } else if (this.reservation.tableTwo == data.id) {
+      //     this.tableTwoNumberOfSeats = data.seats;
+      //   } else if (this.reservation.tableThree == data.id) {
+      //     this.tableThreeNumberOfSeats = data.seats;
+      //   }
+      // });
 
-      this.reservation.tables.push(this.reservation.tableOne, this.reservation.tableTwo, this.reservation.tableThree)
+      // if (
+      //   this.tableOneNumberOfSeats +
+      //     this.tableTwoNumberOfSeats +
+      //     this.tableThreeNumberOfSeats <
+      //   this.reservation.numberOfSeats
+      // ) {
+      //   this.toFewTables = true;
+      // } else {
+        this.reservation.stepTwo = false;
+        this.reservation.stepThree = true;
+
+        this.reservation.tables.push(
+          this.reservation.tableOne,
+          this.reservation.tableTwo,
+          this.reservation.tableThree
+        );
+      // }
     },
 
     // Back-Buttons
 
     onBackOne() {
-      this.reservation.error = false; 
+      this.reservation.error = false;
 
       this.reservation.stepTwo = false;
       this.reservation.stepOne = true;
     },
     onBackTwo() {
       this.reservation.error = false;
-      
+
       this.reservation.stepTwo = true;
       this.reservation.stepThree = false;
     },
 
-  // Switch number of Inputs (Step 2)
+    // Switch number of Inputs (Step 2)
 
     addInputTwo() {
       this.inputTwo = true;
