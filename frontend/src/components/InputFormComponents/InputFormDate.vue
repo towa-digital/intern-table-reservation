@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "InputFormTime",
@@ -34,6 +33,8 @@ export default {
         var date = this.$refs.date.value;
         var time = this.$refs.time.value;
         this.$emit("input", (date === "" || time === "" ? "" : date+"T"+time));
+
+        event.preventDefault();
     },
     updateDate(event) {
       const val = this.$refs.date.value;
@@ -48,6 +49,8 @@ export default {
         this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[index];
 
       }
+
+      event.preventDefault();
 
   },
   },
