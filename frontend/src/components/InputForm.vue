@@ -243,6 +243,8 @@ export default {
     onSubmit(e) {
       e.preventDefault();
 
+      // Check if there is a Input (Step 3)
+
       if(this.reservation.firstname === "" || this.reservation.lastname === "" || this.reservation.phonenumber === ""){
         this.inputErrorStepThree = true
       } else {
@@ -260,8 +262,11 @@ export default {
 
       return timestamp;
     },
+
+  // Switch between Steps
+
     onFindTable() {
-      // Check if there is a Input
+      // Check if there is a Input (Step 1)
 
       if (this.reservation.from === "") {
         this.reservation.error = true;
@@ -282,6 +287,9 @@ export default {
 
       this.reservation.tables.push(this.reservation.tableOne, this.reservation.tableTwo, this.reservation.tableThree)
     },
+
+    // Back-Buttons
+
     onBackOne() {
       this.reservation.error = false; 
 
@@ -294,6 +302,9 @@ export default {
       this.reservation.stepTwo = true;
       this.reservation.stepThree = false;
     },
+
+  // Switch number of Inputs (Step 2)
+
     addInputTwo() {
       this.inputTwo = true;
       this.inputThree = false;
