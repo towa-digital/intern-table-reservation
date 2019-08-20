@@ -24,6 +24,8 @@ function genDefaultOpeningHours() {
 function applyStyle_optionsPage() {
     wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
+    wp_enqueue_style("options_stype", plugins_url("style/options.css", __FILE__));
+
 }
 
 function show_optionsPage() {
@@ -114,20 +116,22 @@ function show_optionsPage() {
 
                     for($key = 0; $key < 7; $key++) {
                         $day = $openingHoursArr[$key];
-                        
-                        
+                                                
                         echo '<tr><td>';
-                        echo '<h3 class="inline">'.$weekDays[$key].'</h3>';
-                        echo '<div id="timePickerParent_'.$key.'">';
-                        foreach($day as $entryKey => $entry) {
-                            echo '<div>';
-                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
-                            echo '<span>-</span>';
-                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
-                            echo '<button type="button" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+                        echo '<h3>'.$weekDays[$key].'</h3>';
+                        if(count($day) > 0) {
+                            echo '<div class="timePickerParent" id="timePickerParent_'.$key.'">';
+                            foreach($day as $entryKey => $entry) {
+                                echo '<div>';
+                                echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
+                                echo '<span> - </span>';
+                                echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
+                                echo '<button type="button" class="edit inline" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+                                echo '</div>';
+                            }
                             echo '</div>';
                         }
-                        echo "</div><button type='button' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
+                        echo "<button type='button' class='edit addBtn' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
                     }
 
                 ?>

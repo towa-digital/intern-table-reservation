@@ -1,0 +1,17 @@
+.timePickerParent {
+    width: calc(100% - 35px);
+    margin-left: 10px;
+}
+
+.timePickerParent input {
+    margin-left: 0;
+}
+
+.addBtn {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+span {
+    white-space: pre;
+}

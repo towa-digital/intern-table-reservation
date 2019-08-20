@@ -8,9 +8,9 @@ function addTimePicker(id) {
 
     var toAppend = "<div>";
     toAppend += '<input type="time" name="openingHours['+id+']['+elemCounter+'][from]">';
-    toAppend += '<span>-</span>';
+    toAppend += '<span> - </span>';
     toAppend += '<input type="time" name="openingHours['+id+']['+elemCounter+'][to]">';
-    toAppend += '<button type="button" onclick="removeTimePicker(this)">Remove</button>';
+    toAppend += '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
     toAppend += '</div>';
     
     $("#timePickerParent_"+id).append(toAppend);
