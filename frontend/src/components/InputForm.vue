@@ -318,7 +318,7 @@ export default {
     onGetReservation() {
 
       let that = this
-
+      console.log(that);
       this.getAllTables.forEach(function(data) {
         if (that.reservation.tableOne == data.id) {
           that.tableOneNumberOfSeats = data.seats;
@@ -330,9 +330,9 @@ export default {
       });
 
       if (
-        this.tableOneNumberOfSeats +
-          this.tableTwoNumberOfSeats +
-          this.tableThreeNumberOfSeats <
+        parseInt(this.tableOneNumberOfSeats) +
+          parseInt(this.tableTwoNumberOfSeats) +
+          parseInt(this.tableThreeNumberOfSeats) <
         this.reservation.numberOfSeats
       ) {
         this.toFewTables = true;
