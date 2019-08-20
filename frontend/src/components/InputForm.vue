@@ -293,7 +293,6 @@ export default {
       const timestamp = Math.floor(d / 1000);
 
       this.reservation.from = timestamp;
-      console.log(timestamp);
       return timestamp;
     },
 
@@ -318,7 +317,7 @@ export default {
     onGetReservation() {
 
       let that = this
-      console.log(that);
+
       this.getAllTables.forEach(function(data) {
         if (that.reservation.tableOne == data.id) {
           that.tableOneNumberOfSeats = data.seats;

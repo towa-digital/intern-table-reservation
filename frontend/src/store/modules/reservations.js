@@ -63,7 +63,7 @@ const actions = {
         reservation.reservation.stepTwo = false;
       })
   },
-  getTimeSlots: ({ commit }) => {
+  getTimeSlots: ({ commit }, reservation) => {
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
     .then((response) => {
       commit("onTimeSlotLoad", response.data);
