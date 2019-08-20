@@ -119,18 +119,16 @@ function show_optionsPage() {
                                                 
                         echo '<tr><td>';
                         echo '<h3>'.$weekDays[$key].'</h3>';
-                        if(count($day) > 0) {
-                            echo '<div class="timePickerParent" id="timePickerParent_'.$key.'">';
-                            foreach($day as $entryKey => $entry) {
-                                echo '<div>';
-                                echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
-                                echo '<span> - </span>';
-                                echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
-                                echo '<button type="button" class="edit inline" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
-                                echo '</div>';
-                            }
+                        echo '<div class="timePickerParent" id="timePickerParent_'.$key.'">';
+                        foreach($day as $entryKey => $entry) {
+                            echo '<div>';
+                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
+                            echo '<span> - </span>';
+                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
+                            echo '<button type="button" class="edit inline" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
                             echo '</div>';
                         }
+                        echo '</div>';
                         echo "<button type='button' class='edit addBtn' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
                     }
 

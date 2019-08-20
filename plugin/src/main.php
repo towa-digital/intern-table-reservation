@@ -9,7 +9,9 @@
  */
 
 define('WP_DEBUG', true);
-date_default_timezone_set("Europe/Zurich");
+
+// set default timezone
+date_default_timezone_set(get_option('timezone_string'));
 
 // Setup von CPT und ACF
 require_once("initCpt.php");
@@ -52,6 +54,9 @@ function setup_options_page() {
 add_action("wp_ajax_my_action", "loadAvailableTables");
 
 function loadAvailableTables() {
+    // set default timezone
+    date_default_timezone_set(get_option('timezone_string'));
+
     global $wpdb; 
 
     
@@ -81,7 +86,8 @@ add_action("rest_api_init", function() {
 
 
 function rest_getFreeTables($request) {
-    date_default_timezone_set("Europe/Zurich");
+    // set default timezone
+    date_default_timezone_set(get_option('timezone_string'));
 
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
@@ -127,7 +133,9 @@ function rest_getFreeTables($request) {
 }
 
 function rest_getTimeSlots($request) {
-    date_default_timezone_set("Europe/Zurich");
+    // set default timezone
+    date_default_timezone_set(get_option('timezone_string'));
+
     $slotsToReturn = array();
 
     $openingHours = getOpeningHours();
@@ -163,7 +171,8 @@ function rest_getTimeSlots($request) {
 
 
 function rest_saveNewReservation($request) {
-    date_default_timezone_set("Europe/Zurich");
+    // set default timezone
+    date_default_timezone_set(get_option('timezone_string'));
 
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);

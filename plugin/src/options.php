@@ -4,9 +4,6 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         $maxUnusedSeatsPerReservation, $canReservateInMinutes, $tooManyPersonsError,
         $noFreeTablesError, $openingHours) {
 
-    date_default_timezone_set("Europe/Zurich");
-
-
     // Validierung der ganzzahligen Werte
     if(intval($defaultReservationDuration) != $defaultReservationDuration && $defaultReservationDuration > 0) {
         return "Dauer einer Reservierung muss eine Ganzzahl größer als 0 sein.";
@@ -127,8 +124,6 @@ function getOpeningHours() {
 }
 
 function getOpeningHoursOnWeekday(int $timestamp) {
-    date_default_timezone_set("Europe/Zurich");    
-
     // wir benötigen den Tag in der lokalen Zeitzone
     $weekday = date("w", $timestamp);
 
@@ -147,8 +142,6 @@ function getOpeningHoursOnWeekday(int $timestamp) {
  * innerhalb der Öffnungszeiten liegt. 
  */
 function isOpen($timestamp) {
-    date_default_timezone_set("Europe/Zurich");
-
     $openingHours = getOpeningHoursOnWeekday($timestamp);
 
     // in UTC, von 0 bis 86400
@@ -174,8 +167,6 @@ function isOpen($timestamp) {
  * um in einen String (H:i) in der lokalen Zeitzone.
  */
 function secondsToValueString(int $seconds) {
-    date_default_timezone_set("Europe/Zurich");
-
     // Umrechnung in lokale Zeitzone
     $seconds += intval(date("Z"));
 
