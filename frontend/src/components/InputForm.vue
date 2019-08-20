@@ -116,12 +116,12 @@
         <!-- Standart Buttons -->
 
         <tr class="submit">
-          <td>
+          <td id="sized">
             <input type="submit" value="Zurück" class="btn" v-on:click="onBackOne" />
           </td>
           <td>
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
-          </td>
+          </td id="sized">
         </tr>
 
         <tr v-if="this.toFewTables">
@@ -178,10 +178,10 @@
           </td>
         </tr>
         <tr class="submit">
-          <td>
+          <td id="sized">
             <input type="submit" value="Zurück" class="btn" v-on:click="onBackTwo" />
           </td>
-          <td>
+          <td id="sized">
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
           </td>
         </tr>
