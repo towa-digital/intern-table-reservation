@@ -293,7 +293,7 @@ export default {
       const timestamp = Math.floor(d / 1000);
 
       this.reservation.from = timestamp;
-
+      console.log(timestamp);
       return timestamp;
     },
 
@@ -386,16 +386,14 @@ input {
   border: none;
   border-bottom: 0.5px solid lightgrey;
   width: 100%;
-
   font-size: 15px;
-
   padding-bottom: 3%;
   padding-top: 2%;
-
-  margin-bottom: 3%;
+  margin-bottom: 10px !important;
 }
 
-input:hover {
+input:hover, select:hover {
+  margin-bottom: 8.5px !important;
   border-bottom: 2px solid #da3743;
 }
 
@@ -438,9 +436,6 @@ select {
   margin-bottom: 3%;
 }
 
-select:hover {
-  border-bottom: 2px solid #da3743;
-}
 
 .btn {
   padding: 3%;
