@@ -8,7 +8,7 @@
       @input="updateDate"
       v-on:input="emitToParent"
     />
-    <select name="time" ref="time" @change="emitToParent">
+    <select id="time" name="time" ref="time" @change="emitToParent">
       <option
         disabled
         selected
@@ -61,6 +61,10 @@ export default {
         this.timeSlotsForCurrentWeekday = [];
       } else {
         this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[this.getWeekday(new Date(val))];
+      }
+
+      if(this.timeSlotsForCurrentWeekday.length == 0) {
+        document.getElementById("time").getElementsByTagName("option")[0].selected = true;
       }
 
       event.preventDefault();
