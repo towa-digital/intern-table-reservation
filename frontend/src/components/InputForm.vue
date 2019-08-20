@@ -97,10 +97,10 @@
         <!-- Zwei Inputfelder -->
 
         <tr v-if="inputTwo && !inputThree">
-          <td>
+          <td id="sized">
             <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputThree" />
           </td>
-          <td>
+          <td id="sized">
             <input type="submit" value="Tisch entfernen" class="btn" v-on:click="removeInput" />
           </td>
         </tr>
@@ -464,6 +464,10 @@ h2 {
 
 a {
   color: #da3743;
+}
+
+#sized {
+  width: 50%;
 }
 </style>
 
