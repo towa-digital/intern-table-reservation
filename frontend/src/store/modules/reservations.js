@@ -68,7 +68,9 @@ const actions = {
     .then((response) => {
       commit("onTimeSlotLoad", response.data);
     }).catch(error => {
-      alert(error);
+        commit('reservationDenied', error.response.data.message)
+        reservation.reservation.stepOne = true;
+        reservation.reservation.stepTwo = false;
     });
   },
 
