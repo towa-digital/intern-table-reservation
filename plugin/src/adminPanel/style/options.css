@@ -7,6 +7,14 @@
     margin-left: 0;
 }
 
+#openingHours input {
+    width: 40%;
+}
+
+.longtext {
+    height: 50px;
+}
+
 .addBtn {
     margin-top: 10px;
     margin-left: 10px;

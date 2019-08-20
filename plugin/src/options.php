@@ -17,7 +17,6 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
     if(intval($canReservateInMinutes) != $canReservateInMinutes && $canReservateInMinutes > 0) {
         return "Mindestdauer zwischen Reservierung und Reservierungsbeginn muss eine Ganzzahl größer als 0 sein.";
     }
-
     
     // Validierung der Öffnungszeiten
     for($dayKey = 0; $dayKey < 7; $dayKey++) {

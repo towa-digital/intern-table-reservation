@@ -48,19 +48,19 @@ form h3 {
     margin-bottom: 45px;
 }
 
-input {
+input, textarea {
     width: 100%;
 }
 
-.titleData input {
+.titleData input, .titleData textarea {
     font-size: 22px;
 }
 
-.data input, .data select {
+.data input, .data select, .data textarea {
     margin-left: 10px;
 }
 
-.data input:not([type=checkbox]) {
+.data input:not([type=checkbox]), .data textarea {
     width: calc(100% - 20px);
 }
 
@@ -98,9 +98,7 @@ input {
     font-style: italic;
 }
 
-#openingHours input {
-    width: 40%;
-}
+
 
 @media(max-width: 1000px) {
     form {

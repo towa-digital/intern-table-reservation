@@ -42,7 +42,7 @@
               <h3>{{ reservation.errormessage }}</h3>
             </div>
             <div class="centered" v-if="errorstatus">
-              <h3>{{ errormessage }}</h3>
+              <h3 v-html="errormessage"></h3>
             </div>
           </td>
         </tr>

@@ -96,11 +96,11 @@ function show_optionsPage() {
                 </td></tr>               
                 <tr><td>
                     <h3 class="inline">Fehlermeldung bei zu vielen Personen</h3>
-                    <input type="text" name="tooManyPersonsError" value="<?php echo esc_attr(getTooManyPersonsError()); ?>" />                
+                    <textarea name="tooManyPersonsError" rows="2"><?php echo esc_attr(getTooManyPersonsError()); ?></textarea>                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Fehlermeldung, wenn keine freien Tische verfügbar sind</h3>
-                    <input type="text" name="noFreeTablesError" value="<?php echo esc_attr(getNoFreeTablesError()); ?>" />                
+                    <textarea name="noFreeTablesError" rows="2"><?php echo esc_attr(getNoFreeTablesError()); ?></textarea>             
                 </td></tr>
             </table>
             <table id="openingHours" class="data formData">
