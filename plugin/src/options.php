@@ -79,22 +79,22 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
 
 function getDefaultReservationDuration() {
     $r = getImpl("defaultReservationDuration");
-    return ($r === null) ? 30 : $r;
+    return ($r === null) ? 60 : $r;
 }
 
 function getMaxAmountOfPersons() {
     $r = getImpl("maxAmountOfPersons");
-    return ($r === null) ? 30 : $r;
+    return ($r === null) ? 5 : $r;
 }
 
 function getMaxUnusedSeatsPerReservation() {
     $r = getImpl("maxUnusedSeatsPerReservation");
-    return ($r === null) ? 30 : $r;
+    return ($r === null) ? 5 : $r;
 }
 
 function getCanReservateInMinutes() {
     $r = getImpl("canReservateInMinutes");
-    return ($r === null) ? 30 : $r;
+    return ($r === null) ? 10 : $r;
 }
 
 function getTooManyPersonsError() {
@@ -132,8 +132,6 @@ function getOpeningHoursOnWeekday(int $timestamp) {
     // wir benötigen den Tag in der lokalen Zeitzone
     $weekday = date("w", $timestamp);
 
-    echo "<i>$timestamp $weekday</i>".date("d.m.Y H:i l", $timestamp);
-
     /**
      * bei $weekday entspricht eine 0 einem Sonntag. Wir wollen aber, dass die 0
      * einem Montag entspricht, somit ist eine Umwandlung notwendig
@@ -152,8 +150,6 @@ function isOpen($timestamp) {
     date_default_timezone_set("Europe/Zurich");
 
     $openingHours = getOpeningHoursOnWeekday($timestamp);
-
-    var_dump($openingHours);
 
     // in UTC, von 0 bis 86400
     $secondsSinceMidnight = $timestamp % 86400;
