@@ -5,7 +5,6 @@
       ref="date"
       type="date"
       name="date"
-      :value = "currentDate"
       @input="updateDate"
       v-on:input="emitToParent"
     />
@@ -42,7 +41,6 @@ export default {
       timeSlotsForCurrentWeekday: [],
       dateFieldValue: "",
       today: '',
-      currentDate: ''
     };
   },
   methods: {
@@ -57,8 +55,6 @@ export default {
       const val = this.$refs.date.value;
       this.dateFieldValue = val;
 
-      this.currentDate = this.$refs.date.value;
-
       if (this.$refs.date.value === "") {
         this.timeSlotsForCurrentWeekday = [];
       } else {
@@ -72,10 +68,12 @@ export default {
   },
   created: function() {
     this.$store.dispatch("getTimeSlots");
-
-    this.currentDate = new Date().toJSON().slice(0,10);
+    window.onload = function() {
+      var date = new Date();
+      document.getElementById("today").value = date.toJSON().slice(0, 10);
+    }
     
-  }
+  },
 };
 </script>
 
