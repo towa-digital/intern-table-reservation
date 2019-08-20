@@ -329,9 +329,9 @@ export default {
       });
 
       if (
-        this.tableOneNumberOfSeats +
-          this.tableTwoNumberOfSeats +
-          this.tableThreeNumberOfSeats <
+        parseInt(this.tableOneNumberOfSeats) +
+          parseInt(this.tableTwoNumberOfSeats) +
+          parseInt(this.tableThreeNumberOfSeats) <
         this.reservation.numberOfSeats
       ) {
         this.toFewTables = true;
