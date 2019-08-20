@@ -417,7 +417,7 @@ input:hover, select:hover {
 
 .btn {
   margin-top: 3%;
-  padding: 10px;
+  padding: 8px;
   border: none;
   background: #da3743;
   color: #fff;
