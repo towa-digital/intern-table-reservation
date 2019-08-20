@@ -44,6 +44,10 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
                     return "Bitte gib die Öffnungszeiten im Format HH:MM an.";
             }
 
+            if($from > $to) {
+                return "Die Beginnzeit muss vor der Endzeit liegen.";
+            }
+
             $localFrom = intval($fromSplit[0]) * 60 * 60 + intval($fromSplit[1] * 60);
             $localTo = intval($toSplit[0] * 60 * 60 + $toSplit[1] * 60);
 
@@ -51,19 +55,6 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
 
             $utcFrom = $localFrom - $d;
             $utcTo = $localTo - $d;
-
-            echo "$utcFrom $utcTo";
-
-            /*
-             * Bei der Umrechnung in UTC kann es passieren, dass wir einen negativen Zeitstempel erhalten,
-             * was wir allerdings nicht wollen. Deswegen konvertieren wir ihn zu einem positiven.
-             */
-         /*   if($utcFrom < 0) $utcFrom += 24 * 60 * 60;
-            if($utcTo < 0) $utcTo += 24 * 60 * 60;
-
-
-            if($utcFrom > 24 * 60 * 60) $utcFrom -= 24 * 60 * 60;
-            if($utcTo > 24 * 60 * 60) $utcTo -= 24 * 60 * 60;*/
 
 
             $openingHours[$dayKey][$elemKey]["from"] = $utcFrom;
@@ -136,14 +127,13 @@ function getOpeningHours() {
 }
 
 function getOpeningHoursOnWeekday(int $timestamp) {
-    date_default_timezone_set("Europe/Zurich");
+    date_default_timezone_set("Europe/Zurich");    
 
     // wir benötigen den Tag in der lokalen Zeitzone
-    $datetime = new DateTime("@$timestamp");
-    $datetime->setTimezone(new DateTimeZone("Europe/Zurich"));
-    $weekday = $datetime->format("w");
+    $weekday = date("w", $timestamp);
 
-    
+    echo "<i>$timestamp $weekday</i>".date("d.m.Y H:i l", $timestamp);
+
     /**
      * bei $weekday entspricht eine 0 einem Sonntag. Wir wollen aber, dass die 0
      * einem Montag entspricht, somit ist eine Umwandlung notwendig
@@ -161,14 +151,40 @@ function getOpeningHoursOnWeekday(int $timestamp) {
 function isOpen($timestamp) {
     date_default_timezone_set("Europe/Zurich");
 
-
     $openingHours = getOpeningHoursOnWeekday($timestamp);
 
-    // in UTC
+    var_dump($openingHours);
+
+    // in UTC, von 0 bis 86400
     $secondsSinceMidnight = $timestamp % 86400;
 
     foreach($openingHours as $timeSlot) {
-        if($secondsSinceMidnight >= $timeSlot["from"] && $secondsSinceMidnight <= $timeSlot["to"]) {
+        $from = $timeSlot["from"];
+        $to = $timeSlot["to"];
+
+        // if(date("Z") > 0) {
+        //     /*
+        //      * Westlich vom Nullmeridian kann die Anzahl Sekunden seit Mitternacht unter 0 sinken. 
+        //      */
+
+        //     if($from < 0 || $to < 0) {
+        //         $from += 24 * 60 * 60;
+        //         $to += 24 * 60 * 60;
+        //     }
+        // } else if (date("Z") < 0) {
+        //     /*
+        //      * Östlich vom Nullmeridian kann die Anzahl Sekunden seit Mitternacht größer als 24 * 60 * 60 werden.
+        //      */
+
+        //     if($from > 0 || $to > 0) {
+        //         $from -= 24 * 60 * 60;
+        //         $to -= 24 * 60 * 60;
+        //     }
+        // }
+        $d = 24 * 60 * 60;
+        if(($secondsSinceMidnight >= $from && $secondsSinceMidnight <= $to) ||
+            ($secondsSinceMidnight >= $from + $d && $secondsSinceMidnight <= $to + $d) ||
+            ($secondsSinceMidnight >= $from - $d  && $secondsSinceMidnight <= $to - $d)) {
             return true;
         }
     }
@@ -186,7 +202,7 @@ function secondsToValueString(int $seconds) {
     // Umrechnung in lokale Zeitzone
     $seconds += intval(date("Z"));
 
-    $h = floor($seconds / (60 * 60));
+    $h = floor($seconds / (60 * 60));     
     $m = floor(($seconds / 60) - ($h * 60));
 
     $ret = str_pad($h, 2, '0', STR_PAD_LEFT).":".str_pad($m, 2, '0', STR_PAD_LEFT);
