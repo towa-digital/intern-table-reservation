@@ -2,7 +2,7 @@
   <div class="wrapper">
     <!-- Step 1 -->
 
-    <div v-if="reservation.stepOne">
+    <div v-show="reservation.stepOne">
       <table>
         <tr>
           <td colspan="2">
