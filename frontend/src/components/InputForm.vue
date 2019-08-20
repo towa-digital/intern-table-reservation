@@ -293,7 +293,6 @@ export default {
       const timestamp = Math.floor(d / 1000);
 
       this.reservation.from = timestamp;
-      console.log(timestamp);
       return timestamp;
     },
 

@@ -33,10 +33,6 @@
 </template>
 
 <script>
-
-import { mapState, mapGetters, mapActions } from "vuex";
-
-
 export default {
   name: "InputFormTime",
   data() {
@@ -82,7 +78,7 @@ export default {
   },
   mounted() {
     // as soon as the opening hours have been loaded, load the one for the current weekday into timeSlotsForCurrentWeekday
-    this.$store.watch((state, getters) => getters.timeSlots, (newValue, oldValue) => {
+    this.$store.watch((state, getters) => getters.timeSlots, (newValue) => {
         this.timeSlotsForCurrentWeekday = newValue[this.getWeekday(new Date())];
          
     })
