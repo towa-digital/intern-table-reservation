@@ -38,10 +38,7 @@
         </tr>
         <tr>
           <td colspan="2">
-            <div class="centered" v-if="reservation.error">
-              <h3>{{ reservation.errormessage }}</h3>
-            </div>
-            <div class="centered" v-if="errorstatus">
+            <div class="centered" v-if="errormessage != ''">
               <h3 v-html="errormessage"></h3>
             </div>
           </td>
@@ -52,7 +49,7 @@
     <!--Step 2 -->
 
     <div>
-      <table v-if="reservation.stepTwo">
+      <table v-show="reservation.stepTwo">
         <tr>
           <td colspan="2">
             <h2>
@@ -124,9 +121,11 @@
           </td>
         </tr>
 
-        <tr v-if="this.toFewTables">
-          <td colspan="2"> 
-            <h3>Sie haben zu wenig Sitze für Ihre Gruppe</h3>
+        <tr>
+          <td colspan="2">
+            <div class="centered" v-if="errormessage != ''">
+              <h3 v-html="errormessage"></h3>
+            </div>
           </td>
         </tr>
       </table>
@@ -134,7 +133,7 @@
 
     <!-- Step 3 -->
     <div v-if="!submitstatus">
-      <table v-if="reservation.stepThree">
+      <table v-show="reservation.stepThree">
         <tr>
           <td colspan="2">
             <h2>Kontaktdaten</h2>
@@ -185,12 +184,11 @@
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
           </td>
         </tr>
-        <tr v-if="inputErrorStepThree">
+        <tr v-if="errormessage != ''">
           <td colspan="2">
-            <h3>
-              Alle Felder mit
-              <a>*</a> müssen ausgefüllt werden
-            </h3>
+            <div class="centered">
+              <h3 v-html="errormessage"></h3>
+            </div>
           </td>
         </tr>
       </table>
@@ -246,16 +244,12 @@ export default {
         date: "",
         phonenumber: "",
         submitted: false,
-        errormessage: "",
-        error: false,
         stepOne: true,
         stepTwo: false,
         stepThree: false
       },
       inputTwo: false,
       inputThree: false,
-      inputErrorStepThree: false,
-      toFewTables: false,
       tableOneNumberOfSeats: "",
       tableTwoNumberOfSeats: "",
       tableThreeNumberOfSeats: ""
@@ -263,7 +257,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["errormessage", "errorstatus", "submitstatus"]),
+    ...mapGetters(["errormessage", "submitstatus"]),
     getAllTables() {
       return this.$store.getters.allTables
     }
@@ -281,8 +275,9 @@ export default {
         this.reservation.lastname === "" ||
         this.reservation.phonenumber === ""
       ) {
-        this.inputErrorStepThree = true;
+        this.$store.commit("setError", "Bitte fülle alle Pflichtfelder (mit <a>*</a> markiert) aus.");
       } else {
+        this.$store.commit("setError", "");
         this.addReservation({
           reservation: this.reservation
         });
@@ -299,16 +294,12 @@ export default {
     // Switch between Steps
 
     onFindTable() {
-      // Check if there is a Input (Step 1)
-
       if (this.reservation.date === "") {
-        this.reservation.error = true;
-        this.reservation.errormessage = "Bitte geben Sie ein Datum an!";
+        this.$store.commit("setError", "Bitte geben Sie ein gültiges Datum an.");
       } else if (this.reservation.numberOfSeats === "") {
-        this.reservation.error = true;
-        this.reservation.errormessage =
-          "Bitte geben Sie eine Peronenanzahl an!";
+        this.$store.commit("setError", "Bitte geben Sie die Anzahl an Personen an.");
       } else {
+        this.$store.commit("setError", "");
         this.fetchTables({
           reservation: this.reservation
         });
@@ -329,16 +320,18 @@ export default {
       });
 
       if (
-        parseInt(this.tableOneNumberOfSeats) +
-          parseInt(this.tableTwoNumberOfSeats) +
-          parseInt(this.tableThreeNumberOfSeats) <
+        (this.tableOneNumberOfSeats === "" ? 0 : parseInt(this.tableOneNumberOfSeats)) +
+          (this.tableTwoNumberOfSeats === "" ? 0 : parseInt(this.tableTwoNumberOfSeats)) +
+          (this.tableThreeNumberOfSeats === "" ? 0 : parseInt(this.tableThreeNumberOfSeats))<
         this.reservation.numberOfSeats
       ) {
-        this.toFewTables = true;
+        this.$store.commit("setError", "Zu wenig Tische für alle Gäste ausgewählt!");
       } else {
         this.reservation.stepTwo = false;
         this.reservation.stepThree = true;
 
+        this.$store.commit("setError", "");
+        this.reservation.tables = [];
         this.reservation.tables.push(
           this.reservation.tableOne,
           this.reservation.tableTwo,
@@ -350,14 +343,12 @@ export default {
     // Back-Buttons
 
     onBackOne() {
-      this.reservation.error = false;
-
+      this.$store.commit("setError", "");
       this.reservation.stepTwo = false;
       this.reservation.stepOne = true;
     },
     onBackTwo() {
-      this.reservation.error = false;
-
+      this.$store.commit("setError", "");
       this.reservation.stepTwo = true;
       this.reservation.stepThree = false;
     },

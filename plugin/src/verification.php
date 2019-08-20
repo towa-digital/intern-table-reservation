@@ -34,15 +34,15 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
 
     // stelle sicher, dass keine Duplikate in tables enthalten sind
     $duplicate = false;
-    for($c1 = 0; $c1 < count($tables); $c1++) {
-        for($c2 = 0; $c2 < count($tables); $c2++) {
-            if($c1 != $c2 && $tables[$c1] == $tables[$c2]) {
+    foreach($tables as $key1 => $value1) {
+        foreach($tables as $key2 => $value2) {
+            if($key1 != $key2 && $value1 == $value2) {
                 $duplicate = true;
                 break 2;
             }
         }
     }
-
+    
     // iteriere über tables und stelle sicher, dass jede ID im Array tatsächlich einem Tisch zugeordnet ist
     $allAreTables = true;
     foreach($tables as $t) {

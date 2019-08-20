@@ -3,7 +3,6 @@ import axios from 'axios'
 const state = {
   error: {
     errormessage: '',
-    error: false
   },
   submitted: {
     submitstatus: false
@@ -14,7 +13,6 @@ const state = {
 
 const getters = {
   errormessage: state => state.error.errormessage,
-  errorstatus: state => state.error.error,
   submitstatus: state => state.submitted.submitstatus,
   allTables: state => state.tables,
   timeSlots: state => state.timeSlots
@@ -83,13 +81,14 @@ const mutations = {
   },
   reservationDenied: (state, data) => {
     state.error.errormessage = data;
-    state.error.error = true;
   },
   reservationAccepted: (state) => {
     state.submitted.submitstatus = true;
-    state.error.error = false;
   },
-  setTables: (state, tables) => (state.tables = tables)
+  setTables: (state, tables) => (state.tables = tables),
+  setError: (state, errorMsg) => {
+    state.error.errormessage = errorMsg;
+  }
 }
 
 export default {
