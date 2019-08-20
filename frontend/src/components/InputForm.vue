@@ -97,10 +97,10 @@
         <!-- Zwei Inputfelder -->
 
         <tr v-if="inputTwo && !inputThree">
-          <td id="sized">
+          <td class="sized">
             <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputThree" />
           </td>
-          <td id="sized">
+          <td class="sized">
             <input type="submit" value="Tisch entfernen" class="btn" v-on:click="removeInput" />
           </td>
         </tr>
@@ -116,12 +116,12 @@
         <!-- Standart Buttons -->
 
         <tr class="submit">
-          <td id="sized">
+          <td class="sized">
             <input type="submit" value="Zurück" class="btn" v-on:click="onBackOne" />
           </td>
-          <td>
+          <td class="sized">
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
-          </td id="sized">
+          </td>
         </tr>
 
         <tr v-if="this.toFewTables">
@@ -142,7 +142,7 @@
         </tr>
         <tr>
           <td>
-            Vorame
+            Vorname
             <a>*</a>
           </td>
           <td>
@@ -178,10 +178,10 @@
           </td>
         </tr>
         <tr class="submit">
-          <td id="sized">
+          <td class="sized">
             <input type="submit" value="Zurück" class="btn" v-on:click="onBackTwo" />
           </td>
-          <td id="sized">
+          <td class="sized">
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
           </td>
         </tr>
@@ -202,7 +202,7 @@
       <table>
         <tr>
           <td colspan="2">
-            <h2>Vielen Dank für deine Reservation</h2>
+            <h2>Vielen Dank für deine Reservation.</h2>
           </td>
         </tr>
       </table>
@@ -416,8 +416,8 @@ input:hover, select:hover {
 }
 
 .btn {
-  padding: 3%;
   margin-top: 3%;
+  padding: 10px;
   border: none;
   background: #da3743;
   color: #fff;
@@ -466,7 +466,7 @@ a {
   color: #da3743;
 }
 
-#sized {
+.sized {
   width: 50%;
 }
 </style>
