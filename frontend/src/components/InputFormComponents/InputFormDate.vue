@@ -5,7 +5,7 @@
       ref="date"
       type="date"
       name="date"
-      
+      :value = "currentDate"
       @input="updateDate"
       v-on:input="emitToParent"
     />
@@ -57,6 +57,8 @@ export default {
       const val = this.$refs.date.value;
       this.dateFieldValue = val;
 
+      this.currentDate = this.$refs.date.value;
+
       if (this.$refs.date.value === "") {
         this.timeSlotsForCurrentWeekday = [];
       } else {
@@ -72,7 +74,7 @@ export default {
     this.$store.dispatch("getTimeSlots");
 
     this.currentDate = new Date().toJSON().slice(0,10);
-    document.getElementById("today").defaultValue = this.currentDate;
+    
   }
 };
 </script>
