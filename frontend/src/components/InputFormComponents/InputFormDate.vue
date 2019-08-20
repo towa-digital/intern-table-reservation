@@ -34,16 +34,22 @@
 
 <script>
 
+import { mapState, mapGetters, mapActions } from "vuex";
+
+
 export default {
   name: "InputFormTime",
   data() {
     return {
       timeSlotsForCurrentWeekday: [],
       dateFieldValue: "",
-      today: '',
     };
   },
   methods: {
+    getWeekday(dateObject) {
+        const weekdays = [6, 0, 1, 2, 3, 4, 5];
+        return weekdays[dateObject.getDay()];
+    },
     emitToParent(event) {
       var date = this.$refs.date.value;
       var time = this.$refs.time.value;
@@ -58,9 +64,7 @@ export default {
       if (this.$refs.date.value === "") {
         this.timeSlotsForCurrentWeekday = [];
       } else {
-        const weekdays = [6, 0, 1, 2, 3, 4, 5];
-        var index = weekdays[new Date(val).getDay()];
-        this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[index];
+        this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[this.getWeekday(new Date(val))];
       }
 
       event.preventDefault();
@@ -68,11 +72,20 @@ export default {
   },
   created: function() {
     this.$store.dispatch("getTimeSlots");
+
+    // set today's date as default value for the date input field
+    this.dateFieldValue = new Date().toJSON().slice(0, 10);
     window.onload = function() {
-      var date = new Date();
-      document.getElementById("today").value = date.toJSON().slice(0, 10);
+      document.getElementById("today").value = new Date().toJSON().slice(0, 10);
     }
     
+  },
+  mounted() {
+    // as soon as the opening hours have been loaded, load the one for the current weekday into timeSlotsForCurrentWeekday
+    this.$store.watch((state, getters) => getters.timeSlots, (newValue, oldValue) => {
+        this.timeSlotsForCurrentWeekday = newValue[this.getWeekday(new Date())];
+         
+    })
   },
 };
 </script>

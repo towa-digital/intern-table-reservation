@@ -33,6 +33,9 @@ function show_optionsPage() {
     // Script für Öffnungszeiten
     wp_enqueue_script("openingHours_script", plugins_url("script/openingHours.js", __FILE__));
 
+    //FontAwesome
+    wp_enqueue_script("fontawesome", "https://kit.fontawesome.com/2c9e55113a.js");
+
     $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "canReservateInMinutes");
     $isset = true;
     $error = false;
@@ -70,19 +73,19 @@ function show_optionsPage() {
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Dauer einer Reservierung in Minuten</h3>
-                    <input type="number" name="defaultReservationDuration" value="<?php echo getDefaultReservationDuration(); ?>" />                
+                    <input type="number" name="defaultReservationDuration" value="<?php echo esc_attr(getDefaultReservationDuration()); ?>" />                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Anzahl Plätze, die pro Reservierung maximal gebucht werden können</h3>
-                    <input type="number" name="maxAmountOfPersons" value="<?php echo getMaxAmountOfPersons(); ?>" />  
+                    <input type="number" name="maxAmountOfPersons" value="<?php echo esc_attr(getMaxAmountOfPersons()); ?>" />  
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Anzahl Plätze, die pro Reservierung maximal ungenutzt bleiben dürfen (damit nicht eine einzelne Person Tisch für 10 Personen bucht)</h3>
-                    <input type="number" name="maxUnusedSeatsPerReservation" value="<?php echo getMaxUnusedSeatsPerReservation(); ?>" />                
+                    <input type="number" name="maxUnusedSeatsPerReservation" value="<?php echo esc_attr(getMaxUnusedSeatsPerReservation()); ?>" />                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Dauer in Minuten, die zwischen Reservierung und Beginnzeit der Reservierung mindestens liegen muss</h3>
-                    <input type="number" name="canReservateInMinutes" value="<?php echo getCanReservateInMinutes(); ?>" />                
+                    <input type="number" name="canReservateInMinutes" value="<?php echo esc_attr(getCanReservateInMinutes()); ?>" />                
                 </td></tr>
             </table>
             <table class="data formData">
@@ -91,11 +94,11 @@ function show_optionsPage() {
                 </td></tr>               
                 <tr><td>
                     <h3 class="inline">Fehlermeldung bei zu vielen Personen</h3>
-                    <input type="text" name="tooManyPersonsError" value="<?php echo getTooManyPersonsError(); ?>" />                
+                    <input type="text" name="tooManyPersonsError" value="<?php echo esc_attr(getTooManyPersonsError()); ?>" />                
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">Fehlermeldung, wenn keine freien Tische verfügbar sind</h3>
-                    <input type="text" name="noFreeTablesError" value="<?php echo getNoFreeTablesError(); ?>" />                
+                    <input type="text" name="noFreeTablesError" value="<?php echo esc_attr(getNoFreeTablesError()); ?>" />                
                 </td></tr>
             </table>
             <table id="openingHours" class="data formData">
@@ -121,10 +124,10 @@ function show_optionsPage() {
                             echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
                             echo '<span>-</span>';
                             echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
-                            echo '<button type="button" onclick="removeTimePicker(this)">Remove</button>';
+                            echo '<button type="button" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
                             echo '</div>';
                         }
-                        echo "</div><button type='button' onclick='addTimePicker($key)'>Add</button></td></tr>";
+                        echo "</div><button type='button' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
                     }
 
                 ?>

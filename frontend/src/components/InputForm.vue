@@ -389,7 +389,26 @@ input {
   font-size: 15px;
   padding-bottom: 3%;
   padding-top: 2%;
+}
+
+select {
+  width: 100%;
+
+  border-left: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: 0.5px solid lightgrey;
+
+  font-size: 15px;
+
+  padding-bottom: 4.9%;
+  padding-top: 2%;
+
+}
+
+input, select {
   margin-bottom: 10px !important;
+
 }
 
 input:hover, select:hover {
@@ -397,9 +416,20 @@ input:hover, select:hover {
   border-bottom: 2px solid #da3743;
 }
 
+.btn {
+  padding: 3%;
+  margin-top: 3%;
+  border: none;
+  background: #da3743;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
 .btn:hover {
   background: #e15b64;
   border: none;
+  margin-bottom: 0 !important;
 }
 
 table {
@@ -420,31 +450,10 @@ h2 {
   border-bottom: 0.5px solid lightgrey;
 }
 
-select {
-  width: 100%;
-
-  border-left: none;
-  border-top: none;
-  border-right: none;
-  border-bottom: 0.5px solid lightgrey;
-
-  font-size: 15px;
-
-  padding-bottom: 4.9%;
-  padding-top: 2%;
-
-  margin-bottom: 3%;
-}
 
 
-.btn {
-  padding: 3%;
-  margin-top: 3%;
-  border: none;
-  background: #da3743;
-  color: #fff;
-  cursor: pointer;
-}
+
+
 
 .centered table {
   border: 2px solid #da3743;

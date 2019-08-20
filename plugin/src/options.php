@@ -162,25 +162,6 @@ function isOpen($timestamp) {
         $from = $timeSlot["from"];
         $to = $timeSlot["to"];
 
-        // if(date("Z") > 0) {
-        //     /*
-        //      * Westlich vom Nullmeridian kann die Anzahl Sekunden seit Mitternacht unter 0 sinken. 
-        //      */
-
-        //     if($from < 0 || $to < 0) {
-        //         $from += 24 * 60 * 60;
-        //         $to += 24 * 60 * 60;
-        //     }
-        // } else if (date("Z") < 0) {
-        //     /*
-        //      * Östlich vom Nullmeridian kann die Anzahl Sekunden seit Mitternacht größer als 24 * 60 * 60 werden.
-        //      */
-
-        //     if($from > 0 || $to > 0) {
-        //         $from -= 24 * 60 * 60;
-        //         $to -= 24 * 60 * 60;
-        //     }
-        // }
         $d = 24 * 60 * 60;
         if(($secondsSinceMidnight >= $from && $secondsSinceMidnight <= $to) ||
             ($secondsSinceMidnight >= $from + $d && $secondsSinceMidnight <= $to + $d) ||

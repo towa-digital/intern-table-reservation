@@ -34,6 +34,7 @@ Dieser Fehlertritt in folgenden Fällen auf:
 - Das Beginndatum der Reservierung liegt weiter als ein halbes Jahr in der Zukunft
 - Das Beginndatum der Reservierung liegt nicht weiter als canReservateInMinutes in der Zukunft
 - Die Anzahl der Personen ist kleiner gleich 0
+- Der übergebene Zeitstempel liegt außerhalb der Öffnungszeiten
 
 <br>
 
@@ -115,6 +116,7 @@ Dieser Fehler tritt in folgenden Fällen auf:
 
  - übergebenes Beginndatum liegt weniger als 30 Minuten oder mehr als ein halbes Jahr in der Zukunft
  - Beginndatum liegt nach dem Enddatum
+ - das Beginndatum liegt außerhalb der Öffnungszeitne
  - es ist kein Tisch angegeben
  - die übergebene ID des Tisches ist keinem Tisch zugeordnet
  - das tables-array enthält Duplikate
@@ -136,13 +138,12 @@ Ein normaler HTML-DateTimePicker hat leider den Nachteil, dass er weder in Safar
 
  **Rückgabe:** (Status-Code: 200)
 
-Das Feld "display" entspricht dem Zeitstempel als String, welcher dem Benutzer angezeigt werden kann. Das Feld "timestamp" repräsentiert den Zeitstempel als Anzahl Sekunden seit Mitternacht an diesem Tag.
+Das Feld "display" entspricht dem Zeitstempel als String, welcher dem Benutzer angezeigt werden kann. 
 
     [
 		[	// Montag
 			{
 				display: [string],
-				timestamp: [integer]
 			}, ...
 		],
 		[	// Dienstag
