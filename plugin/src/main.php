@@ -146,7 +146,7 @@ function rest_getTimeSlots($request) {
             if($minutes == 15) $minutes = 0;
             $from += $minutes * 60;
     
-            while($from < $to) {
+            while($from <= $to) {
                 $slotsToReturn[$dayKey][] = array(
                     "display" => secondsToValueString($from),
                     "timestamp" => $from,
