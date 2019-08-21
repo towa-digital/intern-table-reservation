@@ -2,7 +2,12 @@
 
 function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         $maxUnusedSeatsPerReservation, $canReservateInMinutes, $tooManyPersonsError,
-        $noFreeTablesError, $openingHours) {
+        $noFreeTablesError, $userConfirmationMail, $adminConfirmationMail,
+        $adminAddress, $openingHours) {
+
+    // $tooManyPersonsError = nl2br($tooManyPersonsError);
+    // $userConfirmationMail = nl2br($userConfirmationMail);
+    // $adminConfirmationMail = nl2br($adminConfirmationMail);
 
     // Validierung der ganzzahligen Werte
     if(intval($defaultReservationDuration) != $defaultReservationDuration && $defaultReservationDuration > 0) {
@@ -67,6 +72,9 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
 
     storeImpl("noFreeTablesError", $noFreeTablesError);
     storeImpl("tooManyPersonsError", $tooManyPersonsError);
+    storeImpl("adminConfirmationMail", $adminConfirmationMail);
+    storeImpl("userConfirmationMail", $userConfirmationMail);
+    storeImpl("adminAddress", $adminAddress);
     storeImpl("openingHours", json_encode($openingHours));
 
     return null;
@@ -101,6 +109,22 @@ function getTooManyPersonsError() {
 function getNoFreeTablesError() {
     $r = getImpl("noFreeTablesError");
     return ($r === null) ? "Kein Tisch frei" : $r;
+}
+
+function getUserConfirmationMail() {
+    $r = getImpl("userConfirmationMail");
+    return($r === null) ? "Deine Reservierung ist bei uns eingegangen." : $r;
+}
+
+function getAdminConfirmationMail() {
+    $r = getImpl("adminConfirmationMail");
+    return ($r == null) ? "Eine neue Reservierung ist eingegangen." : $r;
+
+}
+
+function getAdminAddress() {
+    $r = getImpl("adminAddress");
+    return ($r == null) ? "" : $r;
 }
 
 function getOpeningHours() {

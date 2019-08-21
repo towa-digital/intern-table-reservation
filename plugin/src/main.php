@@ -27,7 +27,7 @@ require("adminPanel/exportCSV.php");
 
 require_once("queryDatabase.php");
 require_once("options.php");
-
+require_once("email.php");
 
 add_action("admin_menu", "setup_admin_menu");
 function setup_admin_menu() {
@@ -195,6 +195,12 @@ function rest_saveNewReservation($request) {
 
 
     addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+    
+    register_shutdown_function(function($from, $tables, $numberOfSeats, $firstname, $lastname, $mail) {
+        emailToUser($from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
+        emailToAdmin($from, $tables, $numberOfSeats, $firstname, $lastname);
+    }, $from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
+
 }
 
 ?>

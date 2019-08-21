@@ -7,14 +7,16 @@ const state = {
   submitted: {
     submitstatus: false
   },
-  tables: [],
+  freeTables: [],
+  allTables: [],
   timeSlots: []
 }
 
 const getters = {
   errormessage: state => state.error.errormessage,
   submitstatus: state => state.submitted.submitstatus,
-  allTables: state => state.tables,
+  allTables: state => state.allTables,
+  freeTables: state => state.freeTables,
   timeSlots: state => state.timeSlots
 }
 
@@ -85,7 +87,22 @@ const mutations = {
   reservationAccepted: (state) => {
     state.submitted.submitstatus = true;
   },
-  setTables: (state, tables) => (state.tables = tables),
+  setTables: (state, tables) => {
+    state.allTables = JSON.parse(JSON.stringify(tables));
+    state.freeTables = JSON.parse(JSON.stringify(tables));
+  },
+  claimTable: (state, tableObj) => {
+    var index = -1;
+    for(var i in state.freeTables) {
+      var elem = state.freeTables[i];
+      if(elem.id == tableObj.id) index = i;
+    }
+
+    if(index != -1) state.freeTables.splice(index, 1);
+  },
+  freeTable: (state, tableObj) => {
+    state.freeTables.push(tableObj);
+  },
   setError: (state, errorMsg) => {
     state.error.errormessage = errorMsg;
   }

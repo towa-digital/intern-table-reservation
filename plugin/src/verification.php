@@ -27,6 +27,9 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     if($frontend && ($firstname == "" || $lastname == "")) {
         return "Vor- und Nachname müssen angegeben sein!";
     }
+    if($frontend && $mail == "") {
+        return "Die E-Mail muss angegeben sein!";
+    }
 
 
     // entferne leere Werte aus dem Array
