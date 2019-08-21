@@ -25,9 +25,22 @@ export default {
     }
   },
   methods: {
+    /*
+     * When a InputFormTable is removed from the DOM, it have to return it's selected
+     * value to freeTables.
+     */ 
     freeTable() {
       if(this.selected !== undefined) {
         this.$store.commit("freeTable", this.selected);
+      }
+    },
+    onFreeTablesReload() {
+      if(this.selected === undefined) return;
+
+      if(this.$store.getters.freeTables.indexOf(this.selected) != -1) {
+        this.$store.commit("claimTable", this.selected);
+      } else {
+        this.selected = undefined;
       }
     },
     updateValue(event) {

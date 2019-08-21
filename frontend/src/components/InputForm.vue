@@ -263,6 +263,16 @@ export default {
     },
     getFreeTables() {
       return this.$store.getters.freeTables;
+    },
+    stepTwo() {
+      return this.reservation.stepTwo;
+    }
+  },
+  watch: {
+    stepTwo(newValue, oldValue) {
+      this.$refs.tableOne.onFreeTablesReload();
+      if(this.$refs.tableTwo !== undefined) this.$refs.tableTwo.onFreeTablesReload();
+      if(this.$refs.tableThree !== undefined) this.$refs.tableThree.onFreeTablesReload();
     }
   },
   methods: {
