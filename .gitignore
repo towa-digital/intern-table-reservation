@@ -132,3 +132,7 @@ node_modules/
 .deploy*/
 src/_drafts
 package-lock.json
+
+#csv
+
+plugin/src/csv

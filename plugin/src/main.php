@@ -22,6 +22,8 @@ require("adminPanel/addTable.php");
 require("adminPanel/reservationList.php");
 require("adminPanel/tableList.php");
 require("adminPanel/optionsPage.php");
+require("adminPanel/exportCSV.php");
+
 
 require_once("queryDatabase.php");
 require_once("options.php");
@@ -34,6 +36,9 @@ function setup_admin_menu() {
 
     $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "manage_options", "addreservation", "show_addReservation");
     add_action("admin_print_styles-".$addReservation , "applyStyle_addReservation");
+
+    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "manage_options", "exportcsv", "show_exportCSV");
+    add_action("admin_print_styles-".$exportCSV , "applyStyle_exportCSV");
 
     $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "manage_options", "managetables", "show_tableList");
     add_action("admin_print_styles-".$tableList , "applyStyle_tableList");
