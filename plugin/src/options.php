@@ -2,7 +2,7 @@
 
 function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         $maxUnusedSeatsPerReservation, $canReservateInMinutes, $tooManyPersonsError,
-        $noFreeTablesError, $openingHours) {
+        $noFreeTablesError, $userConfirmationMail, $openingHours) {
 
     // Validierung der ganzzahligen Werte
     if(intval($defaultReservationDuration) != $defaultReservationDuration && $defaultReservationDuration > 0) {
@@ -67,6 +67,7 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
 
     storeImpl("noFreeTablesError", $noFreeTablesError);
     storeImpl("tooManyPersonsError", $tooManyPersonsError);
+    storeImpl("userConfirmationMail", $userConfirmationMail);
     storeImpl("openingHours", json_encode($openingHours));
 
     return null;
@@ -101,6 +102,11 @@ function getTooManyPersonsError() {
 function getNoFreeTablesError() {
     $r = getImpl("noFreeTablesError");
     return ($r === null) ? "Kein Tisch frei" : $r;
+}
+
+function getUserConfirmationMail() {
+    $r = getImpl("userConfirmationMail");
+    return($r === null) ? "Deine Reservierung ist bei uns eingegangen." : $r;
 }
 
 function getOpeningHours() {

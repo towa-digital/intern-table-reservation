@@ -25,7 +25,7 @@ require("adminPanel/optionsPage.php");
 
 require_once("queryDatabase.php");
 require_once("options.php");
-
+require_once("email.php");
 
 add_action("admin_menu", "setup_admin_menu");
 function setup_admin_menu() {
@@ -190,6 +190,7 @@ function rest_saveNewReservation($request) {
 
 
     addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+    emailToUser($from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
 }
 
 ?>

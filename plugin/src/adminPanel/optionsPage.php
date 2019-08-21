@@ -38,7 +38,7 @@ function show_optionsPage() {
     //FontAwesome
     wp_enqueue_script("fontawesome", "https://kit.fontawesome.com/2c9e55113a.js");
 
-    $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "canReservateInMinutes");
+    $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "userConfirmationMail", "canReservateInMinutes");
     $isset = true;
     $error = false;
     foreach($required as $field) {
@@ -57,7 +57,7 @@ function show_optionsPage() {
 
     if($isset) {
         if(! $empty) {
-            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"],  $_POST["openingHours"]);
+            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["openingHours"]);
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
@@ -101,6 +101,16 @@ function show_optionsPage() {
                 <tr><td>
                     <h3 class="inline">Fehlermeldung, wenn keine freien Tische verfügbar sind</h3>
                     <textarea name="noFreeTablesError" rows="2"><?php echo esc_attr(getNoFreeTablesError()); ?></textarea>             
+                </td></tr>
+            </table>
+            <table class="data formData">
+                <tr><td>
+                    <h2>E-Mail-Texte</h2>
+                </td></tr>               
+                <tr><td>
+                    <h3 class="inline">Bestätigungs-Mail an den Nutzer</h3>
+                    <p>Du kannst die Variablen $FIRSTNAME, $LASTNAME, $TABLES, $BEGIN und $NUMBEROFSEATS verwenden.</p>
+                    <textarea name="userConfirmationMail" rows="2"><?php echo esc_attr(getUserConfirmationMail()); ?></textarea>                
                 </td></tr>
             </table>
             <table id="openingHours" class="data formData">
