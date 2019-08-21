@@ -260,6 +260,9 @@ export default {
     ...mapGetters(["errormessage", "submitstatus"]),
     getAllTables() {
       return this.$store.getters.allTables
+    },
+    getFreeTables() {
+      return this.$store.getters.freeTables;
     }
   },
   methods: {
@@ -298,6 +301,8 @@ export default {
         this.$store.commit("setError", "Bitte geben Sie ein gültiges Datum an.");
       } else if (this.reservation.numberOfSeats === "") {
         this.$store.commit("setError", "Bitte geben Sie die Anzahl an Personen an.");
+      } else if (parseInt(this.reservation.numberOfSeats) != this.reservation.numberOfSeats || this.reservation.numberOfSeats <= 0) {
+        this.$store.commit("setError", "Die Anzahl der Personen muss eine ganzzahlige Zahl größer als 0 sein.");
       } else {
         this.$store.commit("setError", "");
         this.fetchTables({
