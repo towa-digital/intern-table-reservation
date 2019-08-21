@@ -54,13 +54,10 @@ const actions = {
     )
       .then((response) => {
         commit('setTables', response.data)
-        reservation.reservation.stepOne = false
-        reservation.reservation.stepTwo = true
+        reservation.reservation.step++;
       })
       .catch(error => {
         commit('reservationDenied', error.response.data.message)
-        reservation.reservation.stepOne = true;
-        reservation.reservation.stepTwo = false;
       })
   },
   getTimeSlots: ({ commit }, reservation) => {
@@ -69,8 +66,6 @@ const actions = {
       commit("onTimeSlotLoad", response.data);
     }).catch(error => {
         commit('reservationDenied', error.response.data.message)
-        reservation.reservation.stepOne = true;
-        reservation.reservation.stepTwo = false;
     });
   },
 

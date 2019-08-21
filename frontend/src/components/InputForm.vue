@@ -2,7 +2,7 @@
   <div class="wrapper">
     <!-- Step 1 -->
 
-    <div v-show="reservation.stepOne">
+    <div v-show="reservation.step == 1">
       <table>
         <tr>
           <td colspan="2">
@@ -49,7 +49,7 @@
     <!--Step 2 -->
 
     <div>
-      <table v-show="reservation.stepTwo">
+      <table v-show="reservation.step == 2">
         <tr>
           <td colspan="2">
             <h2>
@@ -114,7 +114,7 @@
 
         <tr class="submit">
           <td class="sized">
-            <input type="submit" value="Zurück" class="btn" v-on:click="onBackOne" />
+            <input type="submit" value="Zurück" class="btn" v-on:click="onBack" />
           </td>
           <td class="sized">
             <input type="submit" value="Weiter" class="btn" v-on:click="onGetReservation" />
@@ -133,7 +133,7 @@
 
     <!-- Step 3 -->
     <div v-if="!submitstatus">
-      <table v-show="reservation.stepThree">
+      <table v-show="reservation.step == 3">
         <tr>
           <td colspan="2">
             <h2>Kontaktdaten</h2>
@@ -178,7 +178,7 @@
         </tr>
         <tr class="submit">
           <td class="sized">
-            <input type="submit" value="Zurück" class="btn" v-on:click="onBackTwo" />
+            <input type="submit" value="Zurück" class="btn" v-on:click="onBack" />
           </td>
           <td class="sized">
             <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
@@ -244,9 +244,7 @@ export default {
         date: "",
         phonenumber: "",
         submitted: false,
-        stepOne: true,
-        stepTwo: false,
-        stepThree: false
+        step: 1
       },
       inputTwo: false,
       inputThree: false,
@@ -264,15 +262,17 @@ export default {
     getFreeTables() {
       return this.$store.getters.freeTables;
     },
-    stepTwo() {
-      return this.reservation.stepTwo;
+    step() {
+      return this.reservation.step == 2;
     }
   },
   watch: {
-    stepTwo(newValue, oldValue) {
-      this.$refs.tableOne.onFreeTablesReload();
-      if(this.$refs.tableTwo !== undefined) this.$refs.tableTwo.onFreeTablesReload();
-      if(this.$refs.tableThree !== undefined) this.$refs.tableThree.onFreeTablesReload();
+    step(newValue, oldValue) {
+      if(newValue === 2 && oldValue === 1) {
+        this.$refs.tableOne.onFreeTablesReload();
+        if(this.$refs.tableTwo !== undefined) this.$refs.tableTwo.onFreeTablesReload();
+        if(this.$refs.tableThree !== undefined) this.$refs.tableThree.onFreeTablesReload();
+      }
     }
   },
   methods: {
@@ -342,8 +342,7 @@ export default {
       ) {
         this.$store.commit("setError", "Zu wenig Tische für alle Gäste ausgewählt!");
       } else {
-        this.reservation.stepTwo = false;
-        this.reservation.stepThree = true;
+        this.reservation.step++;
 
         this.$store.commit("setError", "");
         this.reservation.tables = [];
@@ -357,16 +356,11 @@ export default {
 
     // Back-Buttons
 
-    onBackOne() {
+    onBack() {
       this.$store.commit("setError", "");
-      this.reservation.stepTwo = false;
-      this.reservation.stepOne = true;
+      this.reservation.step--;
     },
-    onBackTwo() {
-      this.$store.commit("setError", "");
-      this.reservation.stepTwo = true;
-      this.reservation.stepThree = false;
-    },
+
 
     // Switch number of Inputs (Step 2)
 
