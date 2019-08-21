@@ -30,7 +30,7 @@ function exportCSV() {
     
     $daten = array('Reservierungsnummer', 'von', 'bis', 'Anzahl_Plätze', 'Tische', 'Vorname', 'Nachname', 'E-Mail', 'Telefonnummer');
     
-    $fp = fopen($_SERVER["DOCUMENT_ROOT"].'\plugin\plugin\src\csv\daten.csv', 'w');
+    $fp = fopen(plugin_dir_path( __FILE__ )."\csv\daten.csv", 'w');
 
     fputcsv($fp, $daten);
     
@@ -48,7 +48,7 @@ function exportCSV() {
 function headerHook() {
     echo "in";
 
-    $file = $_SERVER["DOCUMENT_ROOT"].'\plugin\plugin\src\csv\daten.csv';
+    $file = plugin_dir_path( __FILE__ )."\csv\daten.csv";
 
     header("Content-Type: application/csv");
     header("Content-Disposition: attachment; reservationen ".$time.".csv");
