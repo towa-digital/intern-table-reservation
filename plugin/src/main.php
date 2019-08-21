@@ -190,7 +190,12 @@ function rest_saveNewReservation($request) {
 
 
     addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
-    emailToUser($from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
+    
+    register_shutdown_function(function($from, $tables, $numberOfSeats, $firstname, $lastname, $mail) {
+        emailToUser($from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
+        emailToAdmin($from, $tables, $numberOfSeats, $firstname, $lastname);
+    }, $from, $tables, $numberOfSeats, $firstname, $lastname, $mail);
+
 }
 
 ?>
