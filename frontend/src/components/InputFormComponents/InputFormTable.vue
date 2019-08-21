@@ -25,6 +25,11 @@ export default {
     }
   },
   methods: {
+    freeTable() {
+      if(this.selected !== undefined) {
+        this.$store.commit("freeTable", this.selected);
+      }
+    },
     updateValue(event) {
       var selectedId = this.$refs.input.value;
       this.$emit("input", selectedId);

@@ -63,7 +63,7 @@
 
         <tr>
           <td colspan="2">
-            <InputFormTable v-model="reservation.tableOne" />
+            <InputFormTable ref="tableOne" v-model="reservation.tableOne" />
           </td>
         </tr>
 
@@ -71,7 +71,7 @@
 
         <tr>
           <td colspan="2" v-if="inputTwo">
-            <InputFormTable v-model="reservation.tableTwo" />
+            <InputFormTable ref="tableTwo" v-model="reservation.tableTwo" />
           </td>
         </tr>
 
@@ -79,7 +79,7 @@
 
         <tr>
           <td colspan="2" v-if="inputThree">
-            <InputFormTable v-model="reservation.tableThree" />
+            <InputFormTable ref="tableThree" v-model="reservation.tableThree" />
           </td>
         </tr>
 
@@ -367,6 +367,9 @@ export default {
     removeInput() {
       this.inputTwo = false;
       this.InputThree = false;
+
+      this.$refs.tableTwo.freeTable();
+      this.$refs.tableThree.freeTable();
     },
     addInputThree() {
       this.inputTwo = true;
