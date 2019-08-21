@@ -39,3 +39,15 @@ function removeTimePicker(button) {
     timePickerParent.removeChild(parent);
 
 }
+
+function addHolidayPicker() {
+    var elemCounter = $("#holidayParent div").length;
+    var toAppend = "";
+    toAppend += "<div class='timePickerParent' id='holidayPicker_"+elemCounter+"'>";
+    toAppend += "<input type='date' name='holidays["+elemCounter+"][from]' />";
+    toAppend += "<input type='date' name='holidays["+elemCounter+"][to]' />";
+    toAppend += '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+    toAppend += "</div>";
+
+    $("#holidayParent").append(toAppend);
+}

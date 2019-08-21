@@ -142,9 +142,10 @@ function rest_getTimeSlots($request) {
     date_default_timezone_set(get_option('timezone_string'));
 
     $slotsToReturn = array();
+    $holidaysToReturn = array();
 
+    // compute slots to return
     $openingHours = getOpeningHours();
-
     foreach($openingHours as $dayKey => $day) {
         $slotsToReturn[$dayKey] = array();
 
@@ -169,9 +170,25 @@ function rest_getTimeSlots($request) {
             }
         }
     }
+
+    // compute holidays
+    $holidays = getHolidays();
+    foreach($holidays as $h) {
+        $from = $h["from"];
+        $to = $h["to"];
+
+        while($from <= $to) {
+            $holidaysToReturn[] = $from;
+
+            $from += 24 * 60 * 60;
+        }
+    }
     
 
-    return $slotsToReturn;
+    return array(
+        "openingHours" => $slotsToReturn,
+        "holidays" => $holidaysToReturn
+    );
 }
 
 
