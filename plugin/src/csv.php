@@ -3,7 +3,7 @@
 require_once("queryDatabase.php");
 
 function exportCSV() {
-    
+
     $allReservations = getReservations();
 
     $timestamp = time();
@@ -40,17 +40,22 @@ function exportCSV() {
     
     fclose($fp);
 
-    add_action('send_header', 'headerHook');
 
-    
+    // add_action('send_headers', 'headerHook');
+    // $file = plugin_dir_path( __FILE__ )."\csv\daten.csv";
+
+    // readfile($file);
 }
 
+
+
 function headerHook() {
-    echo "in";
+    echo "Dies ist ein test.";
+    throw new Exception("TEst");
 
     $file = plugin_dir_path( __FILE__ )."\csv\daten.csv";
 
-    header("Content-Type: application/csv");
+     header("Content-Type: application/csv");
     header("Content-Disposition: attachment; reservationen ".$time.".csv");
     header('Content-Transfer-Encoding: binary');
     header('Connection: Keep-Alive');
@@ -59,7 +64,7 @@ function headerHook() {
     header('Pragma: public');
     header("Content-Length: ". filesize($file));
 
-    readfile($file);
+    
 }
 
 

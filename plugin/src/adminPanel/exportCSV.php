@@ -16,6 +16,7 @@ function show_exportCSV() {
         exportCSV();
     }
 
+    echo __DIR__ .'/../csv/daten.csv';
 
 ?>
 
@@ -25,8 +26,11 @@ function show_exportCSV() {
     </td></tr>
     <tr><td>
         <form method="post">
-            <input name="isClicked" type="submit" class="btn" value="Exportieren"  />
+            <input name="isClicked" type="submit" class="btn" value="neue Liste erstellen"  />
         </form>
+    </td></tr>
+    <tr><td>
+        <h4><a href="<?php echo __DIR__ .'\..\csv\daten.csv' ?>" download="Reservationsliste">Ihr Downloadlink</a></h4>
     </td></tr>
 </table>
 
