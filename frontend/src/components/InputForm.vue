@@ -262,7 +262,7 @@ export default {
       return this.$store.getters.freeTables;
     },
     step() {
-      return this.reservation.step == 2;
+      return this.reservation.step;
     }
   },
   watch: {
