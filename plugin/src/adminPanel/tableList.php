@@ -32,11 +32,12 @@ function show_tableList()
             $title = $_POST["title"];
             $isOutside = $_POST["isOutside"] === null ? false : true;
             $numberOfSeats = $_POST["numberOfSeats"];
+            $isDisabled = $_POST["isDisabled"] === null ? false : true;
 
 
-            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $id);
+            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled, $id);
             if ($errorMsg === null) {
-                addTable($title, $isOutside, $numberOfSeats, $id);
+                addTable($title, $isOutside, $numberOfSeats, $isDisabled , $id);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -50,8 +51,9 @@ function show_tableList()
         <table class="content">
             <tr id="head">
                 <th style="width: 40%">Titel</th>
-                <th style="width: 25%">ist draußen?</th>
-                <th style="width: 25%">Platzanzahl</th>
+                <th style="width: 16.6%">ist draußen?</th>
+                <th style="width: 16.6%">Platzanzahl</th>
+                <th style="width: 16.6%">nicht reservierbar?</th>
                 <th style="width: 10%"></th>
             </tr>
             <?php
@@ -61,6 +63,7 @@ function show_tableList()
         echo '<td class="m_title">'.$r["title"].'</td>';
         echo '<td class="m_isOutside">'.($r["isOutside"] ? "ja" : "nein").'</td>';
         echo '<td class="m_numberOfSeats">'.$r["seats"].'</td>';
+        echo '<td class="m_isDisabled">'.($r["isDisabled"] ? "ja" : "nein").'</td>';
 
         echo '<td><button type="submit" name="tableToDelete" class="edit" id="deleteBtn_'.$r["id"].'" value="'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
 

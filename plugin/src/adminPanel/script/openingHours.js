@@ -45,6 +45,7 @@ function addHolidayPicker() {
     var toAppend = "";
     toAppend += "<div class='timePickerParent' id='holidayPicker_"+elemCounter+"'>";
     toAppend += "<input type='date' name='holidays["+elemCounter+"][from]' />";
+    toAppend += '<span> - </span>';
     toAppend += "<input type='date' name='holidays["+elemCounter+"][to]' />";
     toAppend += '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
     toAppend += "</div>";

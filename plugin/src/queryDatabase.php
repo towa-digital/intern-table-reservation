@@ -8,6 +8,7 @@
      * - title: Bezeichnung des Tisches
      * - isOutside: boolescher Wahrheitswert, welcher true entspricht, wenn sich der Tisch im Außenbereich befindet
      * - seats: Anzahl der Sitzplätze am Tisch
+     * - isDisabled: boolescher Wahrheitswert, welcher true entspricht, wenn der Tisch nicht reserviert werden kann
      */
     function getTables()
     {
@@ -28,6 +29,7 @@
                 "title" => get_the_title(),
                 "isOutside" => get_field("isOutside"),
                 "seats" => get_field("seats"),
+                "isDisabled" => get_field("isDisabled")
             ]);
         }
 
@@ -91,6 +93,7 @@
      * - title: Bezeichnung des Tisches
      * - isOutside: boolescher Wahrheitswert, welcher true entspricht, wenn sich der Tisch im Außenbereich befindet
      * - seats: Anzahl der Sitzplätze am Tisch
+     * - isDisabled: boolescher Wahrheitswert, welcher true entspricht, wenn der Tisch nicht reserviert werden kann
      *
      * Im Fehlerfall (wenn die ID nicht einem Tisch zugeordnet ist oder nicht existiert) wird null zurückgegeben.
      */
@@ -105,6 +108,7 @@
             "title" => get_the_title($id),
             "isOutside" => get_field("isOutside", $id),
             "seats" => get_field("seats", $id),
+            "isDisabled" => get_field("isDisabled", $id)
         ];
     }
 
@@ -204,12 +208,13 @@
      * - title: Bezeichnung des Tischs
      * - isOutside: true, wenn sich der Tisch im Außenbereich befindet
      * - numberOfSeats: Anzahl der Sitzplätze am Tisch
+     * - isDisabled: true, wenn der Tisch nicht reserviert werden kann
      * - tableToUpdate: optionaler Parameter, kann angegeben werden, wenn kein neuer Tisch erstellt werden soll, sondern ein bestehender aktualisiert werden soll. Falls die ID angegeben wrid, aber keinem Tisch
      *   zugeordnet ist, wird eine Exception geworfen.
      *
      * Gibt die ID des erstellten/aktualisierten Tisches zurück.
      */
-    function addTable(string $title, bool $isOutside, int $numberOfSeats, int $tableToUpdate = 0)
+    function addTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $tableToUpdate = 0)
     {
         if ($tableToUpdate !== 0 && get_post_type($tableToUpdate) != "tables") {
             throw new Exception("tableToUpdate ist keinem Tisch zugeordnet");
@@ -225,13 +230,15 @@
 
         update_field("isOutside", $isOutside, $id);
         update_field("seats", $numberOfSeats, $id);
-
+        update_field("isDisabled", $isDisabled, $id);
 
         return $id;
     }
 
     /**
-     * Prüft, ob der übergebene Tisch frei ist und gibt true zurück, wenn dies der Fall ist.
+     * Prüft, ob der übergebene Tisch frei ist und gibt true zurück, wenn dies der Fall ist. Nicht beachtet wird hierbei, ob isDisabled beim
+     * Tisch gesetzt ist.
+     * 
      * - tableId: ID des Tisches, welcher geprüft werden soll. Falls diese ID nicht einem Tisch zugeordnet ist, wird eine Exception geworfen.
      * - startTime: gewünschter Startzeitpunkt als UNIX-Timestamp
      * - endTime: gewünschter Endzeitpunkt als UNIX-Timestamp
@@ -273,7 +280,8 @@
     }
 
     /**
-     * Gibt wie getTables() ein Array aus allen Tischen zurück, allerdings werden alle Tische gefiltert, welche in der gewünschten Zeitspanne nicht frei sind.
+     * Gibt wie getTables() ein Array aus allen Tischen zurück, allerdings werden alle Tische gefiltert, welche in der gewünschten Zeitspanne nicht frei sind. 
+     * Ferner werden alle Tische gefiltert, welche nicht reservierbar sind.
      */
     function getFreeTables($startTime, $endTime, $reservationId = 0)
     {
@@ -287,7 +295,7 @@
 
         // falls der Tisch frei ist, wird er ins Array mit den verfügbaren Tischen aufgenommen
         foreach ($allTables as $elemKey => $table) {
-            if (isTableFree($table["id"], $startTime, $endTime, $allReservations, $reservationId)) {
+            if (isTableFree($table["id"], $startTime, $endTime, $allReservations, $reservationId) && ! getTableById($table["id"])["isDisabled"]) {
                 $freeTables[] = $allTables[$elemKey];
             }
         }

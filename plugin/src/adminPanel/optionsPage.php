@@ -163,6 +163,7 @@ function show_optionsPage()
     foreach ($holidays as $slotKey => $slot) {
         echo "<div class='timePickerParent' id='holidayPicker_$slotKey'>";
         echo "<input type='date' name='holidays[$slotKey][from]' value='".date("Y-m-d", $slot["from"])."' />";
+        echo '<span> - </span>';
         echo "<input type='date' name='holidays[$slotKey][to]' value='".date("Y-m-d", $slot["to"])."' />";
         echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
         echo "</div>";

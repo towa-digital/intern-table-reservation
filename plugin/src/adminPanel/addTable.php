@@ -36,10 +36,11 @@ function show_addTable()
             $title = $_POST["title"];
             $isOutside = $_POST["isOutside"] === null ? false : true;
             $numberOfSeats = $_POST["numberOfSeats"];
+            $isDisabled = $_POST["isDisabled"] === null ? false : true;
 
-            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats);
+            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled);
             if ($errorMsg === null) {
-                addTable($title, $isOutside, $numberOfSeats);
+                addTable($title, $isOutside, $numberOfSeats, $isDisabled);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -65,7 +66,9 @@ function show_addTable()
                     <h3 class="inline">Anzahl Sitzplätze</h3><span class="required">*</span>
                     <input type="number" name="numberOfSeats" />
                 </td></tr>
-                    
+                <tr><td>
+                    <input type="checkbox" name="isDisabled" id="isDisabled" /><label for="isDisabled">Tisch nicht reservierbar</label>
+                </td></tr>
             </table>   
         </div>
         <table class="data" id="publish">

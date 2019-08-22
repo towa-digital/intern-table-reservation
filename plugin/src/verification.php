@@ -2,7 +2,7 @@
 require_once("options.php");
 
 
-function verifyTable(string $title, bool $isOutside, int $numberOfSeats, int $id = 0)
+function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $id = 0)
 {
     // falls id übergeben, stelle sicher dass ID ein Tisch ist
     if ($id !== 0 && get_post_type($id) != "tables") {
@@ -130,13 +130,20 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
      * Ferner müssen wir ausschließen, dass eine Reservierung für zwei Personen z.B. zwei Tische mit zwei und einem
      * Platz umfasst, da am zweiten Tisch dann keine Person sitzen würde.
      */
+    /**
+     * Weiters prüft diese Schleife, ob mindestens ein Tisch nicht reserviert werden kann.
+     */
+    $cannotReserveTable = false;
+
     $tooManyTablesForPersons_error = false;
     $tooMuchTablesForPersons_flag = false;
     $availableSeats = 0;
     foreach($tables as $t) {
         if($tooMuchTablesForPersons_flag) $tooManyTablesForPersons_error = true;
 
-        $availableSeats += getTableById($t)["seats"];
+        $tableById = getTableById($t);
+        $availableSeats += $tableById["seats"];
+        $cannotReserveTable |= $tableById["isDisabled"];
 
         if($availableSeats >= $numberOfSeats) $tooMuchTablesForPersons_flag = true;
     }
