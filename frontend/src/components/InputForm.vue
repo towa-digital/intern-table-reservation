@@ -34,7 +34,7 @@ export default {
     StepThree,
     StepFour,
   },
-  props: ['reservations'],
+  // props: ['reservations'],
 };
 </script>
 

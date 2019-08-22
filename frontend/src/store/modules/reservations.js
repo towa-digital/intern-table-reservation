@@ -58,7 +58,6 @@ const actions = {
   // Get all Tables from API
 
   fetchTables: ({ commit }, time) => {
-    console.log(time)
     state.waitingForAjaxResponse = true;
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats
     )
