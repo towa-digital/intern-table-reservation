@@ -4,9 +4,7 @@ const state = {
   error: {
     errormessage: '',
   },
-  submitted: {
-    submitstatus: false
-  },
+  step: 1,
   waitingForAjaxResponse: false,
   freeTables: [],
   allTables: [],
@@ -15,8 +13,8 @@ const state = {
 }
 
 const getters = {
+  step: state => state.step,
   errormessage: state => state.error.errormessage,
-  submitstatus: state => state.submitted.submitstatus,
   waitingForAjaxResponse: state => state.waitingForAjaxResponse,
   allTables: state => state.allTables,
   freeTables: state => state.freeTables,
@@ -44,7 +42,7 @@ const actions = {
       )
       .then(() => {
         state.waitingForAjaxResponse = false;
-        commit("reservationAccepted")
+        commit("incrementStepCounter");
 
       })
       .catch(error => {
@@ -61,11 +59,13 @@ const actions = {
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;
+
         commit('setTables', response.data)
-        reservation.reservation.step++;
+        commit("incrementStepCounter");
       })
       .catch(error => {
         state.waitingForAjaxResponse = false;
+
         commit('reservationDenied', error.response.data.message)
       })
   },
@@ -85,6 +85,12 @@ const actions = {
 
 
 const mutations = {
+  incrementStepCounter: (state) => {
+    state.step++;
+  },
+  decrementStepCounter: (state) => {
+    state.step--;
+  },
   onTimeSlotLoad: (state, data) => {
     state.timeSlots = data.openingHours;
 
@@ -95,9 +101,6 @@ const mutations = {
   },
   reservationDenied: (state, data) => {
     state.error.errormessage = data;
-  },
-  reservationAccepted: (state) => {
-    state.submitted.submitstatus = true;
   },
   setTables: (state, tables) => {
     state.allTables = JSON.parse(JSON.stringify(tables));
