@@ -18,6 +18,7 @@ function edit(id) {
         innerHTML: document.getElementById("row_"+id).innerHTML
     };
 
+    $(".sortButton").addClass("hidden");
     document.getElementById("editBtn_"+id).classList.add("hidden");
     document.getElementById("deleteBtn_"+id).classList.add("hidden");
 	document.getElementById("saveBtn_"+id).classList.remove("hidden");
@@ -34,6 +35,7 @@ function cancelEdit() {
 
     var id = activeEdit["id"];
 
+    $(".sortButton").removeClass("hidden");
     document.getElementById("editBtn_"+id).classList.remove("hidden");
     document.getElementById("deleteBtn_"+id).classList.remove("hidden");
 	document.getElementById("saveBtn_"+id).classList.add("hidden");

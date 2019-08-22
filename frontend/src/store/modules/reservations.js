@@ -7,6 +7,7 @@ const state = {
   submitted: {
     submitstatus: false
   },
+  waitingForAjaxResponse: false,
   freeTables: [],
   allTables: [],
   timeSlots: [],
@@ -16,6 +17,7 @@ const state = {
 const getters = {
   errormessage: state => state.error.errormessage,
   submitstatus: state => state.submitted.submitstatus,
+  waitingForAjaxResponse: state => state.waitingForAjaxResponse,
   allTables: state => state.allTables,
   freeTables: state => state.freeTables,
   timeSlots: state => state.timeSlots,
@@ -27,8 +29,8 @@ const actions = {
   //Post new Reservation to API
 
   addReservation: ({ commit }, reservation) => {
-    axios
-      .post(
+    state.waitingForAjaxResponse = true;
+    axios.post(
         "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
         {
           from: reservation.reservation.from,
@@ -41,10 +43,12 @@ const actions = {
         }
       )
       .then(() => {
+        state.waitingForAjaxResponse = false;
         commit("reservationAccepted")
 
       })
       .catch(error => {
+        state.waitingForAjaxResponse = false;
         commit('reservationDenied', error.response.data.message)
       })
   },
@@ -52,21 +56,27 @@ const actions = {
   // Get all Tables from API
 
   fetchTables: ({ commit }, reservation) => {
+    state.waitingForAjaxResponse = true;
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + reservation.reservation.from + '/' + reservation.reservation.numberOfSeats
     )
       .then((response) => {
+        state.waitingForAjaxResponse = false;
         commit('setTables', response.data)
         reservation.reservation.step++;
       })
       .catch(error => {
+        state.waitingForAjaxResponse = false;
         commit('reservationDenied', error.response.data.message)
       })
   },
   getTimeSlots: ({ commit }, reservation) => {
+    state.waitingForAjaxResponse = true;
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
     .then((response) => {
+      state.waitingForAjaxResponse = false;
       commit("onTimeSlotLoad", response.data);
     }).catch(error => {
+      state.waitingForAjaxResponse = false;
       commit('reservationDenied', error.response.data.message)
     });
   },

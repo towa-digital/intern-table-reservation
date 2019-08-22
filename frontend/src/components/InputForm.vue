@@ -33,7 +33,7 @@
         </tr>
         <tr class="submit">
           <td colspan="2">
-            <input type="submit" value="Tisch finden" class="btn" v-on:click="onFindTable" />
+            <input type="submit" value="Tisch finden" class="btn" v-on:click="onFindTable" :disabled="waitingForAjaxResponse" />
           </td>
         </tr>
         <tr>
@@ -169,7 +169,7 @@
           </td>
         </tr>
         <tr>
-          <td class="text">E-Mail<a>*</a></td>
+          <td class="text">E-Mail <a>*</a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -178,10 +178,15 @@
         </tr>
         <tr class="submit">
           <td class="sized">
-            <input type="submit" value="Zurück" class="btn" v-on:click="onBack" />
+            <input type="submit" value="Zurück" class="btn" v-on:click="onBack" :disabled="waitingForAjaxResponse"/>
           </td>
           <td class="sized">
-            <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" />
+            <input type="submit" value="Fertigstellen" class="btn" v-on:click="onSubmit" :disabled="waitingForAjaxResponse"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <!--<div class="g-recaptcha" data-sitekey="6LeETbQUAAAAAA9y89Ol2QQRqcTV3GbbCX5ASLSM"></div>-->
           </td>
         </tr>
         <tr v-if="errormessage != ''">
@@ -245,11 +250,11 @@ export default {
       },
       inputTwo: false,
       inputThree: false,
-      tablesNumberOfSeats: []
+      tablesNumberOfSeats: [],
     };
   },
   computed: {
-    ...mapGetters(["errormessage", "submitstatus"]),
+    ...mapGetters(["errormessage", "submitstatus", "waitingForAjaxResponse"]),
     getAllTables() {
       return this.$store.getters.allTables
     },
@@ -269,12 +274,17 @@ export default {
       }
     }
   },
+  mounted() {
+    let recaptchaScript = document.createElement('script')
+    recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js')
+    document.head.appendChild(recaptchaScript)
+  },
   methods: {
     ...mapActions(["addReservation"]),
     ...mapActions(["fetchTables"]),
     onSubmit(e) {
       e.preventDefault();
-
+      console.log(document.getElementsByName("g-recaptcha-response"));
       // Check if there is a Input (Step 3)
 
       if (
@@ -470,6 +480,27 @@ a {
 
 .sized {
   width: 50%;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
 

@@ -20,6 +20,10 @@ function show_tableList()
     wp_enqueue_script("quickEdit_script", plugins_url("script/quickEdit.js", __FILE__));
     wp_enqueue_script("quickEdit_tableList_script", plugins_url("script/quickEdit_tableList.js", __FILE__));
 
+    // Sortierfuntion
+    wp_enqueue_script("sort_script", plugins_url("script/sort.js", __FILE__));
+
+
     if (isset($_POST["tableToDelete"])) {
         deleteTable($_POST["tableToDelete"]);
     }
@@ -50,16 +54,32 @@ function show_tableList()
     <form method="post">
         <table class="content">
             <tr id="head">
-                <th style="width: 40%">Titel</th>
-                <th style="width: 16.6%">ist draußen?</th>
-                <th style="width: 16.6%">Platzanzahl</th>
-                <th style="width: 16.6%">nicht reservierbar?</th>
+                <th style="width: 40%" id="m_title">
+                    Titel
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                </th>
+                <th style="width: 16.6%" id="m_isOutside">
+                    ist draußen?
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                </th>
+                <th style="width: 16.6%" id="m_numberOfSeats">
+                    Platzanzahl
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                </th>
+                <th style="width: 16.6%" id="m_isDisabled">
+                    nicht reservierbar?
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                </th>
                 <th style="width: 10%"></th>
             </tr>
             <?php
                 $allTables = getTables();
     foreach ($allTables as $r) {
-        echo '<tr id="row_'.$r["id"].'">';
+        echo '<tr class="toSort" id="row_'.$r["id"].'">';
         echo '<td class="m_title">'.$r["title"].'</td>';
         echo '<td class="m_isOutside">'.($r["isOutside"] ? "ja" : "nein").'</td>';
         echo '<td class="m_numberOfSeats">'.$r["seats"].'</td>';

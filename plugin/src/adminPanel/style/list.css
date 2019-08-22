@@ -53,6 +53,18 @@ td, th {
     padding-left: 5px;
 }
 
+.sortButton {
+    background: none;
+    border: none;
+    border-radius: 2px;
+    color: white;
+}
+
+.sortButton:hover {
+    background: #e15b64;
+
+}
+
 @media print {
     #adminmenuwrap, #adminmenuback, #wpfooter, button, input, a , .tabLinkContainer{
         display: none;

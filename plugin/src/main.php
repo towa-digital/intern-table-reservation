@@ -67,10 +67,10 @@ function loadAvailableTables()
 
     global $wpdb;
 
-    
-    $startTime = $_POST['from'];
-    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (getDefaultReservationDuration() * 60) : localStringToUTCTimestamp($_POST['to']);
+    $startTime = strtotime($_POST['from']);
+    $endTime = ($_POST["useDefaultEndTime"]) ? $startTime + (getDefaultReservationDuration() * 60) : strtotime($_POST['to']);
     $reservationId = $_POST["reservationId"];
+
 
     echo json_encode(getFreeTables($startTime, $endTime, $reservationId));
     wp_die(); // this is required to terminate immediately and return a proper response

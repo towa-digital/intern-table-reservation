@@ -31,6 +31,8 @@ function show_reservationList()
     wp_enqueue_script("loadAvailableTables_script", plugins_url("script/loadAvailableTables.js", __FILE__));
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 
+    // Sortierfuntion
+    wp_enqueue_script("sort_script", plugins_url("script/sort.js", __FILE__));
 
     if (isset($_POST["reservationToDelete"])) {
         deleteReservation($_POST["reservationToDelete"]);
@@ -109,14 +111,44 @@ function show_reservationList()
         <form method="post">
             <table class="content">
                 <tr id="head">
-                    <th style="width: 15%; max-width: 15%">Tische</th>
-                    <th style="width: 7%">von</th>
-                    <th style="width: 7%">bis</th>
-                    <th style="width: 7%">Anzahl Plätze</th>
-                    <th style="width: 14.5%">Vorname</th>
-                    <th style="width: 14.5%">Nachname</th>
-                    <th style="width: 14.5%">E-Mail</th>
-                    <th style="width: 14.5%">Telefonnummer</th>
+                    <th style="width: 15%; max-width: 15%" id="m_tables">
+                        Tische
+                    </th>
+                    <th style="width: 7%" id="m_from">
+                        von
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 7%" id="m_to">
+                        bis
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 7%" id="m_numberOfSeats">
+                        Anzahl Plätze
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 14.5%" id="m_firstname">
+                        Vorname
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 14.5%" id="m_lastname">
+                        Nachname
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 14.5%" id="m_mail">
+                        E-Mail
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
+                    <th style="width: 14.5%" id="m_phonenumber">
+                        Telefonnummer
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    </th>
                     <th style="width: 6%"></th>
                 </tr>
                 <?php
@@ -126,7 +158,7 @@ function show_reservationList()
             continue;
         }
 
-        echo '<tr id="row_'.$r["id"].'">';
+        echo '<tr class="toSort" id="row_'.$r["id"].'">';
             
         echo '<td class="m_tables">';
         for ($c = 0; $c < count($r["tableIds"]); $c++) {
