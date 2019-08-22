@@ -144,43 +144,6 @@ Ein normaler HTML-DateTimePicker hat leider den Nachteil, dass er weder in Safar
 
 Das Feld "display" entspricht dem Zeitstempel als String, welcher dem Benutzer angezeigt werden kann.
 
-<<<<<<< HEAD
-    [
-    	[	// Montag
-    		{
-    			display: [string],
-    		}, ...
-    	],
-    	[	// Dienstag
-    		...
-    	],
-    	[	// Mittwoch
-    		...
-    	],
-    	[	// Donnerstag
-    		...
-    	],
-    	[	// Freitag
-    		...
-    	],
-    	[	// Samstag
-    		...
-    	],
-    	[	// Sonntag
-    		...
-    	],
-    ]
-
-Beispiel:
-
-    [
-    	{
-    		display: "00:05",
-    		timestamp: 300
-    	}
-    	, ...
-    ]
-=======
     {
 		openingHours: [
 			[	// Montag
@@ -213,4 +176,3 @@ Beispiel:
 			// es handelt sich um einen beliebige Unix-Timestamps am jeweiligen Tag
 		]
 	}
->>>>>>> 928173861f3ed1ef049cb72028373368bde2ce4f
