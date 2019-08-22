@@ -42,6 +42,21 @@ export default {
     };
   },
   methods: {
+    isInHoliday(dateObject) {
+      for(var d of this.$store.getters.holidays) {
+
+        console.log(d.getFullYear() + " " + dateObject.getFullYear());
+        console.log(d.getMonth() + " " + dateObject.getMonth());
+
+        if(d.getFullYear() == dateObject.getFullYear() &&
+            d.getMonth() == dateObject.getMonth() &&
+            d.getDate() == dateObject.getDate()) {
+          return true;
+        }
+      }
+
+      return false;
+    },
     getWeekday(dateObject) {
         const weekdays = [6, 0, 1, 2, 3, 4, 5];
         return weekdays[dateObject.getDay()];
@@ -57,10 +72,12 @@ export default {
       const val = this.$refs.date.value;
       this.dateFieldValue = val;
 
-      if (this.$refs.date.value === "") {
+      var date = new Date(val);
+
+      if (this.$refs.date.value === "" || this.isInHoliday(date)) {
         this.timeSlotsForCurrentWeekday = [];
       } else {
-        this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[this.getWeekday(new Date(val))];
+        this.timeSlotsForCurrentWeekday = this.$store.getters.timeSlots[this.getWeekday(date)];
       }
 
       if(this.timeSlotsForCurrentWeekday.length == 0) {
@@ -83,7 +100,13 @@ export default {
   mounted() {
     // as soon as the opening hours have been loaded, load the one for the current weekday into timeSlotsForCurrentWeekday
     this.$store.watch((state, getters) => getters.timeSlots, (newValue) => {
-        this.timeSlotsForCurrentWeekday = newValue[this.getWeekday(new Date())];
+        var date = new Date();
+
+        if(this.isInHoliday(date)) {
+          this.timeSlotsForCurrentWeekday = [];
+        } else {
+          this.timeSlotsForCurrentWeekday = newValue[this.getWeekday(date)];
+        }
          
     })
   },

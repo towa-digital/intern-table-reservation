@@ -3,7 +3,7 @@
 function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         $maxUnusedSeatsPerReservation, $canReservateInMinutes, $tooManyPersonsError,
         $noFreeTablesError, $userConfirmationMail, $adminConfirmationMail,
-        $adminAddress, $openingHours) {
+        $adminAddress, $openingHours, $holidays) {
 
     // $tooManyPersonsError = nl2br($tooManyPersonsError);
     // $userConfirmationMail = nl2br($userConfirmationMail);
@@ -63,6 +63,22 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
         }
     }
 
+    if($holidays === null) $holidays = array();
+
+    foreach($holidays as $holidayKey => $holidaySlot) {
+        $from = strtotime($holidaySlot["from"]);
+        $to = strtotime($holidaySlot["to"]);
+
+        if($from === false || $to === false) {
+            return "Bitte gib gültige Beginn- und Endzeiten an.";
+        }
+        if($from > $to) {
+            return "Das Beginndatum des Urlaubs muss vor dem Enddatum liegen";
+        }
+
+        $holidays[$holidayKey]["from"] = $from;
+        $holidays[$holidayKey]["to"] = $to;
+    }
 
 
     storeImpl("defaultReservationDuration", $defaultReservationDuration);
@@ -76,6 +92,7 @@ function storeOptions($defaultReservationDuration, $maxAmountOfPersons,
     storeImpl("userConfirmationMail", $userConfirmationMail);
     storeImpl("adminAddress", $adminAddress);
     storeImpl("openingHours", json_encode($openingHours));
+    storeImpl("holidays", json_encode($holidays));
 
     return null;
 }
@@ -146,6 +163,11 @@ function getOpeningHours() {
     }
 }
 
+function getHolidays() {
+    $r = getImpl("holidays");
+    return ($r === null) ? array() : json_decode($r, true);
+}
+
 function getOpeningHoursOnWeekday(int $timestamp) {
     // wir benötigen den Tag in der lokalen Zeitzone
     $weekday = date("w", $timestamp);
@@ -165,6 +187,24 @@ function getOpeningHoursOnWeekday(int $timestamp) {
  * innerhalb der Öffnungszeiten liegt. 
  */
 function isOpen($timestamp) {
+    // check if the timestamp is in the holidays
+    $holidays = getHolidays();
+    foreach($holidays as $h) {
+        $from = $h["from"];
+        $to = $h["to"];
+
+        while($from <= $to) {
+            // check
+            if(date("d", $timestamp) == date("d", $from) &&
+                    date("m", $timestamp) == date("m", $from) &&
+                    date("Y", $timestamp) == date("Y", $from)) {
+                return false;
+            }
+
+            $from += 24 * 60 * 60;
+        }
+    }
+
     $openingHours = getOpeningHoursOnWeekday($timestamp);
 
     // in UTC, von 0 bis 86400

@@ -9,7 +9,8 @@ const state = {
   },
   freeTables: [],
   allTables: [],
-  timeSlots: []
+  timeSlots: [],
+  holidays: []
 }
 
 const getters = {
@@ -17,7 +18,8 @@ const getters = {
   submitstatus: state => state.submitted.submitstatus,
   allTables: state => state.allTables,
   freeTables: state => state.freeTables,
-  timeSlots: state => state.timeSlots
+  timeSlots: state => state.timeSlots,
+  holidays: state => state.holidays,
 }
 
 const actions = {
@@ -65,7 +67,7 @@ const actions = {
     .then((response) => {
       commit("onTimeSlotLoad", response.data);
     }).catch(error => {
-        commit('reservationDenied', error.response.data.message)
+      commit('reservationDenied', error.response.data.message)
     });
   },
 
@@ -74,7 +76,12 @@ const actions = {
 
 const mutations = {
   onTimeSlotLoad: (state, data) => {
-    state.timeSlots = data;
+    state.timeSlots = data.openingHours;
+
+    state.holidays = [];
+    for(var h of data.holidays) {
+      state.holidays.push(new Date(h * 1000));
+    }
   },
   reservationDenied: (state, data) => {
     state.error.errormessage = data;

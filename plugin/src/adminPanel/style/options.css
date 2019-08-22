@@ -5,10 +5,11 @@
 
 .timePickerParent input {
     margin-left: 0;
+    width: 40% !important;
+
 }
 
 #openingHours input {
-    width: 40%;
 }
 
 .longtext {

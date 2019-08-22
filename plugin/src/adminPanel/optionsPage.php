@@ -57,7 +57,7 @@ function show_optionsPage() {
 
     if($isset) {
         if(! $empty) {
-            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"]);
+            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
@@ -144,7 +144,7 @@ function show_optionsPage() {
                             echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
                             echo '<span> - </span>';
                             echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
-                            echo '<button type="button" class="edit inline" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+                            echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
                             echo '</div>';
                         }
                         echo '</div>';
@@ -152,6 +152,30 @@ function show_optionsPage() {
                     }
 
                 ?>
+            </table>
+            <table id="holidays" class="data formData">
+                <tr><td>
+                    <h2>Urlaube</h2>
+                </td></tr>
+                <tr><td>
+                    <div id="holidayParent">
+                    <?php                        
+                        $holidays = getHolidays();
+
+                        foreach($holidays as $slotKey => $slot) {
+                            echo "<div class='timePickerParent' id='holidayPicker_$slotKey'>";
+                            echo "<input type='date' name='holidays[$slotKey][from]' value='".date("Y-m-d", $slot["from"])."' />";
+                            echo "<input type='date' name='holidays[$slotKey][to]' value='".date("Y-m-d", $slot["to"])."' />";
+                            echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+                            echo "</div>";
+                        }
+
+                    ?>
+                    </div>
+                </td></tr>
+                <tr><td>
+                    <button type='button' class='edit addBtn' onclick='addHolidayPicker()'><i class='fa fa-plus'></i></button>
+                </td></tr>
             </table>
         </div>
         <table class="data" id="publish">
