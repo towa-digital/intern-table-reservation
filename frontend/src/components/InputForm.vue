@@ -2,7 +2,7 @@
   <div class="wrapper">
     <!-- Step 1 -->
 
-    <div v-show="reservation.step == 1">
+    <div v-show="step == 1">
       <table>
         <tr>
           <td colspan="2">
@@ -49,7 +49,7 @@
     <!--Step 2 -->
 
     <div>
-      <table v-show="reservation.step == 2">
+      <table v-show="step == 2">
         <tr>
           <td colspan="2">
             <h2>
@@ -132,8 +132,8 @@
     </div>
 
     <!-- Step 3 -->
-    <div v-if="!submitstatus">
-      <table v-show="reservation.step == 3">
+    <div>
+      <table v-show="step == 3">
         <tr>
           <td colspan="2">
             <h2>Kontaktdaten</h2>
@@ -201,7 +201,7 @@
 
     <!-- Completed -->
 
-    <div v-if="submitstatus" class="centered">
+    <div v-if="step == 4" class="centered">
       <table>
         <tr>
           <td colspan="2">
@@ -245,8 +245,6 @@ export default {
         mail: "",
         date: "",
         phonenumber: "",
-        submitted: false,
-        step: 1
       },
       inputTwo: false,
       inputThree: false,
@@ -254,16 +252,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["errormessage", "submitstatus", "waitingForAjaxResponse"]),
+    ...mapGetters(["errormessage", "step", "waitingForAjaxResponse"]),
     getAllTables() {
       return this.$store.getters.allTables
     },
     getFreeTables() {
       return this.$store.getters.freeTables;
     },
-    step() {
-      return this.reservation.step;
-    }
+
   },
   watch: {
     step(newValue, oldValue) {
@@ -357,7 +353,7 @@ export default {
       } else if (tooMuchTablesForPersons_error) {
         this.$store.commit("setError", "Du hast zu viele Tische ausgewählt!");
       } else {
-        this.reservation.step++;
+        this.$store.commit("incrementStepCounter");
 
         this.$store.commit("setError", "");
       }
@@ -367,7 +363,7 @@ export default {
 
     onBack() {
       this.$store.commit("setError", "");
-      this.reservation.step--;
+      this.$store.commit("decrementStepCounter");
     },
 
 
