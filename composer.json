@@ -1,5 +1,6 @@
 {
     "name": "nikla/plugin",
+    "description": "Tischverwaltung",
     "authors": [
         {
             "name": "niklas-mischi",
