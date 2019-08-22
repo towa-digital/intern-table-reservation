@@ -9,7 +9,10 @@ const state = {
   freeTables: [],
   allTables: [],
   timeSlots: [],
-  holidays: []
+  holidays: [],
+  StepOne: {},
+  StepTwo: {},
+  StepThree: {}
 }
 
 const getters = {
@@ -20,26 +23,27 @@ const getters = {
   freeTables: state => state.freeTables,
   timeSlots: state => state.timeSlots,
   holidays: state => state.holidays,
+  StepOne: state => state.StepOne
 }
 
 const actions = {
 
   //Post new Reservation to API
 
-  addReservation: ({ commit }, reservation) => {
+  addReservation: ({ commit }) => {
     state.waitingForAjaxResponse = true;
     axios.post(
-        "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
-        {
-          from: reservation.reservation.from,
-          tables: JSON.stringify(reservation.reservation.tables),
-          firstname: reservation.reservation.firstname,
-          lastname: reservation.reservation.lastname,
-          phonenumber: reservation.reservation.phonenumber,
-          mail: reservation.reservation.mail,
-          numberOfSeats: reservation.reservation.numberOfSeats
-        }
-      )
+      "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
+      {
+        from: state.StepOne.from,
+        tables: JSON.stringify(state.StepTwo.tables),
+        firstname: state.StepThree.firstname,
+        lastname: state.StepThree.lastname,
+        phonenumber: state.StepThree.phonenumber,
+        mail: state.StepThree.mail,
+        numberOfSeats: state.StepOne.numberOfSeats
+      }
+    )
       .then(() => {
         state.waitingForAjaxResponse = false;
         commit("incrementStepCounter");
@@ -53,15 +57,16 @@ const actions = {
 
   // Get all Tables from API
 
-  fetchTables: ({ commit }, reservation) => {
+  fetchTables: ({ commit }, time) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + reservation.reservation.from + '/' + reservation.reservation.numberOfSeats
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;
 
         commit('setTables', response.data)
         commit("incrementStepCounter");
+
       })
       .catch(error => {
         state.waitingForAjaxResponse = false;
@@ -69,16 +74,16 @@ const actions = {
         commit('reservationDenied', error.response.data.message)
       })
   },
-  getTimeSlots: ({ commit }, reservation) => {
+  getTimeSlots: ({ commit }) => {
     state.waitingForAjaxResponse = true;
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
-    .then((response) => {
-      state.waitingForAjaxResponse = false;
-      commit("onTimeSlotLoad", response.data);
-    }).catch(error => {
-      state.waitingForAjaxResponse = false;
-      commit('reservationDenied', error.response.data.message)
-    });
+      .then((response) => {
+        state.waitingForAjaxResponse = false;
+        commit("onTimeSlotLoad", response.data);
+      }).catch(error => {
+        state.waitingForAjaxResponse = false;
+        commit('reservationDenied', error.response.data.message)
+      });
   },
 
 }
@@ -95,7 +100,7 @@ const mutations = {
     state.timeSlots = data.openingHours;
 
     state.holidays = [];
-    for(var h of data.holidays) {
+    for (var h of data.holidays) {
       state.holidays.push(new Date(h * 1000));
     }
   },
@@ -108,18 +113,27 @@ const mutations = {
   },
   claimTable: (state, tableObj) => {
     var index = -1;
-    for(var i in state.freeTables) {
+    for (var i in state.freeTables) {
       var elem = state.freeTables[i];
-      if(elem.id == tableObj.id) index = i;
+      if (elem.id == tableObj.id) index = i;
     }
 
-    if(index != -1) state.freeTables.splice(index, 1);
+    if (index != -1) state.freeTables.splice(index, 1);
   },
   freeTable: (state, tableObj) => {
     state.freeTables.push(tableObj);
   },
   setError: (state, errorMsg) => {
     state.error.errormessage = errorMsg;
+  },
+  setStepOne: (state, data) => {
+    state.StepOne = data;
+  },
+  setStepTwo: (state, data) => {
+    state.StepTwo = data;
+  },
+  setStepThree: (state, data) => {
+    state.StepThree = data;
   }
 }
 
