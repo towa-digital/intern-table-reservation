@@ -502,5 +502,11 @@ a {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+input[type="submit"]:disabled {
+  background: #e15b64;
+  border: none;
+  margin-bottom: 0 !important;
+}
 </style>
 
