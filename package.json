@@ -28,11 +28,17 @@
     "vue-resource": "^1.5.1",
     "vuex": "^3.1.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cross-env PRE_COMMIT=true lint-staged"
+    }
+  },
   "devDependencies": {
     "lint-staged": "^9.0.0",
     "markdown-folder-to-html": "^2.2.0",
     "markdownlint": "^0.16.0",
     "markdownlint-cli": "^0.17.0",
-    "prettier": "^1.0.0"
+    "prettier": "^1.0.0",
+    "husky": "^3.0.0"
   }
 }
