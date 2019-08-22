@@ -52,3 +52,15 @@ tr td {
 td, th {
     padding-left: 5px;
 }
+
+@media print {
+    #adminmenuwrap, #adminmenuback, #wpfooter, button, input, a , .tabLinkContainer{
+        display: none;
+    }
+    #wpcontent {
+        margin-left: 0;
+    }
+    button, input {
+        display: none;
+    }
+}

@@ -63,7 +63,7 @@
 
         <tr>
           <td colspan="2">
-            <InputFormTable ref="tableOne" v-model="reservation.tableOne" />
+            <InputFormTable ref="tableOne" v-model="reservation.tables[0]" />
           </td>
         </tr>
 
@@ -71,7 +71,7 @@
 
         <tr>
           <td colspan="2" v-if="inputTwo">
-            <InputFormTable ref="tableTwo" v-model="reservation.tableTwo" />
+            <InputFormTable ref="tableTwo" v-model="reservation.tables[1]" />
           </td>
         </tr>
 
@@ -79,7 +79,7 @@
 
         <tr>
           <td colspan="2" v-if="inputThree">
-            <InputFormTable ref="tableThree" v-model="reservation.tableThree" />
+            <InputFormTable ref="tableThree" v-model="reservation.tables[2]" />
           </td>
         </tr>
 
@@ -234,9 +234,6 @@ export default {
       reservation: {
         from: "",
         numberOfSeats: "",
-        tableOne: "",
-        tableTwo: "",
-        tableThree: "",
         tables: [],
         firstname: "",
         lastname: "",
@@ -248,10 +245,7 @@ export default {
       },
       inputTwo: false,
       inputThree: false,
-      tableOneNumberOfSeats: "",
-      tableTwoNumberOfSeats: "",
-      tableThreeNumberOfSeats: ""
-      // table: this.$store.getters.allTables
+      tablesNumberOfSeats: []
     };
   },
   computed: {
@@ -326,32 +320,36 @@ export default {
       let that = this
 
       this.getAllTables.forEach(function(data) {
-        if (that.reservation.tableOne == data.id) {
-          that.tableOneNumberOfSeats = data.seats;
-        } else if (that.reservation.tableTwo == data.id) {
-          that.tableTwoNumberOfSeats = data.seats;
-        } else if (that.reservation.tableThree == data.id) {
-          that.tableThreeNumberOfSeats = data.seats;
+        if (that.reservation.tables[0] == data.id) {
+          that.tablesNumberOfSeats[0] = data.seats;
+        } else if (that.reservation.tables[1] == data.id) {
+          that.tablesNumberOfSeats[1] = data.seats;
+        } else if (that.reservation.tables[2] == data.id) {
+          that.tablesNumberOfSeats[2] = data.seats;
         }
       });
 
-      if (
-        (this.tableOneNumberOfSeats === "" ? 0 : parseInt(this.tableOneNumberOfSeats)) +
-          (this.tableTwoNumberOfSeats === "" ? 0 : parseInt(this.tableTwoNumberOfSeats)) +
-          (this.tableThreeNumberOfSeats === "" ? 0 : parseInt(this.tableThreeNumberOfSeats))<
-        this.reservation.numberOfSeats
-      ) {
+      var availableSeats = 0;
+      var tooMuchTablesForPersons_error = false;
+      var tooMuchTablesForPersons_flag = false;
+
+      for(var n of this.tablesNumberOfSeats) {
+        if(tooMuchTablesForPersons_flag) tooMuchTablesForPersons_error = true;
+
+          var nosOnTable = (n == "" ? 0 : parseInt(n));
+          availableSeats += nosOnTable;
+
+          if(availableSeats >= this.reservation.numberOfSeats) tooMuchTablesForPersons_flag = true;
+      }
+
+      if (availableSeats < this.reservation.numberOfSeats) {
         this.$store.commit("setError", "Zu wenig Tische für alle Gäste ausgewählt!");
+      } else if (tooMuchTablesForPersons_error) {
+        this.$store.commit("setError", "Du hast zu viele Tische ausgewählt!");
       } else {
         this.reservation.step++;
 
         this.$store.commit("setError", "");
-        this.reservation.tables = [];
-        this.reservation.tables.push(
-          this.reservation.tableOne,
-          this.reservation.tableTwo,
-          this.reservation.tableThree
-        );
       }
     },
 

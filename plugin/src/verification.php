@@ -125,9 +125,19 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
 
 
     // zähle die Sitzplätze an allen Tischen und prüfe, ob die Reservierung für mehr Leute gedacht ist
+    /**
+     * Ferner müssen wir ausschließen, dass eine Reservierung für zwei Personen z.B. zwei Tische mit zwei und einem
+     * Platz umfasst, da am zweiten Tisch dann keine Person sitzen würde.
+     */
+    $tooManyTablesForPersons_error = false;
+    $tooMuchTablesForPersons_flag = false;
     $availableSeats = 0;
     foreach($tables as $t) {
+        if($tooMuchTablesForPersons_flag) $tooManyTablesForPersons_error = true;
+
         $availableSeats += getTableById($t)["seats"];
+
+        if($availableSeats >= $numberOfSeats) $tooMuchTablesForPersons_flag = true;
     }
     if($availableSeats < $numberOfSeats) {
         return "Die gebuchten Tische haben nicht die gewünschte Anzahl an Sitzplätzen";
@@ -136,6 +146,10 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     // prüfe, ob die Anzahl zu reservierender Plätze über der Anzahl benötigten Plätze liegt
     if($frontend && $availableSeats > $numberOfSeats + getMaxUnusedSeatsPerReservation()) {
         return "Du hast mehr als ".getMaxUnusedSeatsPerReservation()." Plätze reserviert als benötigt.";
+    }
+
+    if($frontend && $tooMuchTablesForPersons_error) {
+        return "Mindestens ein Tisch in deiner Reservierung wird nicht benötigt!";
     }
 
     // stelle sicher, dass eine gültige E-Mail-Adresse eingegeben wurde
