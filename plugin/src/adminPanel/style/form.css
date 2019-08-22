@@ -28,7 +28,17 @@ form h3 {
     background-color: white;
 }
 
+#formContent .data {
+    margin-bottom: 35px;
+}
+
+#formContent .data:last-of-type {
+    margin-bottom: 0;
+}
+
 .data td {
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 15px;
     padding-bottom: 15px;
     border-top: 1px solid rgb(238, 238, 238);
@@ -38,10 +48,6 @@ form h3 {
     padding-top: 0px;
     padding-bottom: 0px;
     border-top: none;
-}
-
-.data h2, .data h3 {
-    margin-left: 10px;
 }
 
 .titleData {
@@ -56,12 +62,8 @@ input, textarea {
     font-size: 22px;
 }
 
-.data input, .data select, .data textarea {
-    margin-left: 10px;
-}
-
 .data input:not([type=checkbox]), .data textarea {
-    width: calc(100% - 20px);
+    width: 100%;
 }
 
 #publish {
