@@ -22,17 +22,24 @@
   },
   "homepage": "https://github.com/towa-digital/intern-table-reservation#readme",
   "dependencies": {
+    "cross-env": "^5.2.0",
     "axios": "^0.19.0",
     "jquery": "^3.4.1",
     "vue-jquery": "^1.0.6",
     "vue-resource": "^1.5.1",
     "vuex": "^3.1.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cross-env PRE_COMMIT=true lint-staged"
+    }
+  },
   "devDependencies": {
     "lint-staged": "^9.0.0",
     "markdown-folder-to-html": "^2.2.0",
     "markdownlint": "^0.16.0",
     "markdownlint-cli": "^0.17.0",
-    "prettier": "^1.0.0"
+    "prettier": "^1.0.0",
+    "husky": "^3.0.0"
   }
 }

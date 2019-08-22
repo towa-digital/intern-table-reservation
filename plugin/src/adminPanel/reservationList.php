@@ -4,13 +4,15 @@ require_once(__DIR__."/../verification.php");
 require_once(__DIR__."/../options.php");
 
 
-function applyStyle_reservationList() {
+function applyStyle_reservationList()
+{
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
     wp_enqueue_style("list_style", plugins_url("style/list.css", __FILE__));
     wp_enqueue_style("tabs_style", plugins_url("style/tabs.css", __FILE__));
 }
 
-function show_reservationList() {
+function show_reservationList()
+{
     //AJAX
     wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 
@@ -30,28 +32,28 @@ function show_reservationList() {
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 
 
-    if(isset($_POST["reservationToDelete"])) {
+    if (isset($_POST["reservationToDelete"])) {
         deleteReservation($_POST["reservationToDelete"]);
     }
 
-    $required = array("reservationToEdit", "table", "from", "to", "firstname", "lastname");
+    $required = ["reservationToEdit", "table", "from", "to", "firstname", "lastname"];
     $isset = true;
     $error = false;
-    foreach($required as $field) {
+    foreach ($required as $field) {
         // prüfe, ob mindestens ein Feld nicht gesetzt ist
-        if(! isset($_POST[$field])) {
+        if (! isset($_POST[$field])) {
             $isset = false;
             break;
         }
 
         // Prüfe, ob mindestens ein Feld leer ist
-        if(empty($_POST[$field])) {
+        if (empty($_POST[$field])) {
             $error = true;
             break;
         }
     }
-    if($isset) {
-        if(! $empty) {
+    if ($isset) {
+        if (! $empty) {
             $id = $_POST["reservationToEdit"];
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
@@ -64,7 +66,7 @@ function show_reservationList() {
 
             $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
 
-            if($errorMsg === null) {
+            if ($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $id);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
@@ -79,15 +81,17 @@ function show_reservationList() {
     echo '<script>const allTables ='.json_encode($allTables).';</script>';
 
     /*
-     * Aufsteigende Sortierung nach der Differenz zwischen der Beginnzeit der Reservierung und der aktuellen Zeit. 
+     * Aufsteigende Sortierung nach der Differenz zwischen der Beginnzeit der Reservierung und der aktuellen Zeit.
      */
-    usort($allReservations, function($a, $b) {
-        if($a["from"] < $b["from"]) return -1;
-        else if ($a["from"] == $b["from"]) return 0;
-        else return 1;
-    });
-
-?>
+    usort($allReservations, function ($a, $b) {
+        if ($a["from"] < $b["from"]) {
+            return -1;
+        } elseif ($a["from"] == $b["from"]) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }); ?>
 
 <script>
     const DEFAULT_RESERVATION_DURATION = <?php echo getDefaultReservationDuration(); ?>;
@@ -115,38 +119,39 @@ function show_reservationList() {
                     <th style="width: 14.5%">Telefonnummer</th>
                     <th style="width: 6%"></th>
                 </tr>
-                <?php           
+                <?php
                 $dateFormat = "d.m.Y H:i";
-                foreach($allReservations as $r) {
-                    if($r["to"] < time()) continue;
+    foreach ($allReservations as $r) {
+        if ($r["to"] < time()) {
+            continue;
+        }
 
-                    echo '<tr id="row_'.$r["id"].'">';
+        echo '<tr id="row_'.$r["id"].'">';
             
-                    echo '<td class="m_tables">';
-                    for($c = 0; $c < count($r["tableIds"]); $c++) {
-                        $tableId = $r["tableIds"][$c];
+        echo '<td class="m_tables">';
+        for ($c = 0; $c < count($r["tableIds"]); $c++) {
+            $tableId = $r["tableIds"][$c];
 
-                        echo getTableById($tableId)["title"].($c != count($r["tableIds"]) - 1 ? "," : "");
-                    }
-                    echo '</td>';
+            echo getTableById($tableId)["title"].($c != count($r["tableIds"]) - 1 ? "," : "");
+        }
+        echo '</td>';
 
-                    echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
-                    echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
-                    echo '<td class="m_numberOfSeats">'.($r["numberOfSeats"] == 0 ? "" : $r["numberOfSeats"]).'</td>';
-                    echo '<td class="m_firstname">'.$r["firstname"].'</td>';
-                    echo '<td class="m_lastname">'.$r["lastname"].'</td>';
-                    echo '<td class="m_mail">'.$r["mail"].'</td>';
-                    echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
+        echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
+        echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
+        echo '<td class="m_numberOfSeats">'.($r["numberOfSeats"] == 0 ? "" : $r["numberOfSeats"]).'</td>';
+        echo '<td class="m_firstname">'.$r["firstname"].'</td>';
+        echo '<td class="m_lastname">'.$r["lastname"].'</td>';
+        echo '<td class="m_mail">'.$r["mail"].'</td>';
+        echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
 
-                    echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit" id="deleteBtn_'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
+        echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit" id="deleteBtn_'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
 
-                    echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')"><i class="fa fa-pencil"></i></button>';
-                    echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'"><i class="fa fa-floppy-o"></i></button>';
-                    echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit"><i class="fa fa-times"></i></button></td>';
+        echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')"><i class="fa fa-pencil"></i></button>';
+        echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'"><i class="fa fa-floppy-o"></i></button>';
+        echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit"><i class="fa fa-times"></i></button></td>';
 
-                    echo '</tr>';
-                }
-                ?>
+        echo '</tr>';
+    } ?>
             </table>
         </form>
     </div>
@@ -166,30 +171,31 @@ function show_reservationList() {
                     <th style="width=16%">Telefonnummer</th>
                     <th></th>
                 </tr>
-                <?php           
+                <?php
                 $dateFormat = "d.m.Y H:i";
-                foreach($allReservations as $r) {
-                    if($r["to"] >= time()) continue;
+    foreach ($allReservations as $r) {
+        if ($r["to"] >= time()) {
+            continue;
+        }
 
-                     echo '<tr id="row_'.$r["id"].'">';
+        echo '<tr id="row_'.$r["id"].'">';
             
-                    echo '<td class="m_tables">';
-                    foreach($r["tableIds"] as $tableId) {
-                        echo getTableById($tableId)["title"].',';
-                    }
-                    echo '</td>';
+        echo '<td class="m_tables">';
+        foreach ($r["tableIds"] as $tableId) {
+            echo getTableById($tableId)["title"].',';
+        }
+        echo '</td>';
 
-                    echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
-                    echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
-                    echo '<td class="m_numberOfSeats">'.$r["numberOfSeats"].'</td>';
-                    echo '<td class="m_firstname">'.$r["firstname"].'</td>';
-                    echo '<td class="m_lastname">'.$r["lastname"].'</td>';
-                    echo '<td class="m_mail">'.$r["mail"].'</td>';
-                    echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
+        echo '<td class="m_from">'.date($dateFormat, $r["from"]).'</td>';
+        echo '<td class="m_to">'.date($dateFormat, $r["to"]).'</td>';
+        echo '<td class="m_numberOfSeats">'.$r["numberOfSeats"].'</td>';
+        echo '<td class="m_firstname">'.$r["firstname"].'</td>';
+        echo '<td class="m_lastname">'.$r["lastname"].'</td>';
+        echo '<td class="m_mail">'.$r["mail"].'</td>';
+        echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
 
-                    echo '</tr>';
-                }
-                ?>
+        echo '</tr>';
+    } ?>
             </table>
         </form>
     </div>

@@ -5,45 +5,46 @@ require_once(__DIR__."/../options.php");
 
 
 
-function applyStyle_addReservation() {
+function applyStyle_addReservation()
+{
     wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
-
 }
 
 
-function show_addReservation() {
+function show_addReservation()
+{
     //AJAX
     wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
     wp_enqueue_script("loadAvailableTables_script", plugins_url("script/loadAvailableTables.js", __FILE__));
     wp_enqueue_script("reservationsClientVerification_script", plugins_url("script/reservationsClientVerification.js", __FILE__));
 
 
-    $required = array("table", "from", "numberOfSeats", "firstname", "lastname", "mail", "phonenumber");
+    $required = ["table", "from", "numberOfSeats", "firstname", "lastname", "mail", "phonenumber"];
 
     $isset = true;
     $error = false;
-    foreach($required as $field) {
+    foreach ($required as $field) {
         // prüfe, ob mindestens ein Feld nicht gesetzt ist
-        if(! isset($_POST[$field])) {
+        if (! isset($_POST[$field])) {
             $isset = false;
             break;
         }
 
         // Prüfe, ob mindestens ein Feld leer ist
-        if(empty($_POST[$field])) {
+        if (empty($_POST[$field])) {
             $error = true;
             break;
         }
     }
 
-    if($isset) {
-        if(! $empty) {
+    if ($isset) {
+        if (! $empty) {
             $tables = $_POST["table"];
             $from = strtotime($_POST["from"]);
             $useDefaultEndTime = $_POST["useDefaultEndTime"] === null ? false : true;
 
-            if(! $useDefaultEndTime && !isset($_POST["to"])) {
+            if (! $useDefaultEndTime && ! isset($_POST["to"])) {
                 echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
             }
 
@@ -56,7 +57,7 @@ function show_addReservation() {
 
             $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
             
-            if($errorMsg === null) {
+            if ($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
@@ -64,11 +65,7 @@ function show_addReservation() {
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
-    }
-
-
-
-?>
+    } ?>
 <script>
     const DEFAULT_RESERVATION_DURATION = <?php echo getDefaultReservationDuration(); ?>;
     const CAN_RESERVATE_IN_MINUTES = <?php echo getCanReservateInMinutes(); ?>;

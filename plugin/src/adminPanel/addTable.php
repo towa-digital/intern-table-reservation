@@ -4,50 +4,49 @@ require_once(__DIR__."/../verification.php");
 
 
 
-function applyStyle_addTable() {
+function applyStyle_addTable()
+{
     wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
 }
 
-function show_addTable() {
-    $required = array("title", "numberOfSeats");
+function show_addTable()
+{
+    $required = ["title", "numberOfSeats"];
 
     $isset = true;
     $empty = false;
 
-    foreach($required as $field) {
+    foreach ($required as $field) {
         // prüfe, ob mindestens ein Feld nicht gesetzt ist
-        if(! isset($_POST[$field])) {
+        if (! isset($_POST[$field])) {
             $isset = false;
             break;
         }
 
         // Prüfe, ob mindestens ein Feld leer ist
-        if(empty($_POST[$field])) {
+        if (empty($_POST[$field])) {
             $empty = true;
             break;
         }
     }
 
-    if($isset) {
-        if(! $empty) {
+    if ($isset) {
+        if (! $empty) {
             $title = $_POST["title"];
             $isOutside = $_POST["isOutside"] === null ? false : true;
             $numberOfSeats = $_POST["numberOfSeats"];
 
             $errorMsg = verifyTable($title, $isOutside, $numberOfSeats);
-            if($errorMsg === null) {
+            if ($errorMsg === null) {
                 addTable($title, $isOutside, $numberOfSeats);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
-
             }
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
-    }
-    
-?>
+    } ?>
 <div id="main">
     <h1>Tisch hinzufügen</h1>
     <form method="post">
