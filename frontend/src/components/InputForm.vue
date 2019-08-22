@@ -169,7 +169,7 @@
           </td>
         </tr>
         <tr>
-          <td class="text">E-Mail</td>
+          <td class="text">E-Mail<a>*</a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -284,9 +284,10 @@ export default {
       // Check if there is a Input (Step 3)
 
       if (
-        this.reservation.firstname === "" ||
-        this.reservation.lastname === "" ||
-        this.reservation.phonenumber === ""
+        this.reservation.firstname == "" ||
+        this.reservation.lastname == "" ||
+        this.reservation.mail == "" ||
+        this.reservation.phonenumber == ""
       ) {
         this.$store.commit("setError", "Bitte fülle alle Pflichtfelder (mit <a>*</a> markiert) aus.");
       } else {
