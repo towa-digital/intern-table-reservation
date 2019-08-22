@@ -1,11 +1,11 @@
 <?php
-    if( function_exists('acf_add_local_field_group') ):
+    if (function_exists('acf_add_local_field_group')):
 
-        acf_add_local_field_group(array(
+        acf_add_local_field_group([
             'key' => 'group_5d497f3c590da',
             'title' => 'Reservierungsdaten',
-            'fields' => array(
-                array(
+            'fields' => [
+                [
                     'key' => 'field_5d497f42a6d61',
                     'label' => 'von?',
                     'name' => 'from',
@@ -13,16 +13,16 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'display_format' => 'm/d/Y H:i:s',
                     'return_format' => 'm/d/Y H:i:s',
                     'first_day' => 1,
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d497f73a6d62',
                     'label' => 'bis?',
                     'name' => 'to',
@@ -30,16 +30,16 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'display_format' => 'm/d/Y H:i:s',
                     'return_format' => 'm/d/Y H:i:s',
                     'first_day' => 1,
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8c232af89',
                     'label' => 'Tische',
                     'name' => 'tables',
@@ -47,22 +47,22 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
-                    'post_type' => array(
+                    ],
+                    'post_type' => [
                         0 => 'tables',
-                    ),
+                    ],
                     'taxonomy' => '',
                     'filters' => '',
                     'elements' => '',
                     'min' => 1,
                     'max' => '',
                     'return_format' => 'id',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8cdad75e0',
                     'label' => 'Vorname',
                     'name' => 'firstname',
@@ -70,18 +70,18 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
                     'append' => '',
                     'maxlength' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8d0e154c3',
                     'label' => 'Nachname',
                     'name' => 'lastname',
@@ -89,18 +89,18 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
                     'append' => '',
                     'maxlength' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8d1d154c4',
                     'label' => 'E-Mail',
                     'name' => 'mail',
@@ -108,17 +108,17 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
                     'append' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8d44154c5',
                     'label' => 'Telefonnummmer',
                     'name' => 'phonenumber',
@@ -126,18 +126,18 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
                     'append' => '',
                     'maxlength' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d4a8d6af434d',
                     'label' => 'IP-Adresse',
                     'name' => 'ip',
@@ -145,18 +145,18 @@
                     'instructions' => '',
                     'required' => 0,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
                     'append' => '',
                     'maxlength' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d513bc84a83a',
                     'label' => 'Anzahl Sitzplätze',
                     'name' => 'numberOfSeats',
@@ -164,11 +164,11 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => '',
                     'placeholder' => '',
                     'prepend' => '',
@@ -176,17 +176,17 @@
                     'min' => '',
                     'max' => '',
                     'step' => '',
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
+                ],
+            ],
+            'location' => [
+                [
+                    [
                         'param' => 'post_type',
                         'operator' => '==',
                         'value' => 'reservations',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'menu_order' => 0,
             'position' => 'normal',
             'style' => 'default',
@@ -195,13 +195,13 @@
             'hide_on_screen' => '',
             'active' => true,
             'description' => '',
-        ));
+        ]);
         
-        acf_add_local_field_group(array(
+        acf_add_local_field_group([
             'key' => 'group_5d497e6e8010d',
             'title' => 'Tischdaten',
-            'fields' => array(
-                array(
+            'fields' => [
+                [
                     'key' => 'field_5d497e7cb0cec',
                     'label' => 'außen?',
                     'name' => 'isOutside',
@@ -209,18 +209,18 @@
                     'instructions' => '',
                     'required' => 0,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'message' => 'Ist der Tisch im Außenbereich?',
                     'default_value' => 0,
                     'ui' => 0,
                     'ui_on_text' => '',
                     'ui_off_text' => '',
-                ),
-                array(
+                ],
+                [
                     'key' => 'field_5d497eb1b0ced',
                     'label' => 'Anzahl Sitzplätze',
                     'name' => 'seats',
@@ -228,11 +228,11 @@
                     'instructions' => '',
                     'required' => 1,
                     'conditional_logic' => 0,
-                    'wrapper' => array(
+                    'wrapper' => [
                         'width' => '',
                         'class' => '',
                         'id' => '',
-                    ),
+                    ],
                     'default_value' => 1,
                     'placeholder' => '',
                     'prepend' => '',
@@ -240,17 +240,17 @@
                     'min' => 1,
                     'max' => 999,
                     'step' => 1,
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
+                ],
+            ],
+            'location' => [
+                [
+                    [
                         'param' => 'post_type',
                         'operator' => '==',
                         'value' => 'tables',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'menu_order' => 0,
             'position' => 'normal',
             'style' => 'default',
@@ -259,7 +259,6 @@
             'hide_on_screen' => '',
             'active' => true,
             'description' => '',
-        ));
+        ]);
         
         endif;
-?>

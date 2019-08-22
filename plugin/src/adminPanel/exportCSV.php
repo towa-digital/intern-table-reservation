@@ -4,21 +4,20 @@ require_once(__DIR__."/../csv.php");
 
 
 
-function applyStyle_exportCSV() {
+function applyStyle_exportCSV()
+{
     wp_enqueue_style("export_style", plugins_url("style/export.css", __FILE__));
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
-
 }
 
 
-function show_exportCSV() {
-    if(isset($_POST["isClicked"])){
+function show_exportCSV()
+{
+    if (isset($_POST["isClicked"])) {
         exportCSV();
     }
 
-    echo __DIR__ .'/../csv/daten.csv';
-
-?>
+    echo __DIR__ .'/../csv/daten.csv'; ?>
 
 <table>
     <tr><td>

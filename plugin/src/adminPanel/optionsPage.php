@@ -2,33 +2,35 @@
 
 require_once(__DIR__."/../options.php");
 
-function initSettings() {
-
+function initSettings()
+{
 }
 
-function genDefaultOpeningHours() {
-    $toReturn = array();
-    for($c = 0; $c < 7; $c++) {
-        $toReturn[] = array(
-            array(
+function genDefaultOpeningHours()
+{
+    $toReturn = [];
+    for ($c = 0; $c < 7; $c++) {
+        $toReturn[] = [
+            [
                 "from" => 11 * 60 * 60,
-                "to" => 13 * 60 * 60
-            )
-        );
+                "to" => 13 * 60 * 60,
+            ],
+        ];
     }
 
     return $toReturn;
 }
 
 
-function applyStyle_optionsPage() {
+function applyStyle_optionsPage()
+{
     wp_enqueue_style("form_style", plugins_url("style/form.css", __FILE__));
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
     wp_enqueue_style("options_stype", plugins_url("style/options.css", __FILE__));
-
 }
 
-function show_optionsPage() {
+function show_optionsPage()
+{
     //AJAX
     wp_enqueue_script("ajax", "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 
@@ -38,32 +40,30 @@ function show_optionsPage() {
     //FontAwesome
     wp_enqueue_script("fontawesome", "https://kit.fontawesome.com/2c9e55113a.js");
 
-    $required = array("defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "userConfirmationMail", "adminConfirmationMail", "canReservateInMinutes");
+    $required = ["defaultReservationDuration", "maxAmountOfPersons", "maxUnusedSeatsPerReservation", "userConfirmationMail", "adminConfirmationMail", "canReservateInMinutes"];
     $isset = true;
     $error = false;
-    foreach($required as $field) {
+    foreach ($required as $field) {
         // prüfe, ob mindestens ein Feld nicht gesetzt ist
-        if(! isset($_POST[$field])) {
+        if (! isset($_POST[$field])) {
             $isset = false;
             break;
         }
 
         // Prüfe, ob mindestens ein Feld leer ist
-        if(empty($_POST[$field])) {
+        if (empty($_POST[$field])) {
             $error = true;
             break;
         }
     }
 
-    if($isset) {
-        if(! $empty) {
-            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"],$_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
+    if ($isset) {
+        if (! $empty) {
+            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"], $_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
         } else {
             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
         }
-    }
-    
-?>
+    } ?>
 <div id="main">
     <h1>Tischverwaltung</h1>
     <form method="post">
@@ -128,30 +128,28 @@ function show_optionsPage() {
                 </td></tr>
                 <?php
 
-                    $weekDays = array("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
+                    $weekDays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
                     
-                    $openingHoursArr = getOpeningHours();
+    $openingHoursArr = getOpeningHours();
 
 
-                    for($key = 0; $key < 7; $key++) {
-                        $day = $openingHoursArr[$key];
+    for ($key = 0; $key < 7; $key++) {
+        $day = $openingHoursArr[$key];
                                                 
-                        echo '<tr><td>';
-                        echo '<h3>'.$weekDays[$key].'</h3>';
-                        echo '<div class="timePickerParent" id="timePickerParent_'.$key.'">';
-                        foreach($day as $entryKey => $entry) {
-                            echo '<div>';
-                            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
-                            echo '<span> - </span>';
-                            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
-                            echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
-                            echo '</div>';
-                        }
-                        echo '</div>';
-                        echo "<button type='button' class='edit addBtn' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
-                    }
-
-                ?>
+        echo '<tr><td>';
+        echo '<h3>'.$weekDays[$key].'</h3>';
+        echo '<div class="timePickerParent" id="timePickerParent_'.$key.'">';
+        foreach ($day as $entryKey => $entry) {
+            echo '<div>';
+            echo "<input type='time' name='openingHours[$key][$entryKey][from]' value='".secondsToValueString($entry["from"])."'>";
+            echo '<span> - </span>';
+            echo "<input type='time' name='openingHours[$key][$entryKey][to]' value='".secondsToValueString($entry["to"])."'>";
+            echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+            echo '</div>';
+        }
+        echo '</div>';
+        echo "<button type='button' class='edit addBtn' onclick='addTimePicker($key)'><i class='fa fa-plus'></i></button></td></tr>";
+    } ?>
             </table>
             <table id="holidays" class="data formData">
                 <tr><td>
@@ -159,18 +157,16 @@ function show_optionsPage() {
                 </td></tr>
                 <tr><td>
                     <div id="holidayParent">
-                    <?php                        
+                    <?php
                         $holidays = getHolidays();
 
-                        foreach($holidays as $slotKey => $slot) {
-                            echo "<div class='timePickerParent' id='holidayPicker_$slotKey'>";
-                            echo "<input type='date' name='holidays[$slotKey][from]' value='".date("Y-m-d", $slot["from"])."' />";
-                            echo "<input type='date' name='holidays[$slotKey][to]' value='".date("Y-m-d", $slot["to"])."' />";
-                            echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
-                            echo "</div>";
-                        }
-
-                    ?>
+    foreach ($holidays as $slotKey => $slot) {
+        echo "<div class='timePickerParent' id='holidayPicker_$slotKey'>";
+        echo "<input type='date' name='holidays[$slotKey][from]' value='".date("Y-m-d", $slot["from"])."' />";
+        echo "<input type='date' name='holidays[$slotKey][to]' value='".date("Y-m-d", $slot["to"])."' />";
+        echo '<button type="button" class="edit" onclick="removeTimePicker(this)"><i class="fas fa-minus"></i></button>';
+        echo "</div>";
+    } ?>
                     </div>
                 </td></tr>
                 <tr><td>
@@ -189,4 +185,5 @@ function show_optionsPage() {
      
     </form>
 </div>
-<?php } ?>
+<?php
+} ?>

@@ -1,17 +1,18 @@
 <?php
-     function registerTableReservationCpts() {
+     function registerTableReservationCpts()
+     {
 
          /**
           * Post Type: Tische.
           */
 
-         $labels = array(
-             "name" => __( "Tische", "twentynineteen" ),
-             "singular_name" => __( "Tisch", "twentynineteen" ),
-         );
+         $labels = [
+             "name" => __("Tische", "twentynineteen"),
+             "singular_name" => __("Tisch", "twentynineteen"),
+         ];
 
-         $args = array(
-             "label" => __( "Tische", "twentynineteen" ),
+         $args = [
+             "label" => __("Tische", "twentynineteen"),
              "labels" => $labels,
              "description" => "Tische für die Tischverwaltung erstellen",
              "public" => true,
@@ -28,24 +29,24 @@
              "capability_type" => "post",
              "map_meta_cap" => true,
              "hierarchical" => false,
-             "rewrite" => array( "slug" => "tables", "with_front" => true ),
+             "rewrite" => ["slug" => "tables", "with_front" => true],
              "query_var" => true,
-             "supports" => array( "title" ),
-         );
+             "supports" => ["title"],
+         ];
 
-         register_post_type( "tables", $args );
+         register_post_type("tables", $args);
 
          /**
           * Post Type: Reservierungen.
           */
 
-         $labels = array(
-             "name" => __( "Reservierungen", "twentynineteen" ),
-             "singular_name" => __( "Reservierung", "twentynineteen" ),
-         );
+         $labels = [
+             "name" => __("Reservierungen", "twentynineteen"),
+             "singular_name" => __("Reservierung", "twentynineteen"),
+         ];
 
-         $args = array(
-             "label" => __( "Reservierungen", "twentynineteen" ),
+         $args = [
+             "label" => __("Reservierungen", "twentynineteen"),
              "labels" => $labels,
              "description" => "",
              "public" => true,
@@ -62,48 +63,45 @@
              "capability_type" => "post",
              "map_meta_cap" => true,
              "hierarchical" => false,
-             "rewrite" => array( "slug" => "reservations", "with_front" => true ),
+             "rewrite" => ["slug" => "reservations", "with_front" => true],
              "query_var" => true,
-             "supports" => array("custom_fields"),
-         );
+             "supports" => ["custom_fields"],
+         ];
 
          /**
           * Post Type: Einstellungen.
           */
 
-          $labels = array(
-            "name" => __( "Optionen", "twentynineteen" ),
-            "singular_name" => __( "Option", "twentynineteen" ),
-            );
+         $labels = [
+             "name" => __("Optionen", "twentynineteen"),
+             "singular_name" => __("Option", "twentynineteen"),
+         ];
 
-            $args = array(
-                "label" => __( "Optionen", "twentynineteen" ),
-                "labels" => $labels,
-                "description" => "",
-                "public" => true,
-                "publicly_queryable" => true,
-                "show_ui" => true,
-                "delete_with_user" => false,
-                "show_in_rest" => true,
-                "rest_base" => "options",
-                "rest_controller_class" => "WP_REST_Posts_Controller",
-                "has_archive" => false,
-                "show_in_menu" => true,
-                "show_in_nav_menus" => true,
-                "exclude_from_search" => false,
-                "capability_type" => "post",
-                "map_meta_cap" => true,
-                "hierarchical" => false,
-                "rewrite" => array( "slug" => "options", "with_front" => true ),
-                "query_var" => true,
-                "supports" => array("title", "editor"),
-            );
+         $args = [
+             "label" => __("Optionen", "twentynineteen"),
+             "labels" => $labels,
+             "description" => "",
+             "public" => true,
+             "publicly_queryable" => true,
+             "show_ui" => true,
+             "delete_with_user" => false,
+             "show_in_rest" => true,
+             "rest_base" => "options",
+             "rest_controller_class" => "WP_REST_Posts_Controller",
+             "has_archive" => false,
+             "show_in_menu" => true,
+             "show_in_nav_menus" => true,
+             "exclude_from_search" => false,
+             "capability_type" => "post",
+             "map_meta_cap" => true,
+             "hierarchical" => false,
+             "rewrite" => ["slug" => "options", "with_front" => true],
+             "query_var" => true,
+             "supports" => ["title", "editor"],
+         ];
 
 
-         register_post_type( "options", $args );
- }
+         register_post_type("options", $args);
+     }
 
  add_action('init', 'registerTableReservationCpts');
-
-
-?>
