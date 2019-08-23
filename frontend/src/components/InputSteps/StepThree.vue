@@ -79,6 +79,13 @@
           <!--<div class="g-recaptcha" data-sitekey="6LeETbQUAAAAAA9y89Ol2QQRqcTV3GbbCX5ASLSM"></div>-->
         </td>
       </tr>
+      <tr>
+        <td colspan="2"  v-if="waitingForAjaxResponse">
+          <div class="loader">
+
+          </div>
+        </td>
+      </tr>
       <tr v-if="errormessage != ''">
         <td colspan="2">
           <div class="centered">
@@ -119,7 +126,6 @@ export default {
     ...mapActions(['addReservation']),
     onSubmit(e) {
       e.preventDefault();
-      console.log(document.getElementsByName('g-recaptcha-response'));
       // Check if there is a Input (Step 3)
 
       if (this.firstname == '' || this.lastname == '' || this.mail == '' || this.phonenumber == '') {
