@@ -306,14 +306,17 @@
         return $freeTables;
     }
 
-    function getSuitableTables($startTime, $endTime, $numberOfSeats, $reservationId = 0)
+    function getSuitableTables($startTime, $endTime, $numberOfSeats, $isOutside = -1, $reservationId = 0)
     {
+        if($isOutside < -1 || $isOutside > 1) $isOutside = -1;
+        
         $freeTables = getFreeTables($startTime, $endTime, $reservationId);
 
         $suitableTables = [];
         foreach ($freeTables as $elemKey => $table) {
             // füge alle Tische hinzu, bei denen nicht mehr Plätze frei bleiben würden, als maxUnusedSeatsPerReservation gestattet
-            if ($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation()) {
+            // und zusätzlich innen/außen liegen
+            if ($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation() && ($isOutside === -1 || $table["isOutside"] == $isOutside)) {
                 $suitableTables[] = $table;
             }
         }

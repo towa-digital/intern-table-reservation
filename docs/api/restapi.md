@@ -4,12 +4,13 @@
 
 **Zugriffsmethode:** GET
 
-**URL:** tischverwaltung/v1/freetables/\<from\>/\<numberOfSeats\>
+**URL:** tischverwaltung/v1/freetables/\<from\>/\<numberOfSeats\>/\<isOutside\>
 
 **Parameter:**
 
 - \<from\> ist die gewünschte Beginnzeit der Reservierung, als ganzzahliger Unix-Zeitstempel (Anzahl Sekunden seit 1.1.1970 00:00)
 - \<numberOfSeats\> ist die Anzahl an benötigten Plätzen
+- \<isOutside\> ist ein Integer, der 0 ist, wenn der Tisch im Innenbereich sein soll; 1 wenn der Tisch im Außenbereich sein soll; und -1, wenn alle Tische, unabhängig von der Position angezeigt werden sollen. Dieser Parameter ist optional, falls er nicht angegeben wird, wird -1 angenommen. Falls ein anderer Wert als -1, 0 oder 1 angegeben wird, wird ebenfalls -1 angenommen.
 
 **Rückgabe:** (Status-Code: 200)
 

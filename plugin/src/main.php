@@ -71,7 +71,7 @@ function loadAvailableTables()
 }
 
 add_action("rest_api_init", function () {
-    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<numberOfSeats>\d+)", [
+    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<numberOfSeats>\d+)(?:/(?P<isOutside>\d+))?", [
         "methods" => "GET",
         "callback" => "rest_getFreeTables",
     ]);
@@ -95,6 +95,7 @@ function rest_getFreeTables($request)
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
     $persons = $request["numberOfSeats"];
+    $outside = ($request["isOutside"] === null) ? -1 : $request["isOutside"];
 
     if ($from > $to) {
         return new WP_Error('invalid_data', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
@@ -122,6 +123,7 @@ function rest_getFreeTables($request)
         $from,
         $to,
         $persons,
+        $outside,
         0
     );
 
