@@ -2,7 +2,7 @@
 require_once("options.php");
 
 
-function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $id = 0)
+function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, $posX = 0, $posY = 0, $width = 0, $height = 0, int $id = 0)
 {
     // falls id übergeben, stelle sicher dass ID ein Tisch ist
     if ($id !== 0 && get_post_type($id) != "tables") {

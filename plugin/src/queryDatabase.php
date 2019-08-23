@@ -229,7 +229,7 @@
      *
      * Gibt die ID des erstellten/aktualisierten Tisches zurück.
      */
-    function addTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $tableToUpdate = 0)
+    function addTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, $posX = 0, $posY = 0, $width = 0, $height = 0, int $tableToUpdate = 0)
     {
         if ($tableToUpdate !== 0 && get_post_type($tableToUpdate) != "tables") {
             throw new Exception("tableToUpdate ist keinem Tisch zugeordnet");
@@ -246,6 +246,11 @@
         update_field("isOutside", $isOutside, $id);
         update_field("seats", $numberOfSeats, $id);
         update_field("isDisabled", $isDisabled, $id);
+        update_field("posX", $posX, $id);
+        update_field("posY", $posY, $id);
+        update_field("width", $width, $id);
+        update_field("height", $height, $id);
+
 
         return $id;
     }
