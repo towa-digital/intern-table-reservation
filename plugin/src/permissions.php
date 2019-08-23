@@ -36,11 +36,14 @@ function initPermissions() {
             "read" => true
         ));
 
+        addAdminRoles("administrator", $wp_roles);
         addAdminRoles("owner", $wp_roles);
 
+        addSuperEmployeeRoles("administrator", $wp_roles);
         addSuperEmployeeRoles("owner", $wp_roles);
         addSuperEmployeeRoles("superEmployee", $wp_roles);
 
+        addEmployeeRoles("administrator", $wp_roles);
         addEmployeeRoles("owner", $wp_roles);
         addEmployeeRoles("superEmployee", $wp_roles);
         addEmployeeRoles("employee", $wp_roles);
