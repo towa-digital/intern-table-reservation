@@ -29,7 +29,13 @@
                 "title" => get_the_title(),
                 "isOutside" => get_field("isOutside"),
                 "seats" => get_field("seats"),
-                "isDisabled" => get_field("isDisabled")
+                "isDisabled" => get_field("isDisabled"),
+                "position" => [
+                    "posX" => get_field("posX"),
+                    "posY" => get_field("posY"),
+                    "width" => get_field("width"),
+                    "height" => get_field("height")
+                ]
             ]);
         }
 
@@ -110,7 +116,13 @@
             "title" => get_the_title($id),
             "isOutside" => get_field("isOutside", $id),
             "seats" => get_field("seats", $id),
-            "isDisabled" => get_field("isDisabled", $id)
+            "isDisabled" => get_field("isDisabled", $id),
+            "position" => [
+                "posX" => get_field("posX"),
+                "posY" => get_field("posY"),
+                "width" => get_field("width"),
+                "height" => get_field("height")
+            ]
         ];
     }
 
