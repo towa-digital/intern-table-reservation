@@ -51,14 +51,6 @@ function setup_admin_menu()
     add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");
 }
 
-add_action("admin_menu", "setup_options_page");
-function setup_options_page()
-{
-    
-
-    add_action('admin_init', 'initSettings');
-}
-
 
 add_action("wp_ajax_my_action", "loadAvailableTables");
 

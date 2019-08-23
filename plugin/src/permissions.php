@@ -26,10 +26,6 @@ function initPermissions() {
     $isset = get_option("areTvRolesSet");
 
     if(! $isset) {
-        remove_role("owner");
-        remove_role("superEmployee");
-        remove_role("employee");
-
         add_role("owner", "Betreiber", array(
             "read" => true
         ));
