@@ -34,7 +34,7 @@ function show_reservationList()
     // Sortierfuntion
     wp_enqueue_script("sort_script", plugins_url("script/sort.js", __FILE__));
 
-    if (isset($_POST["reservationToDelete"])) {
+    if (isset($_POST["reservationToDelete"]) && current_user_can("tv_deleteReservations")) {
         deleteReservation($_POST["reservationToDelete"]);
     }
 
@@ -54,7 +54,7 @@ function show_reservationList()
             break;
         }
     }
-    if ($isset) {
+    if ($isset && current_user_can("tv_editReservations")) {
         if (! $empty) {
             $id = $_POST["reservationToEdit"];
             $tables = $_POST["table"];
@@ -107,7 +107,7 @@ function show_reservationList()
     <div id="current" class="tabElement">
         <p id="jsError" class="hidden"></h1>
         <h1 class="inline">Aktuelle Reservierungen</h1>
-        <a href="admin.php?page=addreservation" class="btn">Neue Reservierung erstellen</a>
+        <?php if(current_user_can("tv_addReservations")) echo '<a href="admin.php?page=addreservation" class="btn">Neue Reservierung erstellen</a>' ?>       
         <form method="post">
             <table class="content">
                 <tr id="head">
@@ -176,11 +176,17 @@ function show_reservationList()
         echo '<td class="m_mail">'.$r["mail"].'</td>';
         echo '<td class="m_phonenumber">'.$r["phonenumber"].'</td>';
 
-        echo '<td><button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit" id="deleteBtn_'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
+        echo '<td>';
+        if(current_user_can("tv_deleteReservations")) {
+            echo '<button type="submit" name="reservationToDelete" value="'.$r["id"].'" class="edit" id="deleteBtn_'.$r["id"].'" onclick="return confirm(\'Willst du diesen Eintrag wirklich löschen?\');"><i class="fa fa-trash"></i></button>';
+        }
 
-        echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')"><i class="fa fa-pencil"></i></button>';
-        echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'"><i class="fa fa-floppy-o"></i></button>';
-        echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit"><i class="fa fa-times"></i></button></td>';
+        if(current_user_can("tv_editReservations")) {
+            echo '<button type="button" id="editBtn_'.$r["id"].'" class="edit" onclick="edit('.$r["id"].')"><i class="fa fa-pencil"></i></button>';
+            echo '<button type="submit" id="saveBtn_'.$r["id"].'" class="hidden edit" name="reservationToEdit" value="'.$r["id"].'"><i class="fa fa-floppy-o"></i></button>';
+            echo '<button type="button" id="cancelBtn_'.$r["id"].'" onclick="cancelEdit()" class="hidden edit"><i class="fa fa-times"></i></button>';
+        }
+        echo '</td>';
 
         echo '</tr>';
     } ?>

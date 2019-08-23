@@ -24,7 +24,7 @@ require("adminPanel/tableList.php");
 require("adminPanel/optionsPage.php");
 require("adminPanel/exportCSV.php");
 
-
+require_once("permissions.php");
 require_once("queryDatabase.php");
 require_once("options.php");
 require_once("email.php");
@@ -32,27 +32,29 @@ require_once("email.php");
 add_action("admin_menu", "setup_admin_menu");
 function setup_admin_menu()
 {
-    $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "manage_options", "managereservations", "show_reservationList");
+    $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "tv_viewReservations", "managereservations", "show_reservationList");
     add_action("admin_print_styles-".$reservationList, "applyStyle_reservationList");
 
-    $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "manage_options", "addreservation", "show_addReservation");
+    $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "tv_addReservations", "addreservation", "show_addReservation");
     add_action("admin_print_styles-".$addReservation, "applyStyle_addReservation");
 
-    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "manage_options", "exportcsv", "show_exportCSV");
+    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_exportCSV");
     add_action("admin_print_styles-".$exportCSV, "applyStyle_exportCSV");
 
-    $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "manage_options", "managetables", "show_tableList");
+    $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "tv_viewTables", "managetables", "show_tableList");
     add_action("admin_print_styles-".$tableList, "applyStyle_tableList");
 
-    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "manage_options", "addtable", "show_addTable");
+    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "tv_addTables", "addtable", "show_addTable");
     add_action("admin_print_styles-".$addTable, "applyStyle_addTable");
+
+    $optionsPage = add_menu_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "tv_editOptions", "config", "show_optionsPage");
+    add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");
 }
 
 add_action("admin_menu", "setup_options_page");
 function setup_options_page()
 {
-    $optionsPage = add_options_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "administrator", "config", "show_optionsPage");
-    add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");
+    
 
     add_action('admin_init', 'initSettings');
 }
