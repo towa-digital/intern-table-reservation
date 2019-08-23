@@ -45,9 +45,6 @@ export default {
     isInHoliday(dateObject) {
       for(var d of this.$store.getters.holidays) {
 
-        console.log(d.getFullYear() + " " + dateObject.getFullYear());
-        console.log(d.getMonth() + " " + dateObject.getMonth());
-
         if(d.getFullYear() == dateObject.getFullYear() &&
             d.getMonth() == dateObject.getMonth() &&
             d.getDate() == dateObject.getDate()) {
