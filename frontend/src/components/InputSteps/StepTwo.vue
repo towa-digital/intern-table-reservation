@@ -147,7 +147,7 @@ export default {
         if (availableSeats >= this.getNumberOfSeats) tooMuchTablesForPersons_flag = true;
       }
 
-      if (availableSeats < this.numberOfSeats) {
+      if (availableSeats < this.getNumberOfSeats) {
         this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
       } else if (tooMuchTablesForPersons_error) {
         this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');

@@ -46,6 +46,14 @@
           <InputFormEmail v-model="mail" />
         </td>
       </tr>
+      <tr>
+        <td class="text">Anmerkungen</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <InputFormTextarea v-model="remarks" />
+        </td>
+      </tr>
       <tr class="submit">
         <td class="sized">
           <input
@@ -83,11 +91,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 import InputFormPersons from './../InputFormComponents/InputFormName';
 import InputFormPhonenumber from './../InputFormComponents/InputFormPhonenumber';
 import InputFormEmail from './../InputFormComponents/InputFormEmail';
+import InputFormTextarea from './../InputFormComponents/InputFormTextarea';
 
 export default {
   name: 'StepThree',
@@ -95,6 +104,7 @@ export default {
     InputFormPersons,
     InputFormPhonenumber,
     InputFormEmail,
+    InputFormTextarea,
   },
   data() {
     return {
@@ -102,6 +112,7 @@ export default {
       lastname: '',
       mail: '',
       phonenumber: '',
+      remarks: ''
     };
   },
   methods: {
@@ -111,15 +122,10 @@ export default {
       console.log(document.getElementsByName('g-recaptcha-response'));
       // Check if there is a Input (Step 3)
 
-      if (
-        this.firstname == '' ||
-        this.lastname == '' ||
-        this.mail == '' ||
-        this.phonenumber == ''
-      ) {
+      if (this.firstname == '' || this.lastname == '' || this.mail == '' || this.phonenumber == '') {
         this.$store.commit('setError', 'Bitte fülle alle Pflichtfelder (mit <a>*</a> markiert) aus.');
       } else {
-        this.$store.commit('setStepThree', this)
+        this.$store.commit('setStepThree', this);
         this.$store.commit('setError', '');
         this.addReservation();
       }
@@ -130,10 +136,11 @@ export default {
     },
   },
   computed: {
-      ...mapGetters(["errormessage", "step", "waitingForAjaxResponse"])
-  }
+    ...mapGetters(['errormessage', 'step', 'waitingForAjaxResponse']),
+  },
 };
 </script>
 
 <style scoped>
+
 </style>
