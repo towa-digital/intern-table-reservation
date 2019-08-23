@@ -64,7 +64,7 @@ export default {
   position: relative;
   z-index: 2;
   float: left;
-  width: 49.4%;
+  width: 49%;
   line-height: 32px;
   font-size: 11px;
   color: black;
