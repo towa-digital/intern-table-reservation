@@ -41,7 +41,8 @@ const actions = {
         lastname: state.StepThree.lastname,
         phonenumber: state.StepThree.phonenumber,
         mail: state.StepThree.mail,
-        numberOfSeats: state.StepOne.numberOfSeats
+        numberOfSeats: state.StepOne.numberOfSeats,
+        remarks: state.StepThree.remarks
       }
     )
       .then(() => {
