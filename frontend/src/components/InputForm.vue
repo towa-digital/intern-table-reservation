@@ -80,7 +80,7 @@ select:hover {
   background: #da3743;
   color: #fff;
   cursor: pointer;
-  margin-bottom: 20px !important;
+  margin-bottom: 0 !important;
 }
 
 .btn:hover {
