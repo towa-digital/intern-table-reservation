@@ -206,7 +206,7 @@ function rest_saveNewReservation($request)
     $mail = $request["mail"];
     $phonenumber = $request["phonenumber"];
     $numberOfSeats = $request["numberOfSeats"];
-    $remarks = $_request["remarks"];
+    $remarks = ($request["remarks"] === null) ? "" : $request["remarks"];
    
     $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks, 0, true);
     if ($errorMsg !== null) {

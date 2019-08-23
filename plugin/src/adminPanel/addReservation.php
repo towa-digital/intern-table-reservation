@@ -50,11 +50,11 @@ function show_addReservation()
 
             $to = $useDefaultEndTime ? $from + (getDefaultReservationDuration() * 60) : strtotime($_POST["to"]);
             $numberOfSeats = ($_POST["numberOfSeats"] == "" ? 0 : $_POST["numberOfSeats"]);
-            $firstname = $_POST["firstname"];
-            $lastname = $_POST["lastname"];
-            $mail = $_POST["mail"];
-            $phonenumber = $_POST["phonenumber"];
-            $remarks = $_POST["remarks"];
+            $firstname = ($_POST["firstname"] === null) ? "" : $_POST["firstname"];
+            $lastname = ($_POST["lastname"] === null) ? "" : $_POST["lastname"];
+            $mail = ($_POST["mail"] === null) ? "" : $_POST["mail"];
+            $phonenumber = ($_POST["phonenumber"] === null) ? "" : $_POST["phonenumber"];
+            $remarks = ($_POST["remarks"] === null) ? "" : $_POST["remarks"];
 
 
             $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks);
