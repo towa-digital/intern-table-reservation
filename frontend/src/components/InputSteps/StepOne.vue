@@ -28,6 +28,17 @@
           <InputFormDate v-model="date" @input="makeTimestamp" />
         </td>
       </tr>
+      <br />
+      <br />
+      <tr class="text">
+        <td colspan="2">Wo soll sich Ihr Tisch befinden?</td>
+      </tr>
+      <tr>
+        <td>
+          <InputFormToggle v-model="location"/>
+        </td>
+      </tr>
+
       <tr class="submit">
         <td colspan="2">
           <input
@@ -55,12 +66,14 @@ import { mapGetters, mapActions } from 'vuex';
 
 import InputFormNumberOfPersons from './../InputFormComponents/InputFormNumberOfPersons';
 import InputFormDate from './../InputFormComponents/InputFormDate';
+import InputFormToggle from './../InputFormComponents/InputFormToggle';
 
 export default {
   name: 'StepOne',
   components: {
     InputFormNumberOfPersons,
     InputFormDate,
+    InputFormToggle,
   },
   computed: {
     ...mapGetters(['errormessage', 'step', 'waitingForAjaxResponse']),
@@ -70,6 +83,7 @@ export default {
       numberOfSeats: '',
       date: '',
       from: '',
+      location: 0
     };
   },
   methods: {

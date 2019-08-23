@@ -45,6 +45,7 @@ input {
   font-size: 15px;
   padding-bottom: 3%;
   padding-top: 2%;
+  margin-bottom: 2%;
 }
 
 select {
@@ -111,9 +112,7 @@ h2 {
   border: 2px solid #da3743;
 }
 
-.text {
-  margin-top: 20px;
-}
+
 
 a {
   color: #da3743;

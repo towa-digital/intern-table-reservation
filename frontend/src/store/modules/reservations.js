@@ -60,7 +60,7 @@ const actions = {
 
   fetchTables: ({ commit }, time) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;

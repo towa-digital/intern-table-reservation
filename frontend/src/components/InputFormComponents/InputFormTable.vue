@@ -36,8 +36,7 @@ export default {
     },
     onFreeTablesReload() {
       if(this.selected === undefined) return;
-
-      var indexOf = -1;
+      
       for(var i in this.$store.getters.freeTables) {
         if(this.$store.getters.freeTables[i]["id"] == this.selected["id"]) {
           indexOf = i;
