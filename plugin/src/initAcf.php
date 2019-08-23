@@ -177,6 +177,25 @@
                     'max' => '',
                     'step' => '',
                 ],
+                [
+                    'key' => 'field_5d4a8cdad7577',
+                    'label' => 'Anmerkungen',
+                    'name' => 'remarks',
+                    'type' => 'text',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => [
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ],
+                    'default_value' => '',
+                    'placeholder' => '',
+                    'prepend' => '',
+                    'append' => '',
+                    'maxlength' => '',
+                ],
             ],
             'location' => [
                 [

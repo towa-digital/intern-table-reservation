@@ -18,7 +18,7 @@ function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $i
     return null;
 }
 
-function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, $lastname, $mail, $phonenumber, $id = 0, $frontend = false)
+function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, $lastname, $mail, $phonenumber, string $remarks, $id = 0, $frontend = false)
 {
     if ($from == "") {
         return "Das Beginndatum muss angegeben sein!";

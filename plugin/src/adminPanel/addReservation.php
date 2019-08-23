@@ -54,11 +54,13 @@ function show_addReservation()
             $lastname = $_POST["lastname"];
             $mail = $_POST["mail"];
             $phonenumber = $_POST["phonenumber"];
+            $remarks = $_POST["remarks"];
 
-            $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+
+            $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks);
             
             if ($errorMsg === null) {
-                addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+                addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -117,6 +119,10 @@ function show_addReservation()
                 <tr><td>
                     <h3>Telefonnummer</h3>
                     <input type="tel" name="phonenumber" />
+                </td></tr>
+                <tr><td>
+                    <h3>Anmerkungen</h3>
+                    <input type="text" name="remarks" />
                 </td></tr>
             </table>   
         </div>

@@ -87,7 +87,8 @@ Dieser Fehler tritt in folgenden Fällen auf:
     	lastname: [string],
     	mail: [string],
     	phonenumber: [string],
-    	numberOfSeats: [integer]
+    	numberOfSeats: [integer],
+		remarks: [string]
     }
 
 Beispiel:
@@ -101,7 +102,8 @@ Beispiel:
     	lastname: "Mustermann",
     	mail: "max@mustermann.de",
     	phonenumber: "06641050678",
-    	numberOfSeats: 5
+    	numberOfSeats: 5,
+		remarks: "Bitte Kindersitz bereitstellen!"
     }
 
 **Rückgabe:** (Status-Code: 200)

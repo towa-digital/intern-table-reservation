@@ -52,6 +52,7 @@
      * - lastname: Nachname
      * - mail: E-Mail, als String
      * - phonenumber: Telefonnummer, als String
+     * - remarks: Benutzerdefinierte Anmerkungen
      * - ip: IP-Adresse, als String
      */
     function getReservations()
@@ -77,6 +78,7 @@
                 "lastname" => get_field("lastname"),
                 "mail" => get_field("mail"),
                 "phonenumber" => get_field("phonenumber"),
+                "remarks" => get_field("remarks"),
                 "ip" => get_field("ip"),
             ]);
         }
@@ -170,7 +172,7 @@
      *
      * Gibt die ID der erstellten/aktualisierten Reservierung zurück.
      */
-    function addReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, int $reservationToUpdate = 0)
+    function addReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, string $remarks, int $reservationToUpdate = 0)
     {
         if ($reservationToUpdate !== 0 && get_post_type($reservationToUpdate) != "reservations") {
             throw new Exception("reservationToUpdate ist keiner Reservierung zugeordnet");
@@ -197,6 +199,7 @@
         update_field("lastname", sanitize_text_field($lastname), $id);
         update_field("mail", sanitize_email($mail), $id);
         update_field("phonenumber", sanitize_text_field($phonenumber), $id);
+        update_field("remarks", sanitize_text_field($remarks), $id);
         update_field("ip", $_SERVER["REMOTE_ADDR"], $id);
 
         return $id;
