@@ -113,10 +113,10 @@ export default {
   left: 2px;
   display: block;
   width: 49.4%;
-  height: 30px;
+  height: 28px;
   border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  /* -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2); */
+  /* box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2); */
   -webkit-transition: left 0.15s ease-out;
   -moz-transition: left 0.15s ease-out;
   -ms-transition: left 0.15s ease-out;
