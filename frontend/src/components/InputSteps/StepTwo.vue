@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import InputFormTable from './../InputFormComponents/InputFormTable';
 

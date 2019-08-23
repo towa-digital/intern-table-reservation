@@ -19,7 +19,6 @@
 </template> 
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 
 import StepOne from './InputSteps/StepOne.vue';
 import StepTwo from './InputSteps/StepTwo.vue';

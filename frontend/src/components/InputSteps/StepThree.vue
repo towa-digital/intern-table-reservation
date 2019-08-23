@@ -126,7 +126,6 @@ export default {
     ...mapActions(['addReservation']),
     onSubmit(e) {
       e.preventDefault();
-      console.log(document.getElementsByName('g-recaptcha-response'));
       // Check if there is a Input (Step 3)
 
       if (this.firstname == '' || this.lastname == '' || this.mail == '' || this.phonenumber == '') {
