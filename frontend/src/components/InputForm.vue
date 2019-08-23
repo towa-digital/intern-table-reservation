@@ -63,7 +63,8 @@ select {
 }
 
 input,
-select {
+select,
+textarea {
   margin-bottom: 10px !important;
 }
 
