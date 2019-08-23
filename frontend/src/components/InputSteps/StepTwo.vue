@@ -110,8 +110,11 @@ export default {
       this.inputTwo = false;
       this.InputThree = false;
 
-      this.$refs.tableTwo.freeTable();
-      this.$refs.tableThree.freeTable();
+      if(this.$refs.tableTwo !== undefined) this.$refs.tableTwo.freeTable();
+      if(this.$refs.tableThree !== undefined) this.$refs.tableThree.freeTable();
+
+      if(! this.inputTwo) this.tables[1] = "";
+      if(! this.inputThree) this.tables[2] = "";
     },
     addInputThree() {
       this.inputTwo = true;
@@ -124,6 +127,8 @@ export default {
     onGetReservation() {
       let that = this;
 
+      this.tablesNumberOfSeats = [];
+
       this.getAllTables.forEach(function(data) {
         if (that.tables[0] == data.id) {
           that.tablesNumberOfSeats[0] = data.seats;
@@ -133,6 +138,7 @@ export default {
           that.tablesNumberOfSeats[2] = data.seats;
         }
       });
+
 
       var availableSeats = 0;
       var tooMuchTablesForPersons_error = false;
