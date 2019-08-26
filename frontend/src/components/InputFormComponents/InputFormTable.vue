@@ -36,8 +36,14 @@ export default {
     },
     onFreeTablesReload() {
       if(this.selected === undefined) return;
+      
+      for(var i in this.$store.getters.freeTables) {
+        if(this.$store.getters.freeTables[i]["id"] == this.selected["id"]) {
+          indexOf = i;
+        }
+      }
 
-      if(this.$store.getters.freeTables.indexOf(this.selected) != -1) {
+      if(i != -1) {
         this.$store.commit("claimTable", this.selected);
       } else {
         this.selected = undefined;

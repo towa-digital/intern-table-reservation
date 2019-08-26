@@ -19,7 +19,6 @@
 </template> 
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 
 import StepOne from './InputSteps/StepOne.vue';
 import StepTwo from './InputSteps/StepTwo.vue';
@@ -46,6 +45,7 @@ input {
   font-size: 15px;
   padding-bottom: 3%;
   padding-top: 2%;
+  margin-bottom: 2%;
 }
 
 select {
@@ -63,7 +63,8 @@ select {
 }
 
 input,
-select {
+select,
+textarea {
   margin-bottom: 10px !important;
 }
 
@@ -111,9 +112,7 @@ h2 {
   border: 2px solid #da3743;
 }
 
-.text {
-  margin-top: 20px;
-}
+
 
 a {
   color: #da3743;
@@ -126,11 +125,14 @@ a {
 .loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
+  border-top: 16px solid #da3743;
+  width: 30px;
+  height: 30px;;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
+  
+  margin: auto;
+
 }
 
 /* Safari */

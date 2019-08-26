@@ -12,6 +12,7 @@ initQuickEdit(function(rowElement, id) {
     var lastname = rowElement.getElementsByClassName("m_lastname")[0].innerHTML;
     var mail = rowElement.getElementsByClassName("m_mail")[0].innerHTML;
     var phonenumber = rowElement.getElementsByClassName("m_phonenumber")[0].innerHTML;
+    var remarks = rowElement.getElementsByClassName("m_remarks")[0].innerHTML;
 
     rowElement.removeChild(rowElement.getElementsByClassName("m_tables")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_from")[0]);
@@ -21,6 +22,8 @@ initQuickEdit(function(rowElement, id) {
     rowElement.removeChild(rowElement.getElementsByClassName("m_lastname")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_mail")[0]);
     rowElement.removeChild(rowElement.getElementsByClassName("m_phonenumber")[0]);
+    rowElement.removeChild(rowElement.getElementsByClassName("m_remarks")[0]);
+
 
     var tableArray = tables.split(",");
 
@@ -44,6 +47,8 @@ initQuickEdit(function(rowElement, id) {
     content += '<td><input type="text" name="lastname" value="'+lastname+'" /></td>';
     content += '<td><input type="text" name="mail" value="'+mail+'" /></td>';
     content += '<td><input type="text" name="phonenumber" value="'+phonenumber+'" /></td>';
+    content += '<td><input type="text" name="remarks" value="'+remarks+'" /></td>';
+
 
 
     rowElement.innerHTML = content + rowElement.innerHTML;

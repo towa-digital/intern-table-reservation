@@ -24,7 +24,7 @@ require("adminPanel/tableList.php");
 require("adminPanel/optionsPage.php");
 require("adminPanel/exportCSV.php");
 
-
+require_once("permissions.php");
 require_once("queryDatabase.php");
 require_once("options.php");
 require_once("email.php");
@@ -32,29 +32,23 @@ require_once("email.php");
 add_action("admin_menu", "setup_admin_menu");
 function setup_admin_menu()
 {
-    $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "manage_options", "managereservations", "show_reservationList");
+    $reservationList = add_menu_page("Reservierungen verwalten", "Reservierungen verwalten", "tv_viewReservations", "managereservations", "show_reservationList");
     add_action("admin_print_styles-".$reservationList, "applyStyle_reservationList");
 
-    $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "manage_options", "addreservation", "show_addReservation");
+    $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "tv_addReservations", "addreservation", "show_addReservation");
     add_action("admin_print_styles-".$addReservation, "applyStyle_addReservation");
 
-    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "manage_options", "exportcsv", "show_exportCSV");
+    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_exportCSV");
     add_action("admin_print_styles-".$exportCSV, "applyStyle_exportCSV");
 
-    $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "manage_options", "managetables", "show_tableList");
+    $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "tv_viewTables", "managetables", "show_tableList");
     add_action("admin_print_styles-".$tableList, "applyStyle_tableList");
 
-    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "manage_options", "addtable", "show_addTable");
+    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "tv_addTables", "addtable", "show_addTable");
     add_action("admin_print_styles-".$addTable, "applyStyle_addTable");
-}
 
-add_action("admin_menu", "setup_options_page");
-function setup_options_page()
-{
-    $optionsPage = add_options_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "administrator", "config", "show_optionsPage");
+    $optionsPage = add_menu_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "tv_editOptions", "config", "show_optionsPage");
     add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");
-
-    add_action('admin_init', 'initSettings');
 }
 
 
@@ -77,7 +71,7 @@ function loadAvailableTables()
 }
 
 add_action("rest_api_init", function () {
-    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<numberOfSeats>\d+)", [
+    register_rest_route("tischverwaltung/v1", "freetables/(?P<from>\d+)/(?P<numberOfSeats>\d+)(?:/(?P<isOutside>\d+))?", [
         "methods" => "GET",
         "callback" => "rest_getFreeTables",
     ]);
@@ -101,6 +95,7 @@ function rest_getFreeTables($request)
     $from = $request["from"];
     $to = $from + (getDefaultReservationDuration() * 60);
     $persons = $request["numberOfSeats"];
+    $outside = ($request["isOutside"] === null) ? -1 : $request["isOutside"];
 
     if ($from > $to) {
         return new WP_Error('invalid_data', "Das Beginndatum darf nicht nach dem Enddatum liegen.");
@@ -128,6 +123,7 @@ function rest_getFreeTables($request)
         $from,
         $to,
         $persons,
+        $outside,
         0
     );
 
@@ -212,14 +208,15 @@ function rest_saveNewReservation($request)
     $mail = $request["mail"];
     $phonenumber = $request["phonenumber"];
     $numberOfSeats = $request["numberOfSeats"];
+    $remarks = ($request["remarks"] === null) ? "" : $request["remarks"];
    
-    $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, 0, true);
+    $errorMsg = verifyReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks, 0, true);
     if ($errorMsg !== null) {
         return new WP_Error("verification_error", $errorMsg);
     }
 
 
-    addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber);
+    addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks);
     
     register_shutdown_function(function ($from, $tables, $numberOfSeats, $firstname, $lastname, $mail) {
         emailToUser($from, $tables, $numberOfSeats, $firstname, $lastname, $mail);

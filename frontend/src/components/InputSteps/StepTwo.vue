@@ -21,7 +21,7 @@
       <!-- Table 2 -->
 
       <tr>
-        <td colspan="2" v-if="inputTwo">
+        <td colspan="2" v-if="inputCounter >= 2">
           <InputFormTable ref="tableTwo" v-model="tables[1]" />
         </td>
       </tr>
@@ -29,24 +29,24 @@
       <!-- Table 3 -->
 
       <tr>
-        <td colspan="2" v-if="inputThree">
+        <td colspan="2" v-if="inputCounter >= 3">
           <InputFormTable ref="tableThree" v-model="tables[2]" />
         </td>
       </tr>
 
       <!-- Ein Inputfeld -->
 
-      <tr v-if="!inputTwo">
+      <tr v-if="inputCounter == 1">
         <td colspan="2">
-          <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputTwo" />
+          <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInput" />
         </td>
       </tr>
 
       <!-- Zwei Inputfelder -->
 
-      <tr v-if="inputTwo && !inputThree">
+      <tr v-if="inputCounter == 2">
         <td class="sized">
-          <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInputThree" />
+          <input type="submit" value="Tisch hinzufügen" class="btn" v-on:click="addInput" />
         </td>
         <td class="sized">
           <input type="submit" value="Tisch entfernen" class="btn" v-on:click="removeInput" />
@@ -55,9 +55,9 @@
 
       <!-- Drei Inputfelder -->
 
-      <tr v-if="inputThree">
+      <tr v-if="inputCounter == 3">
         <td colspan="2">
-          <input type="submit" value="Tisch entfernen" class="btn" v-on:click="addInputTwo" />
+          <input type="submit" value="Tisch entfernen" class="btn" v-on:click="removeInput" />
         </td>
       </tr>
 
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import InputFormTable from './../InputFormComponents/InputFormTable';
 
@@ -96,26 +96,22 @@ export default {
   data() {
     return {
       tables: [],
-      inputTwo: false,
-      inputThree: false,
+      inputCounter: 1,
       tablesNumberOfSeats: []
     };
   },
   methods: {
-    addInputTwo() {
-      this.inputTwo = true;
-      this.inputThree = false;
+    addInput() {
+      this.inputCounter++;
     },
     removeInput() {
-      this.inputTwo = false;
-      this.InputThree = false;
+      this.inputCounter--;
 
-      this.$refs.tableTwo.freeTable();
-      this.$refs.tableThree.freeTable();
-    },
-    addInputThree() {
-      this.inputTwo = true;
-      this.inputThree = true;
+      if(this.$refs.tableTwo !== undefined && this.inputCounter < 2) this.$refs.tableTwo.freeTable();
+      if(this.$refs.tableThree !== undefined && this.inputCounter < 3) this.$refs.tableThree.freeTable();
+
+      if(this.inputCounter < 2) this.tables[1] = "";
+      if(this.inputCounter < 3) this.tables[2] = "";
     },
     onBack() {
       this.$store.commit('setError', '');
@@ -123,6 +119,8 @@ export default {
     },
     onGetReservation() {
       let that = this;
+
+      this.tablesNumberOfSeats = [];
 
       this.getAllTables.forEach(function(data) {
         if (that.tables[0] == data.id) {
@@ -133,6 +131,7 @@ export default {
           that.tablesNumberOfSeats[2] = data.seats;
         }
       });
+
 
       var availableSeats = 0;
       var tooMuchTablesForPersons_error = false;
@@ -147,7 +146,7 @@ export default {
         if (availableSeats >= this.getNumberOfSeats) tooMuchTablesForPersons_flag = true;
       }
 
-      if (availableSeats < this.numberOfSeats) {
+      if (availableSeats < this.getNumberOfSeats) {
         this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
       } else if (tooMuchTablesForPersons_error) {
         this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');

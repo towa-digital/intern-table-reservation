@@ -29,7 +29,13 @@
                 "title" => get_the_title(),
                 "isOutside" => get_field("isOutside"),
                 "seats" => get_field("seats"),
-                "isDisabled" => get_field("isDisabled")
+                "isDisabled" => get_field("isDisabled"),
+                "position" => [
+                    "posX" => get_field("posX"),
+                    "posY" => get_field("posY"),
+                    "width" => get_field("width"),
+                    "height" => get_field("height")
+                ]
             ]);
         }
 
@@ -52,6 +58,7 @@
      * - lastname: Nachname
      * - mail: E-Mail, als String
      * - phonenumber: Telefonnummer, als String
+     * - remarks: Benutzerdefinierte Anmerkungen
      * - ip: IP-Adresse, als String
      */
     function getReservations()
@@ -77,6 +84,7 @@
                 "lastname" => get_field("lastname"),
                 "mail" => get_field("mail"),
                 "phonenumber" => get_field("phonenumber"),
+                "remarks" => get_field("remarks"),
                 "ip" => get_field("ip"),
             ]);
         }
@@ -108,7 +116,13 @@
             "title" => get_the_title($id),
             "isOutside" => get_field("isOutside", $id),
             "seats" => get_field("seats", $id),
-            "isDisabled" => get_field("isDisabled", $id)
+            "isDisabled" => get_field("isDisabled", $id),
+            "position" => [
+                "posX" => get_field("posX"),
+                "posY" => get_field("posY"),
+                "width" => get_field("width"),
+                "height" => get_field("height")
+            ]
         ];
     }
 
@@ -170,7 +184,7 @@
      *
      * Gibt die ID der erstellten/aktualisierten Reservierung zurück.
      */
-    function addReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, int $reservationToUpdate = 0)
+    function addReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, string $remarks, int $reservationToUpdate = 0)
     {
         if ($reservationToUpdate !== 0 && get_post_type($reservationToUpdate) != "reservations") {
             throw new Exception("reservationToUpdate ist keiner Reservierung zugeordnet");
@@ -197,6 +211,7 @@
         update_field("lastname", sanitize_text_field($lastname), $id);
         update_field("mail", sanitize_email($mail), $id);
         update_field("phonenumber", sanitize_text_field($phonenumber), $id);
+        update_field("remarks", sanitize_text_field($remarks), $id);
         update_field("ip", $_SERVER["REMOTE_ADDR"], $id);
 
         return $id;
@@ -214,7 +229,7 @@
      *
      * Gibt die ID des erstellten/aktualisierten Tisches zurück.
      */
-    function addTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $tableToUpdate = 0)
+    function addTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, $posX = 0, $posY = 0, $width = 0, $height = 0, int $tableToUpdate = 0)
     {
         if ($tableToUpdate !== 0 && get_post_type($tableToUpdate) != "tables") {
             throw new Exception("tableToUpdate ist keinem Tisch zugeordnet");
@@ -231,6 +246,11 @@
         update_field("isOutside", $isOutside, $id);
         update_field("seats", $numberOfSeats, $id);
         update_field("isDisabled", $isDisabled, $id);
+        update_field("posX", $posX, $id);
+        update_field("posY", $posY, $id);
+        update_field("width", $width, $id);
+        update_field("height", $height, $id);
+
 
         return $id;
     }
@@ -303,14 +323,17 @@
         return $freeTables;
     }
 
-    function getSuitableTables($startTime, $endTime, $numberOfSeats, $reservationId = 0)
+    function getSuitableTables($startTime, $endTime, $numberOfSeats, $isOutside = -1, $reservationId = 0)
     {
+        if($isOutside < -1 || $isOutside > 1) $isOutside = -1;
+        
         $freeTables = getFreeTables($startTime, $endTime, $reservationId);
 
         $suitableTables = [];
         foreach ($freeTables as $elemKey => $table) {
             // füge alle Tische hinzu, bei denen nicht mehr Plätze frei bleiben würden, als maxUnusedSeatsPerReservation gestattet
-            if ($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation()) {
+            // und zusätzlich innen/außen liegen
+            if ($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation() && ($isOutside === -1 || $table["isOutside"] == $isOutside)) {
                 $suitableTables[] = $table;
             }
         }

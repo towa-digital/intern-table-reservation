@@ -2,7 +2,7 @@
 require_once("options.php");
 
 
-function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, int $id = 0)
+function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $isDisabled, $posX = 0, $posY = 0, $width = 0, $height = 0, int $id = 0)
 {
     // falls id übergeben, stelle sicher dass ID ein Tisch ist
     if ($id !== 0 && get_post_type($id) != "tables") {
@@ -18,7 +18,7 @@ function verifyTable(string $title, bool $isOutside, int $numberOfSeats, bool $i
     return null;
 }
 
-function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, $lastname, $mail, $phonenumber, $id = 0, $frontend = false)
+function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats, string $firstname, string $lastname, string $mail, string $phonenumber, string $remarks, $id = 0, $frontend = false)
 {
     if ($from == "") {
         return "Das Beginndatum muss angegeben sein!";
