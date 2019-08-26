@@ -22,9 +22,12 @@
             <span>
               <span class="not-available"></span> = nicht verfügbar
             </span>
+            <span>
+              <span class="picked"></span> = ausgewählt
+            </span>
           </div>
         </div>
-        <div class="content" ref="content" @click="useTable" v-resize="redrawCanvas">
+        <div class="content" ref="content" @click="useTable" v-resize="redrawCanvas" @mousemove="onMouseMoved">
           <canvas ref="chooseTable" />
         </div>
       </div>
@@ -45,9 +48,20 @@ export default {
   data() {
     return {
       selected: undefined,
+      offset: {
+        "x": -1,
+        "y": -1
+      }
     };
   },
   methods: {
+    onMouseMoved(event) {
+      this.offset.x = event.offsetX;
+      this.offset.y = event.offsetY;
+      document.body.style.cursor = "default";
+
+      this.redrawCanvas();
+    },
     isTableFree(table) {
       var indexOf = -1;
       for (var i in this.freeTables) {
@@ -94,6 +108,8 @@ export default {
       });
 
       if (!isSet) this.selected = undefined;
+
+      this.redrawCanvas();
     },
     redrawCanvas() {
       var canvas = this.$refs.chooseTable;
@@ -134,29 +150,37 @@ export default {
         ctx.strokeStyle = '#606361';
         ctx.strokeRect(posX, posY, width, height);
 
+        var isHovered = this.offset.x >= posX && this.offset.x <= posX + width && this.offset.y >= posY && this.offset.y <= posY + height;
+       
         if (!i.isFree) {
-          ctx.strokeStyle = '#1d8708'; // green
-          ctx.fillStyle = '#1d8708';
+          ctx.strokeStyle = '#FF0000'; // green
+          ctx.fillStyle = '#FF0000';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
-        } else if (!this.isTableFree(i)){
+        } else if (!this.isTableFree(i) || i == this.selected || isHovered){
           ctx.strokeStyle = '#0a35f5'; //blue
           ctx.fillStyle = '#0a35f5';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
+          if(isHovered){
+            document.body.style.cursor = "pointer";
+          }
         } else {
-          ctx.strokeStyle = '#FF0000'; //red
-          ctx.fillStyle = '#FF0000';
+          ctx.strokeStyle = '#1d8708'; //red
+          ctx.fillStyle = '#1d8708';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
         }
 
+        
+
         ctx.font = '20px sans-serif';
 
-        var fontSize = 30;
-        while (ctx.measureText(i.seats) > width) {
-          fontSize -= 5;
-          ctx.font = fontSize + 'px serif';
+        var fontSize = 20;
+        while (ctx.measureText(i.seats + " Plätze").width > width) {
+
+          fontSize -= 10;
+          ctx.font = fontSize + 'px sans-serif';
         }
 
         ctx.textAlign = 'center';
@@ -275,9 +299,18 @@ button:hover {
 }
 
 .not-available {
+  margin-left: 15px;
   display: inline-block;
   width: 10px;
   height: 10px;
   background: #ff0000;
+}
+
+.picked {
+  margin-left: 15px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #0a35f5;
 }
 </style>

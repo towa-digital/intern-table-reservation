@@ -12,14 +12,19 @@
       </tr>
 
         <tr v-for="t in selectedTables" v-bind:key="t.id">
-            <td colspan="2">
-                {{t.title}}
+            <td v-if="t.seats > 1">
+                {{t.title}} ({{t.seats}} Plätze)
+            </td>
+            <td v-if="t.seats = 1">
+                {{t.title}} ({{t.seats}} Platz)
+            </td>
+            <td>
+              <span class="icon">
+               <font-awesome-icon :icon="['fas', 'minus']" flip="horizontal" size="1x" />
+              </span>
             </td>
         </tr>
 
-
-
-      <!-- Drei Inputfelder -->
 
       <tr>
         <td colspan="2">
@@ -127,5 +132,18 @@ export default {
 }
 
 </script>
+
+<style scoped>
+
+  .icon {
+    width: 20%;
+    float: right;
+  }
+
+  .icon:hover {
+    background-color: #da3743;
+    color: #ffffff;
+  }
+</style>
 
 

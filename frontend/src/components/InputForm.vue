@@ -6,7 +6,8 @@
 
     <!--Step 2 -->
 
-    <StepTwo />
+    <StepTwoMobile v-show="$mq === 'mobile' || $mq === 'tablet'"/>
+    <StepTwoGraphic v-show="$mq === 'laptop' || $mq === 'lg'" />
 
     <!-- Step 3 -->
 
@@ -21,7 +22,8 @@
 <script>
 
 import StepOne from './InputSteps/StepOne.vue';
-import StepTwo from './InputSteps/StepTwoNew.vue';
+import StepTwoGraphic from './InputSteps/StepTwoNew.vue';
+import StepTwoMobile from './InputSteps/StepTwo.vue';
 import StepThree from './InputSteps/StepThree.vue';
 import StepFour from './InputSteps/StepFour.vue';
 
@@ -29,7 +31,8 @@ export default {
   name: 'InputForm',
   components: {
     StepOne,
-    StepTwo,
+    StepTwoGraphic,
+    StepTwoMobile,
     StepThree,
     StepFour,
   },
