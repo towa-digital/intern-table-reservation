@@ -90,10 +90,10 @@ function show_tableList()
                         Position Y
                     </th>
                     <th>
-                        Höhe 
+                        Breite 
                     </th>
                     <th>
-                        Breite
+                        Höhe
                     </th>";
                     }
                 ?>
