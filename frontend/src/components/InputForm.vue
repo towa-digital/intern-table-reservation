@@ -21,7 +21,7 @@
 <script>
 
 import StepOne from './InputSteps/StepOne.vue';
-import StepTwo from './InputSteps/StepTwo.vue';
+import StepTwo from './InputSteps/StepTwoNew.vue';
 import StepThree from './InputSteps/StepThree.vue';
 import StepFour from './InputSteps/StepFour.vue';
 

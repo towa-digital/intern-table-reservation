@@ -152,7 +152,9 @@ export default {
         this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
       } else {
 
-        this.$store.commit('setStepTwo', this)
+        this.$store.commit('setStepTwo', {
+          "selectedTableIds": this.tables
+        });
         this.$store.commit('incrementStepCounter');
         this.$store.commit('setError', '');
       }

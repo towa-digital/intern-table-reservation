@@ -119,15 +119,20 @@ function rest_getFreeTables($request)
         return new WP_Error("tooMuchPersons", getTooManyPersonsError());
     }
 
-    $returnArr = getSuitableTables(
+    $returnArr = getSuitableTablesWithFlag(
         $from,
         $to,
         $persons,
         $outside,
         0
     );
+    
+    $atLeastOneFree = false;
+    foreach($returnArr as $table) {
+        if($table["isFree"]) $atLeastOneFree = true;
+    }
 
-    if (count($returnArr) == 0) {
+    if (! $atLeastOneFree) {
         return new WP_Error("noSuitableTables", getNoFreeTablesError());
     }
 

@@ -10,9 +10,22 @@ const state = {
   allTables: [],
   timeSlots: [],
   holidays: [],
-  StepOne: {},
-  StepTwo: {},
-  StepThree: {}
+  StepOne: {
+    "date": undefined,
+    "from": 0,
+    "location": 0,
+    "numberOfSeats": 0
+  },
+  StepTwo: {
+    "selectedTableIds": []
+  },
+  StepThree: {
+    "firstname": "",
+    "lastname": "",
+    "mail": "",
+    "phonenumber": "",
+    "remarks": ""
+  }
 }
 
 const getters = {
@@ -32,11 +45,13 @@ const actions = {
 
   addReservation: ({ commit }) => {
     state.waitingForAjaxResponse = true;
+
+
     axios.post(
       "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
       {
         from: state.StepOne.from,
-        tables: JSON.stringify(state.StepTwo.tables),
+        tables: JSON.stringify(state.StepTwo.selectedTableIds),
         firstname: state.StepThree.firstname,
         lastname: state.StepThree.lastname,
         phonenumber: state.StepThree.phonenumber,
@@ -127,14 +142,14 @@ const mutations = {
   setError: (state, errorMsg) => {
     state.error.errormessage = errorMsg;
   },
-  setStepOne: (state, data) => {
-    state.StepOne = data;
+  setStepOne: (state, payload) => {
+    state.StepOne = payload;
   },
-  setStepTwo: (state, data) => {
-    state.StepTwo = data;
+  setStepTwo: (state, payload) => {
+    state.StepTwo = payload;
   },
-  setStepThree: (state, data) => {
-    state.StepThree = data;
+  setStepThree: (state, payload) => {
+    state.StepThree = payload;
   }
 }
 

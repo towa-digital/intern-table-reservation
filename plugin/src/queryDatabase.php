@@ -323,6 +323,32 @@
         return $freeTables;
     }
 
+    function getSuitableTablesWithFlag($startTime, $endTime, $numberOfSeats, $isOutside = -1, $reservationId = 0) {
+        if($isOutside < -1 || $isOutside > 1) $isOutside = -1;
+
+        $allTables = getTables();
+        $allReservations = getReservations();
+        $suitableTables = [];
+
+        foreach($allTables as $elemKey => $table) {
+            // füge alle Tische hinzu, bei denen nicht mehr Plätze frei bleiben würden, als maxUnusedSeatsPerReservation gestattet
+            // und zusätzlich innen/außen liegen
+            if (($isOutside === -1 || $table["isOutside"] == $isOutside)) {
+                $t = $table;
+
+                if($table["seats"] <= $numberOfSeats + getMaxUnusedSeatsPerReservation()) {
+                    $t["isFree"] = isTableFree($t["id"], $startTime, $endTime, $allReservations, $reservationId);
+                } else {
+                    $t["isFree"] = false;
+                }
+
+                $suitableTables[] = $t;
+            }
+        }
+
+        return $suitableTables;
+    }
+
     function getSuitableTables($startTime, $endTime, $numberOfSeats, $isOutside = -1, $reservationId = 0)
     {
         if($isOutside < -1 || $isOutside > 1) $isOutside = -1;

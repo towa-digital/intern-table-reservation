@@ -27,10 +27,10 @@ initQuickEdit(function(rowElement, id) {
     content += '<td><input type="number"  name="numberOfSeats" value="'+numberOfSeats+'" /></td>';
     content += '<td><input type="checkbox" name="isDisabled" '+(isDisabled ? 'checked' : '')+'/></td>';
 
-    content += '<td><input type="number"  name="posXs" value="'+posX+'" /></td>';
-    content += '<td><input type="number"  name="posY" value="'+posY+'" /></td>';
-    content += '<td><input type="number"  name="width" value="'+width+'" /></td>';
-    content += '<td><input type="number"  name="height" value="'+height+'" /></td>';
+    content += '<td><input type="number" step="0.01" name="posX" value="'+posX+'" /></td>';
+    content += '<td><input type="number" step="0.01" name="posY" value="'+posY+'" /></td>';
+    content += '<td><input type="number" step="0.01" name="width" value="'+width+'" /></td>';
+    content += '<td><input type="number" step="0.01" name="height" value="'+height+'" /></td>';
 
 
     rowElement.innerHTML = content + rowElement.innerHTML;

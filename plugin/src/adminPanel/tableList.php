@@ -48,7 +48,7 @@ function show_tableList()
 
             $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $id);
             if ($errorMsg === null) {
-                addTable($title, $isOutside, $numberOfSeats, $isDisabled , $id);
+                addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $id);
             } else {
                 echo '<p class="formError">'.$errorMsg.'</p>';
             }
@@ -81,18 +81,22 @@ function show_tableList()
                     <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                     <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                 </th>
-                <th>
-                    Position X
-                </th>
-                <th>
-                    Position Y
-                </th>
-                <th>
-                    Höhe 
-                </th>
-                <th>
-                    Breite
-                </th>
+                <?php
+                    if(current_user_can("tv_editTables")) {
+                        echo "<th>
+                                Position X
+                    </th>
+                    <th>
+                        Position Y
+                    </th>
+                    <th>
+                        Höhe 
+                    </th>
+                    <th>
+                        Breite
+                    </th>";
+                    }
+                ?>
                 <th style="width: 10%"></th>
             </tr>
             <?php
@@ -103,10 +107,14 @@ function show_tableList()
         echo '<td class="m_isOutside">'.($r["isOutside"] ? "ja" : "nein").'</td>';
         echo '<td class="m_numberOfSeats">'.$r["seats"].'</td>';
         echo '<td class="m_isDisabled">'.($r["isDisabled"] ? "ja" : "nein").'</td>';
-        echo '<td class="m_posX">'.$r["position"]["posX"].'</td>';
-        echo '<td class="m_posY">'.$r["position"]["posY"].'</td>';
-        echo '<td class="m_width">'.$r["position"]["width"].'</td>';
-        echo '<td class="m_height">'.$r["position"]["height"].'</td>';
+
+        if(current_user_can("tv_editTables")) {
+            echo '<td class="m_posX">'.$r["position"]["posX"].'</td>';
+            echo '<td class="m_posY">'.$r["position"]["posY"].'</td>';
+            echo '<td class="m_width">'.$r["position"]["width"].'</td>';
+            echo '<td class="m_height">'.$r["position"]["height"].'</td>';
+        }
+        
 
         echo '<td>';
         if(current_user_can("tv_deleteTables")) {
