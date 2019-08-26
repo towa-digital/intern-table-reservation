@@ -4,7 +4,7 @@
       type="radio"
       class="switch-input"
       name="view2"
-      value="0"
+      value = 0
       id="week2"
       v-model="location"
       @change="updateValue"
@@ -16,7 +16,7 @@
       type="radio"
       class="switch-input"
       name="view2"
-      value="1"
+      value = 1
       id="month2"
       v-model="location"
       @change="updateValue"
@@ -31,18 +31,18 @@ export default {
   name: 'InputFormToggle',
   data() {
     return {
-      location: 0,
+      location: "0",
     };
   },
   props: {
     value: {
-      type: String,
+      type: Number,
     },
   },
   methods: {
 
     updateValue(event) {
-      this.$emit('input', this.location);
+      this.$emit('input', parseInt(this.location));
       event.preventDefault();
     },
   },
@@ -112,7 +112,7 @@ export default {
   top: 2px;
   left: 2px;
   display: block;
-  width: 49.4%;
+  width: 49%;
   height: 28px;
   border-radius: 3px;
   /* -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2); */

@@ -2,36 +2,40 @@
 require_once(__DIR__."/../queryDatabase.php");
 require_once(__DIR__."/../csv.php");
 
+if($_GET["page"] == "exportreservations" && isset($_POST["isClicked"])) {
+    add_action('init', 'downloadCsv');
+    function downloadCsv() {
+        $str = getCsvAsString();
 
-
-function applyStyle_exportCSV()
-{
-    wp_enqueue_style("export_style", plugins_url("style/export.css", __FILE__));
-    wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+        header('Content-Type: text/plain');
+        header('Content-Length: ' . strlen($str));
+        header("Content-Disposition: attachment;filename=reservations.csv ");
+        header('Connection: close');
+        
+        echo $str;
+    }
 }
 
 
-function show_exportCSV()
+function applyStyle_export()
 {
-    if (isset($_POST["isClicked"])) {
-        exportCSV();
-    }
+    wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
+    wp_enqueue_style("export_style", plugins_url("style/export.css", __FILE__));
 
-    echo __DIR__ .'/../csv/daten.csv'; ?>
+}
 
-<table>
-    <tr><td>
-        <h3 class="inline">Exportieren Sie Ihre CSV</h3>                     
-    </td></tr>
-    <tr><td>
-        <form method="post">
-            <input name="isClicked" type="submit" class="btn" value="neue Liste erstellen"  />
-        </form>
-    </td></tr>
-    <tr><td>
-        <h4><a href="<?php echo __DIR__ .'\..\csv\daten.csv' ?>" download="Reservationsliste">Ihr Downloadlink</a></h4>
-    </td></tr>
-</table>
+function show_export()
+{
+?>
+
+<h1>Reservierungsliste als CSV exportieren</h1>
+<form method="post">
+    <input name="isClicked" type="submit" class="btn" value="neue Liste erstellen"  />
+</form>
+
 
 <?php
 }
