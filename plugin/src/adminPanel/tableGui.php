@@ -149,11 +149,23 @@ function show_tableGui() {
     </div>
     </div>
     <div id="mainBar">
-        <select id="insideOutside" class="bar">
-            <option value="inside">Innen</option>
-            <option value="outside" <?php if($_POST["isOutside"] == true) echo "selected"; ?>>Außen</option>
-        </select>
-        <button type="button" onclick="addTable()">Tisch hinzufügen</button>
+
+        <h2>
+            Graphische Tischverwaltung
+        </h2>
+        <table class="buttonOverview">
+            <tr>
+                <td>
+                    <select id="insideOutside" class="bar">
+                        <option value="inside">Innen</option>
+                        <option value="outside" <?php if($_POST["isOutside"] == true) echo "selected"; ?>>Außen</option>
+                    </select>   
+                </td>
+                <td>
+                    <button type="button" onclick="addTable()" id="newTable">Tisch hinzufügen</button>
+                </td>
+            </tr>
+        </table>
     </div>
     <div id="positioningBarOfNewTable" class="hidden bar">
         <button type="button" onclick="cancelPositioning()">Erstellen abbrechen</button>

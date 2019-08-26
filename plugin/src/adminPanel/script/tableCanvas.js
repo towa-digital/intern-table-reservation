@@ -65,8 +65,47 @@ function redrawCanvas() {
         var width = (table.position["width"]) * canvas.width;
         var height = (table.position["height"]) * canvas.height;
 
-        ctx.fillStyle = "#000000";
+        var strokeX;
+        var strokeY;
+        var strokeWidth;
+        var strokeHeight;
+
+        if (table.position['width'] < 0.15 && table.position['height'] < 0.15) {
+          strokeX = table.position['posX'] * canvas.width + table.position['height'] * 0.15 * canvas.height;
+          strokeY = table.position['posY'] * canvas.height + table.position['height'] * 0.15 * canvas.height;
+          strokeWidth = table.position['width'] * canvas.width - table.position['height'] * 0.3 * canvas.height;
+          strokeHeight = table.position['height'] * canvas.height - table.position['height'] * 0.3 * canvas.height;
+        } else {
+          strokeX = table.position['posX'] * canvas.width + 0.005 * canvas.width;
+          strokeY = table.position['posY'] * canvas.height + 0.005 * canvas.width;
+          strokeWidth = table.position['width'] * canvas.width - 0.01 * canvas.width;
+          strokeHeight = table.position['height'] * canvas.height - 0.01 * canvas.width;
+        }
+
+        ctx.fillStyle = '#f5f7f5';
         ctx.fillRect(posX, posY, width, height);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = '#606361';
+        ctx.strokeRect(posX, posY, width, height);
+
+        ctx.strokeStyle = '#ff7e05'; // orange
+        ctx.fillStyle = '#ff7e05';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
+
+        ctx.font = '20px sans-serif';
+
+        var fontSize = 20;
+        while (table.title + " (" + table.seats + ")".width > width) {
+
+          fontSize -= 10;
+          ctx.font = fontSize + 'px sans-serif';
+        }
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.fillText(table.title + " (" + table.seats + ")", posX + width / 2, posY + height / 2);
     }
 
     if(mouseDown !== undefined && mouseUp !== undefined) {
