@@ -162,7 +162,13 @@ export default {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.fillText(i.seats + " Plätze", posX + width / 2, posY + height / 2);
+        if(i.seats == 1){
+          ctx.fillText(i.seats + " Platz", posX + width / 2, posY + height / 2);
+        } else {
+          ctx.fillText(i.seats + " Plätze", posX + width / 2, posY + height / 2);
+        }
+
+        
       }
     },
   },
