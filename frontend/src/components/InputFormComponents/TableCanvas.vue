@@ -151,7 +151,7 @@ export default {
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
         }
 
-        ctx.font = '20px serif';
+        ctx.font = '20px sans-serif';
 
         var fontSize = 30;
         while (ctx.measureText(i.seats) > width) {
@@ -167,8 +167,6 @@ export default {
         } else {
           ctx.fillText(i.seats + " Plätze", posX + width / 2, posY + height / 2);
         }
-
-        
       }
     },
   },
