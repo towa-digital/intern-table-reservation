@@ -1,0 +1,35 @@
+.canvasParent {
+    width: 100%;
+    /* 32px Wordpress-Admin-Header-Bar + 32px eigene Headerbar + 6px Abstand nach unten*/
+    height: calc(100vh - 70px);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: calc(100% + 20px);
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0.5);
+}
+
+.overlayContent{
+    padding: 10px;
+    margin: 10px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    width: calc(100% - 40px);
+    height: calc(100% - 20px);
+}
+
+#wpfooter {
+    display: none;
+}
+
+.bar {
+    height: 32px;
+}
+
+#wpbody-content {
+    padding: 0;
+}
