@@ -6,13 +6,9 @@
 
     <!--Step 2 -->
 
-<<<<<<< HEAD
     <StepTwoMobile v-show="step === 2 && ($mq === 'mobile' || $mq === 'tablet')" />
     <StepTwoGraphic v-show="step === 2 && ($mq === 'laptop' || $mq === 'lg')" />
-=======
-    <StepTwoMobile v-show="step == 2"/>
-   <!-- <StepTwoGraphic v-show="step == 2"/>-->
->>>>>>> 8aad8afa3775936c52ab426b243de03c51ecc4c0
+
 
     <!-- Step 3 -->
 

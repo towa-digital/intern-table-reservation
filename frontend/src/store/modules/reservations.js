@@ -164,9 +164,9 @@ const mutations = {
   setStepOne: (state, payload) => {
     state.StepOne = payload;
   },
-  setStepTwo: (state, payload) => {
-   // state.StepTwo = payload;
-  },
+  // setStepTwo: (state, payload) => {
+  //  // state.StepTwo = payload;
+  // },
   setStepThree: (state, payload) => {
     state.StepThree = payload;
   }

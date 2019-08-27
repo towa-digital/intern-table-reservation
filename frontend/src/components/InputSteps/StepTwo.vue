@@ -7,9 +7,9 @@
           </div>
         </td>
       </tr>
-    <tr v-for="t of getCombinations">
+    <tr v-for="t of getCombinations" v-bind:key="t">
       <td v-html="getTextForCombination(t)"></td>
-      <td><button type="button" @click="onClick(t)">Übernehmen</button></td>
+      <td><button type="button" class="btn" @click="onClick(t)">Übernehmen</button></td>
     </tr>
     <tr>
       <td colspan="2">
@@ -55,7 +55,7 @@ export default {
 
       var toReturn = "<ul>";
       for(var entry of seatsMap) {
-        if(entry[0] != undefined) toReturn += "<li>"+entry[1]+"x "+entry[0].seats+" Plätze</li>";
+        if(entry[0] != undefined) toReturn += "<li>"+entry[1]+" x "+entry[0].seats+" Plätze</li>";
       }
       toReturn += "</ul>";
 
@@ -66,7 +66,7 @@ export default {
       var tooMuchTablesForPersons_error = false;
       var tooMuchTablesForPersons_flag = false;
 
-      for (var n of selectedTables) {
+      for (n of selectedTables) {
         if (tooMuchTablesForPersons_flag) tooMuchTablesForPersons_error = true;
 
         var nosOnTable = n.seats == '' ? 0 : parseInt(n.seats);
@@ -110,9 +110,9 @@ export default {
         return [[suitableTables[0]]];
       }
 
-
+      
       var availableTables = [];
-      for(var t of this.allTables) {
+      for(t of this.allTables) {
         if(t.isFree && !t.isDisabled) availableTables.push(t);
       }
 
@@ -131,12 +131,19 @@ export default {
       return suitableTables;
     },
     
-    numberOfSeats() {
-        return this.$store.getters.StepOne.numberOfSeats;
-    },
+    // numberOfSeats() {
+    //     return this.$store.getters.StepOne.numberOfSeats;
+    // },
   },
 };
 </script>
 
 <style scoped>
+.btn {
+  float: right;
+}
+
+ul{
+  list-style: none !important;
+}
 </style>

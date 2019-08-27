@@ -58,9 +58,6 @@
 <script>
 import TableCanvas from '../InputFormComponents/TableCanvas.vue';
 
-import { mapGetters } from 'vuex';
-import { debuglog } from 'util';
-
 export default {
     name: "StepTwoNew",
     components: {
