@@ -6,8 +6,8 @@
 
     <!--Step 2 -->
 
-    <!--<StepTwoMobile v-show="$mq === 'mobile' || $mq === 'tablet'"/>-->
-    <StepTwoGraphic v-show="step == 2"/>
+    <StepTwoMobile v-show="step === 2 && ($mq === 'mobile' || $mq === 'tablet')" />
+    <StepTwoGraphic v-show="step === 2 && ($mq === 'laptop' || $mq === 'lg')" />
 
     <!-- Step 3 -->
 
@@ -24,7 +24,7 @@ import { mapGetters } from 'vuex';
 
 import StepOne from './InputSteps/StepOne.vue';
 import StepTwoGraphic from './InputSteps/StepTwoNew.vue';
-//import StepTwoMobile from './InputSteps/StepTwo.vue';
+import StepTwoMobile from './InputSteps/StepTwo.vue';
 import StepThree from './InputSteps/StepThree.vue';
 import StepFour from './InputSteps/StepFour.vue';
 
@@ -33,13 +33,13 @@ export default {
   components: {
     StepOne,
     StepTwoGraphic,
-    //StepTwoMobile,
+    StepTwoMobile,
     StepThree,
     StepFour,
   },
   computed: {
-    ...mapGetters(['errormessage', 'step', "allTables", "selectedTables"]),
-  }
+    ...mapGetters(['errormessage', 'step', 'allTables', 'selectedTables']),
+  },
   // props: ['reservations'],
 };
 </script>
@@ -53,6 +53,8 @@ input {
   padding-bottom: 3%;
   padding-top: 2%;
   margin-bottom: 2%;
+
+  -webkit-appearance: none;
 }
 
 select {
@@ -67,6 +69,8 @@ select {
 
   padding-bottom: 4.9%;
   padding-top: 2%;
+
+  -webkit-appearance: none;
 }
 
 input,
@@ -89,6 +93,8 @@ select:hover {
   color: #fff;
   cursor: pointer;
   margin-bottom: 0 !important;
+  -webkit-appearance: none;
+  border-radius: 0;
 }
 
 .btn:hover {
@@ -107,6 +113,21 @@ table {
   margin-left: 35%;
 }
 
+@media only screen and (max-width: 1200px) {
+  table {
+    width: 50%;
+    margin-left: 25%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  table {
+    width: 100%;
+    margin-left: 0px;
+    box-shadow: none;
+  }
+}
+
 h2 {
   text-align: center;
 
@@ -118,8 +139,6 @@ h2 {
 .centered table {
   border: 2px solid #da3743;
 }
-
-
 
 a {
   color: #da3743;
@@ -134,12 +153,11 @@ a {
   border-radius: 50%;
   border-top: 16px solid #da3743;
   width: 30px;
-  height: 30px;;
+  height: 30px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-  
-  margin: auto;
 
+  margin: auto;
 }
 
 /* Safari */
@@ -165,6 +183,8 @@ input[type='submit']:disabled {
   background: #e15b64;
   border: none;
   margin-bottom: 0 !important;
+
+  -webkit-appearance: none;
 }
 </style>
 

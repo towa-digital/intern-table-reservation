@@ -53,7 +53,7 @@ const actions = {
     }
 
     axios.post(
-      "http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
+      "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
       {
         from: state.StepOne.from,
         tables: JSON.stringify(selectedTableIds),
@@ -80,7 +80,7 @@ const actions = {
 
   fetchTables: ({ commit }, time) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;
@@ -97,7 +97,7 @@ const actions = {
   },
   getTimeSlots: ({ commit }) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
       .then((response) => {
         state.waitingForAjaxResponse = false;
         commit("onTimeSlotLoad", response.data);
