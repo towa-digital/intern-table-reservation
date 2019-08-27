@@ -149,19 +149,37 @@ function show_tableGui() {
     </div>
     </div>
     <div id="mainBar">
-        <select id="insideOutside" class="bar">
-            <option value="inside">Innen</option>
-            <option value="outside" <?php if($_POST["isOutside"] == true) echo "selected"; ?>>Außen</option>
-        </select>
-        <button type="button" onclick="addTable()">Tisch hinzufügen</button>
+
+        <h2>
+            Graphische Tischverwaltung
+        </h2>
+        <table class="buttonOverview">
+            <tr>
+                <td>
+                    <select id="insideOutside" class="bar">
+                        <option value="inside">Innen</option>
+                        <option value="outside" <?php if($_POST["isOutside"] == true) echo "selected"; ?>>Außen</option>
+                    </select>   
+                </td>
+                <td>
+                    <button type="button" onclick="addTable()" id="newTable">Tisch hinzufügen</button>
+                </td>
+            </tr>
+        </table>
     </div>
     <div id="positioningBarOfNewTable" class="hidden bar">
-        <button type="button" onclick="cancelPositioning()">Erstellen abbrechen</button>
-        <button type="submit" id="submitTableButton" onclick="submitNewTable()" disabled>Tisch speichern</button>
+        <h2>Neuen Tisch positionieren</h2>
+        <div class="buttonOverviewNewTable">
+            <button type="button" onclick="cancelPositioning()" class="buttonNewTable">Erstellen abbrechen</button>
+            <button type="submit" id="submitTableButton" class="buttonNewTable" onclick="submitNewTable()" disabled>Tisch speichern</button>
+        </div>
     </div>
     <div id="positioningBarForEdit" class="hidden bar">
-        <button type="button" onclick="discardNewPositioning_backToWdiget()">Abbrechen</button>
-        <button type="button" onclick="saveNewPositioning_backToWidget()">Übernehmen</button>
+        <h2>Tisch neu positionieren</h2>
+        <div class="buttonOverviewNewTable">
+            <button type="button" class="buttonNewTable" onclick="discardNewPositioning_backToWdiget()">Abbrechen</button>
+            <button type="button" class="buttonNewTable" onclick="saveNewPositioning_backToWidget()">Übernehmen</button>
+        </div>
     </div>
     <div class="canvasParent">
             <canvas id="canvas"></canvas>

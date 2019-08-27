@@ -1,7 +1,7 @@
 .canvasParent {
     width: 100%;
     /* 32px Wordpress-Admin-Header-Bar + 32px eigene Headerbar + 6px Abstand nach unten*/
-    height: calc(100vh - 70px);
+    height: calc(100vh - 100px);
 }
 
 .overlay {
@@ -32,4 +32,104 @@
 
 #wpbody-content {
     padding: 0;
+}
+
+#mainBar {
+    height: 50px;
+    border-bottom: 2px solid black;
+}
+
+#insideOutside {
+
+  /* box-shadow: none;
+  border-left: none;
+  border-top: none;
+  border-right: none; */
+  border-bottom: 0.5px solid lightgrey;
+
+  /* background-color: #ffff; */
+
+  /* font-size: 13px; */
+
+    /* margin-top: 10px; */
+
+    /* padding: 5px; */
+    border: none;
+    background: #ffffff;
+    color: #000;
+    cursor: pointer;
+    /* line-height: 32px !important;
+    height: 32px; */
+    padding: 0 !important;
+
+    margin-left: 10px;
+    margin-right: 10px;
+    /* margin-bottom: 0 !important */
+
+}
+
+#insideOutside:hover {
+    border-bottom: 2px solid #da3743;
+}
+
+#newTable {
+    /* margin-top: 5px; */
+    padding: 5px;
+    border: none;
+    background: #da3743;
+    color: #fff;
+    cursor: pointer;
+    /* margin-bottom: 0 !important; */
+
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#newTable:hover {
+    background: #e15b64;
+    border: none;
+    margin-bottom: 0 !important;
+}
+
+.buttonOverview{
+    float: right;
+    margin-top: 5px;
+}
+
+h2 {
+    clear: left;
+    float: left;
+
+    font-size: 20px !important;
+
+    margin-top: 15px !important;
+}
+
+.buttonNewTable{
+    padding: 5px;
+    border: none;
+    background: #da3743;
+    color: #fff;
+    cursor: pointer;
+    /* margin-bottom: 0 !important; */
+
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.buttonNewTable:hover{
+    background: #e15b64;
+    border: none;
+    margin-bottom: 0 !important;
+}
+
+.bar{
+    height: 50px;
+    border-bottom: 2px solid black;
+}
+
+.buttonOverviewNewTable{
+    float: right;
+    margin-top: 5px;
+    padding-top: 7px;
 }
