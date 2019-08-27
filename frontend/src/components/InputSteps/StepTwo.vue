@@ -7,7 +7,7 @@
           </div>
         </td>
       </tr>
-    <tr v-for="t of getCombinations" v-bind:key="t">
+    <tr v-for="t in getCombinations" :key="t.t1">
       <td v-html="getTextForCombination(t)"></td>
       <td><button type="button" class="btn" @click="onClick(t)">Übernehmen</button></td>
     </tr>
