@@ -3,16 +3,16 @@
     <div class="overlay">
       <div class="popup">
         <div class="header">
-          <h4>Tisch: {{tableName}}</h4>
+          <h4 v-html="errormessage"></h4>
 
           <div class="buttons">
             <button
               type="button"
-              :disabled="selected === undefined"
-              @click="emitToParent"
+              :disabled="selected.length == 0"
+              @click="onGetReservation"
             >Übernehmen</button>
 
-            <button type="button" @click="cancelAndEmitToParent">Abbrechen</button>
+            <button type="button" @click="onBack">Abbrechen</button>
           </div>
 
           <div class="legend">
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      selected: undefined,
+      selected: [],
       offset: {
         "x": -1,
         "y": -1
@@ -72,18 +72,6 @@ export default {
 
       return indexOf != -1;
     },
-    emitToParent() {
-      this.$emit('input', {
-        timestamp: new Date(),
-        value: this.selected,
-      });
-    },
-    cancelAndEmitToParent() {
-      this.$emit('input', {
-        timestamp: new Date(),
-        value: undefined,
-      });
-    },
     useTable(evt) {
       var canvas = this.$refs.chooseTable;
 
@@ -91,10 +79,9 @@ export default {
       var y = evt.offsetY;
 
       var that = this;
-      var isSet = false;
 
       this.allTables.forEach(function(table) {
-        if (!that.isTableFree(table) || !table.isFree) return;
+        if (!table.isFree) return;
 
         var posX = table.position.posX * canvas.width;
         var posY = table.position.posY * canvas.height;
@@ -102,12 +89,22 @@ export default {
         var height = table.position.height * canvas.height;
 
         if (x >= posX && x <= posX + width && y >= posY && y <= posY + height) {
-          isSet = true;
-          that.selected = table;
+
+          if(that.isTableFree(table)) {
+            that.selected.push(table);
+            that.$store.commit("claimTable", table);
+          } else {
+            var indexOf = -1;
+            for(var i in that.selected) {
+              if(that.selected[i].id == table.id) indexOf = i;
+            }
+            that.selected.splice(indexOf, 1);
+
+            that.$store.commit("freeTable", table);
+          }
         }
       });
 
-      if (!isSet) this.selected = undefined;
 
       this.redrawCanvas();
     },
@@ -193,12 +190,41 @@ export default {
         }
       }
     },
+    onBack() {
+      this.$store.commit('setError', '');
+      this.$store.commit('decrementStepCounter');
+    },
+    onGetReservation() {
+      var availableSeats = 0;
+      var tooMuchTablesForPersons_error = false;
+      var tooMuchTablesForPersons_flag = false;
+
+      for (var n of this.selected) {
+        if (tooMuchTablesForPersons_flag) tooMuchTablesForPersons_error = true;
+
+        var nosOnTable = n.seats == '' ? 0 : parseInt(n.seats);
+        availableSeats += nosOnTable;
+
+        if (availableSeats >= this.numberOfSeats) tooMuchTablesForPersons_flag = true;
+      }
+
+      if (availableSeats < this.numberOfSeats) {
+        this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
+      } else if (tooMuchTablesForPersons_error) {
+        this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
+      } else {
+            this.$store.commit('incrementStepCounter');
+            this.$store.commit('setError', '');
+          }
+        }
   },
   computed: {
-    ...mapGetters(['freeTables', 'allTables']),
+    ...mapGetters(['freeTables', 'allTables', "errormessage"]),
     tableName() {
-      if (this.selected === undefined) return 'Kein Tisch ausgewählt';
-      else return this.selected.title;
+      return "";
+    },
+    numberOfSeats() {
+          return this.$store.getters.StepOne.numberOfSeats;
     },
   },
   watch: {
@@ -227,6 +253,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
+  min-width: 800px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }

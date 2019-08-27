@@ -53,26 +53,26 @@ export default {
     },
     updateValue(event) {
       var selectedId = this.$refs.input.value;
-      this.$emit("input", selectedId);
+
+      var selectedObj = undefined;
+      // Table-Objekt zu ausgewählter ID abfragen
+      for(var table of allTables) {
+        if(table.id == selectedId) selectedObj = table;
+      }
+      this.$emit("input", selectedObj);
 
       event.preventDefault();
 
       if(this.selected !== undefined) {
         this.$store.commit("freeTable", this.selected);
       }
-      this.selected = undefined;
-
-      for(var value of this.$store.getters.allTables) {
-        if(value["id"] == selectedId) {
-          this.selected = value;
-        }
-      }
+      this.selected = selectedObj;
 
       if(this.selected !== undefined) {
         this.$store.commit("claimTable", this.selected);
       }
     },
-  }, computed: mapGetters(['freeTables'])
+  }, computed: mapGetters(['freeTables', "allTables"])
   
 };
 </script>

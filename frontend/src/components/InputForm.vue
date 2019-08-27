@@ -6,8 +6,8 @@
 
     <!--Step 2 -->
 
-    <StepTwoMobile v-show="$mq === 'mobile' || $mq === 'tablet'"/>
-    <StepTwoGraphic v-show="$mq === 'laptop' || $mq === 'lg'" />
+    <!--<StepTwoMobile v-show="$mq === 'mobile' || $mq === 'tablet'"/>-->
+    <StepTwoGraphic v-show="step == 2"/>
 
     <!-- Step 3 -->
 
@@ -20,10 +20,11 @@
 </template> 
 
 <script>
+import { mapGetters } from 'vuex';
 
 import StepOne from './InputSteps/StepOne.vue';
 import StepTwoGraphic from './InputSteps/StepTwoNew.vue';
-import StepTwoMobile from './InputSteps/StepTwo.vue';
+//import StepTwoMobile from './InputSteps/StepTwo.vue';
 import StepThree from './InputSteps/StepThree.vue';
 import StepFour from './InputSteps/StepFour.vue';
 
@@ -32,10 +33,13 @@ export default {
   components: {
     StepOne,
     StepTwoGraphic,
-    StepTwoMobile,
+    //StepTwoMobile,
     StepThree,
     StepFour,
   },
+  computed: {
+    ...mapGetters(['errormessage', 'step', "allTables", "selectedTables"]),
+  }
   // props: ['reservations'],
 };
 </script>

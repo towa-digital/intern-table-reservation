@@ -17,7 +17,7 @@ const state = {
     "numberOfSeats": 0
   },
   StepTwo: {
-    "selectedTableIds": []
+    "selectedTables": []
   },
   StepThree: {
     "firstname": "",
@@ -34,6 +34,7 @@ const getters = {
   waitingForAjaxResponse: state => state.waitingForAjaxResponse,
   allTables: state => state.allTables,
   freeTables: state => state.freeTables,
+  selectedTables: state => state.StepTwo.selectedTables,
   timeSlots: state => state.timeSlots,
   holidays: state => state.holidays,
   StepOne: state => state.StepOne
@@ -46,12 +47,16 @@ const actions = {
   addReservation: ({ commit }) => {
     state.waitingForAjaxResponse = true;
 
+    var selectedTableIds = [];
+    for(var tableObj of state.StepTwo.selectedTables) {
+      selectedTableIds.push(tableObj.id);
+    }
 
     axios.post(
-      "http://localhost/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
+      "http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/savenewreservation",
       {
         from: state.StepOne.from,
-        tables: JSON.stringify(state.StepTwo.selectedTableIds),
+        tables: JSON.stringify(selectedTableIds),
         firstname: state.StepThree.firstname,
         lastname: state.StepThree.lastname,
         phonenumber: state.StepThree.phonenumber,
@@ -75,7 +80,7 @@ const actions = {
 
   fetchTables: ({ commit }, time) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
+    axios.get('http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;
@@ -92,7 +97,7 @@ const actions = {
   },
   getTimeSlots: ({ commit }) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
+    axios.get('http://192.168.1.22/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
       .then((response) => {
         state.waitingForAjaxResponse = false;
         commit("onTimeSlotLoad", response.data);
@@ -128,6 +133,7 @@ const mutations = {
     state.freeTables = JSON.parse(JSON.stringify(tables));
   },
   claimTable: (state, tableObj) => {
+    // von freeTables entfernen
     var index = -1;
     for (var i in state.freeTables) {
       var elem = state.freeTables[i];
@@ -135,9 +141,22 @@ const mutations = {
     }
 
     if (index != -1) state.freeTables.splice(index, 1);
+
+    // zu selectedTables hinzufügen
+    state.StepTwo.selectedTables.push(tableObj);
   },
   freeTable: (state, tableObj) => {
+    // zu freeTables hinzufügen
     state.freeTables.push(tableObj);
+
+    // von selectedTables entfernen
+    var index = -1;
+    for(var i in state.StepTwo.selectedTables) {
+      var elem = state.StepTwo.selectedTables[i];
+      if(elem.id == tableObj.id) index = i;
+    }
+
+    if(index != -1) state.StepTwo.selectedTables.splice(index, 1);
   },
   setError: (state, errorMsg) => {
     state.error.errormessage = errorMsg;
@@ -146,7 +165,7 @@ const mutations = {
     state.StepOne = payload;
   },
   setStepTwo: (state, payload) => {
-    state.StepTwo = payload;
+   // state.StepTwo = payload;
   },
   setStepThree: (state, payload) => {
     state.StepThree = payload;
