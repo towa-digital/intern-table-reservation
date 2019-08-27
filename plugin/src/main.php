@@ -39,8 +39,8 @@ function setup_admin_menu()
     $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "tv_addReservations", "addreservation", "show_addReservation");
     add_action("admin_print_styles-".$addReservation, "applyStyle_addReservation");
 
-    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_exportCSV");
-    add_action("admin_print_styles-".$exportCSV, "applyStyle_exportCSV");
+    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_export");
+    add_action("admin_print_styles-".$exportCSV, "applyStyle_export");
 
     $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "tv_viewTables", "managetables", "show_tableList");
     add_action("admin_print_styles-".$tableList, "applyStyle_tableList");
@@ -87,7 +87,30 @@ add_action("rest_api_init", function () {
         "methods" => "GET",
         "callback" => "rest_getTimeSlots",
     ]);
+    register_rest_route("tischverwaltung/v1", "getobjects/(?P<isOutside>\d+)", [
+        "methods" => "GET",
+        "callback" => "rest_getObjects"
+    ]);
 });
+
+
+
+function rest_getObjects($request) {
+    $isOutside = $request["isOutside"];
+    $payload = [
+        "roomOutlines" => getObjectsByType("roomOutlines", $isOutside),
+        "seperators" => getObjectsByType("seperators", $isOutside),
+        "windows" => getObjectsByType("windows", $isOutside),
+        "doors" => getObjectsByType("doors", $isOutside),
+        "toilets" => getObjectsByType("toilets", $isOutside),
+        "bars" => getObjectsByType("bars", $isOutside),
+    ];
+
+    $response = new WP_REST_Response($payload);
+    $response->set_status(200);
+
+    return $response;
+}
 
 
 

@@ -118,6 +118,7 @@ function redrawCanvas() {
 
 }
 
+
 /**
  * Wird aufgerufen, wenn der Benutzer auf den Button zum Hinzufügen eines neuen Tisches klickt.
  */
@@ -196,7 +197,7 @@ function closeWidgets() {
 
     $(".widget").addClass("hidden");
     
-    $(".publish").addClass("hidden");
+    $(".multiplePublish").addClass("hidden");
 
     tableToEdit = undefined;
     
@@ -385,4 +386,13 @@ function startEdit(tableObject) {
 
     tableToEdit = tableObject;
 
+}
+
+function changeRoomDimensions() {
+    $("#changeRoomDimensions").removeClass("hidden");
+    $("#saveRoomDimensionsBtn").val($("#insideOutside").val());
+
+
+    $("#roomWidth").val(isOutside() ? width_outside : width_inside);
+    $("#roomDepth").val(isOutside() ? depth_outside : depth_inside);
 }

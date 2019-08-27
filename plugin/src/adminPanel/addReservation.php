@@ -77,7 +77,7 @@ function show_addReservation()
     <p id="jsError" class="hidden"></p>
     <h1>Reservierung hinzufügen</h1>
     <form method="post" class="flexForm">
-        <div id="formContent">
+        <div class="formContent">
             <table class="data formData">
                 <tr><td>
                     <h2>Reservierungsdaten</h2>

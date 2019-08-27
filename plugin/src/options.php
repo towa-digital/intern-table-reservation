@@ -277,6 +277,7 @@ function secondsToValueString(int $seconds)
 
 function storeImpl($key, $value)
 {
+    echo "STORE IMPL: $key $value";
     $option = get_page_by_title($key, ARRAY_A, "options");
 
     $id = wp_insert_post([

@@ -96,6 +96,40 @@
         return $allReservations;
     }
 
+
+    function getObjectsByType(string $type, bool $isOutside) {
+        $allObjects = [];
+
+        $query = new WP_Query([
+            'post_type' => 'objects',
+            'post_status' => 'publish',
+            "post_title" => $type,
+            'posts_per_page' => -1,
+        ]);
+
+        while ($query->have_posts()) {
+            $query->the_post();
+            
+            $a = [
+                "id" => get_the_ID(),
+                "type" => $type,
+                "isOutside" => get_field("isOutside"),
+                "startX" => get_field("startX"),
+                "startY" => get_field("startY"),
+                "endX" => get_field("endX"),
+                "endY" => get_field("endY"),
+            ];
+
+            if($a["isOutside"] == $isOutside) {
+                $allObjects[] = $a;
+            }
+        }
+
+        wp_reset_postdata();
+
+        return $allObjects;
+    }
+
     /**
      * Gibt die Daten des Tisches mit der übergebenen ID als assoziatives Array zurück.
      * - id: eindeutige ID der Tisches (dieselbe, die übergeben wurde)
