@@ -168,12 +168,18 @@ function show_tableGui() {
         </table>
     </div>
     <div id="positioningBarOfNewTable" class="hidden bar">
-        <button type="button" onclick="cancelPositioning()">Erstellen abbrechen</button>
-        <button type="submit" id="submitTableButton" onclick="submitNewTable()" disabled>Tisch speichern</button>
+        <h2>Neuen Tisch positionieren</h2>
+        <div class="buttonOverviewNewTable">
+            <button type="button" onclick="cancelPositioning()" class="buttonNewTable">Erstellen abbrechen</button>
+            <button type="submit" id="submitTableButton" class="buttonNewTable" onclick="submitNewTable()" disabled>Tisch speichern</button>
+        </div>
     </div>
     <div id="positioningBarForEdit" class="hidden bar">
-        <button type="button" onclick="discardNewPositioning_backToWdiget()">Abbrechen</button>
-        <button type="button" onclick="saveNewPositioning_backToWidget()">Übernehmen</button>
+        <h2>Tisch neu positionieren</h2>
+        <div class="buttonOverviewNewTable">
+            <button type="button" class="buttonNewTable" onclick="discardNewPositioning_backToWdiget()">Abbrechen</button>
+            <button type="button" class="buttonNewTable" onclick="saveNewPositioning_backToWidget()">Übernehmen</button>
+        </div>
     </div>
     <div class="canvasParent">
             <canvas id="canvas"></canvas>
