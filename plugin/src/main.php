@@ -39,8 +39,8 @@ function setup_admin_menu()
     $addReservation = add_submenu_page("managereservations", "Neue Reservierung erstellen", "Neue Reservierung erstellen", "tv_addReservations", "addreservation", "show_addReservation");
     add_action("admin_print_styles-".$addReservation, "applyStyle_addReservation");
 
-    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_exportCSV");
-    add_action("admin_print_styles-".$exportCSV, "applyStyle_exportCSV");
+    $exportCSV = add_submenu_page("managereservations", "Exportieren als CSV", "Exportieren als CSV", "tv_exportReservations", "exportcsv", "show_export");
+    add_action("admin_print_styles-".$exportCSV, "applyStyle_export");
 
     $tableList = add_menu_page("Tische verwalten", "Tische verwalten", "tv_viewTables", "managetables", "show_tableList");
     add_action("admin_print_styles-".$tableList, "applyStyle_tableList");
