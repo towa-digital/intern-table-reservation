@@ -179,3 +179,84 @@ Das Feld "display" entspricht dem Zeitstempel als String, welcher dem Benutzer a
 			// es handelt sich um einen beliebige Unix-Timestamps am jeweiligen Tag
 		]
 	}
+
+## Sonstige Objekte abfragen
+
+**Zugriffsmethode:** GET
+
+**URL:** tischverwaltung/v1/getobjects/\<isOutside\>
+
+**Parameter:**
+
+- \<isOutside\> ist ein Integer, der 0 ist, wenn die Objekte im Innenbereich abgefragt werden sollen und 1, wenn die Objekte im Außenbereich abgefragt werden sollen
+
+**Rückgabe:** (Status-Code: 200)
+
+    {
+		roomOutlines: [
+			{
+				id: [integer],
+				type: "roomOutlines",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		],
+		seperators: [
+			{
+				id: [integer],
+				type: "seperators",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		],
+		windows: [
+			{
+				id: [integer],
+				type: "windows",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		],
+		doors: [
+			{
+				id: [integer],
+				type: "doors",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		],
+		toilets: [
+			{
+				id: [integer],
+				type: "toilets",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		],
+		bars: [
+			{
+				id: [integer],
+				type: "bars",
+				startX: [float],
+				startY: [float],
+				endX: [float],
+				endY: [float]
+			},
+			...
+		]
+	}

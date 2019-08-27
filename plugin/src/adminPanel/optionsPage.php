@@ -67,7 +67,7 @@ function show_optionsPage()
 <div id="main">
     <h1>Tischverwaltung</h1>
     <form method="post">
-        <div id="formContent">
+        <div class="formContent">
 
             <table class="data formData">
                 <tr><td>

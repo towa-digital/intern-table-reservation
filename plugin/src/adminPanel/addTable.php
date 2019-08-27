@@ -51,7 +51,7 @@ function show_addTable()
 <div id="main">
     <h1>Tisch hinzufügen</h1>
     <form method="post" class="flexForm">
-        <div id="formContent">
+        <div class="formContent">
             <div class="titleData">
                 <input type="text" name="title" class="title" placeholder="Bezeichnung des Tisches" />
             </div>

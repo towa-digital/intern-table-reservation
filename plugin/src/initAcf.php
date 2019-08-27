@@ -374,5 +374,108 @@
             'active' => true,
             'description' => '',
         ]);
+
+        acf_add_local_field_group(array(
+            'key' => 'group_5d64fc5274b05',
+            'title' => 'Objektdaten',
+            'fields' => array(
+                [
+                    'key' => 'field_5d497e7cdeeec',
+                    'label' => 'außen?',
+                    'name' => 'isOutside',
+                    'type' => 'true_false',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => [
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ],
+                    'message' => 'Ist der Tisch im Außenbereich?',
+                    'default_value' => 0,
+                    'ui' => 0,
+                    'ui_on_text' => '',
+                    'ui_off_text' => '',
+                ],
+                array(
+                    'key' => 'field_5d64fc60d5612',
+                    'label' => 'startX',
+                    'name' => 'startX',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'step' => '0.01',
+                ),
+                array(
+                    'key' => 'field_5d64fc60d5615',
+                    'label' => 'startY',
+                    'name' => 'startY',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'step' => '0.01',
+                ),
+                array(
+                    'key' => 'field_5d64fc67d5612',
+                    'label' => 'endX',
+                    'name' => 'endX',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'step' => '0.01',
+                ),
+                array(
+                    'key' => 'field_5d64fc6075615',
+                    'label' => 'endY',
+                    'name' => 'endY',
+                    'type' => 'number',
+                    'instructions' => '',
+                    'required' => 1,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'step' => '0.01',
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'objects',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen' => '',
+            'active' => true,
+            'description' => '',
+        ));
         
         endif;

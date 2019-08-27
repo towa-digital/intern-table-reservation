@@ -1,6 +1,8 @@
 <?php
 
 require_once(__DIR__."/../queryDatabase.php");
+require_once(__DIR__."/../roomDimensions.php");
+
 
 function applyStyle_tableGui() {
     wp_enqueue_style("main_style", plugins_url("style/main.css", __FILE__));
@@ -15,6 +17,26 @@ function show_tableGui() {
     
     // Sortierfuntion
     wp_enqueue_script("tableCanvas_script", plugins_url("script/tableCanvas.js", __FILE__));
+
+    var_dump($_POST);
+
+
+    /**
+     * Bearbeiten der Raumabmessungen
+     */
+    if(isset($_POST["roomToEdit"])) {
+        if(isset($_POST["roomWidth"]) && isset($_POST["roomDepth"]) && !empty($_POST["roomWidth"]) && !empty($_POST["roomDepth"])) {
+            $errorMsg = storeRoomDimensions($_POST["roomToEdit"], $_POST["roomWidth"], $_POST["roomDepth"]);
+
+            if($errorMsg !== null) {
+                echo $errorMsg;
+            }
+        } else {
+            echo "Bitte fülle alle Pflichtfelder aus!";
+        }
+
+        $_POST = array();
+    }
 
     /**
      * Löschen eines Tisches
@@ -99,7 +121,13 @@ function show_tableGui() {
          }
     }
 ?>
-<script>const allTables = <?php echo json_encode(getTables());?>;</script>
+<script>
+    const allTables = <?php echo json_encode(getTables());?>;
+    const width_inside = <?php echo getWidth("inside");?>;
+    const depth_inside = <?php echo getDepth("inside");?>;
+    const width_outside = <?php echo getWidth("outside");?>;
+    const depth_outside = <?php echo getDepth("outside");?>;
+</script>
 
 <div id="main">
 <form method="post">
@@ -108,7 +136,7 @@ function show_tableGui() {
     <h1>Tisch hinzufügen</h1>
     <p id="jsError" class="hidden"></p>
         <div class="flexForm">
-                <div id="formContent">
+                <div class="formContent">
                    <div class="titleData">
                         <input type="text" name="title" class="title" id="title" placeholder="Bezeichnung des Tisches" />
                     </div>
@@ -125,7 +153,7 @@ function show_tableGui() {
                         </td></tr>
                     </table>   
                 </div>
-                <table id="addTable_publish" class="data publish hidden">
+                <table id="addTable_publish" class="data publish multiplePublish hidden">
                     <tr><td>
                         <h2>Speichern</h2>
                     </td></tr>
@@ -134,7 +162,7 @@ function show_tableGui() {
                         <button type="reset" onclick="closeWidgets()">Abbrechen</button>
                     </td></tr>   
                 </table>
-                <table id="editTable_publish" class="data publish hidden">
+                <table id="editTable_publish" class="data publish multiplePublish hidden">
                     <tr><td>
                         <h2>Aktionen</h2>
                     </td></tr>
@@ -144,6 +172,38 @@ function show_tableGui() {
                         <button type="submit" name="tableToDelete" id="editTable_deleteBtn" onclick="return confirm('Willst du diesen Eintrag wirklich löschen?')">Löschen</button>
                         <button type="reset" onclick="closeWidgets(); mouseUp = undefined; mouseDown = undefined;">Abbrechen</button>
                     </td></tr>  
+                </table>
+        </div>          
+    </div>
+    </div>
+    <div id="changeRoomDimensions" class="hidden overlay widget">
+    <div class="overlayContent">
+    <h1>Raumabmessungen ändern</h1>
+    <p id="jsError" class="hidden"></p>
+        <div class="flexForm">
+                <div class="formContent">
+                    <table class="data formData">
+                        <tr><td>
+                            <h2>Abmessungen</h2>
+                        </td></tr>
+                        <tr><td>
+                            <h3 class="inline">Breite</h3><span class="required">*</span>
+                            <input type="number" name="roomWidth" id="roomWidth" step="0.01" />
+                        </td></tr>
+                        <tr><td>
+                            <h3 class="inline">Tiefe</h3><span class="required">*</span>
+                            <input type="number" name="roomDepth" id="roomDepth" step="0.01" />
+                        </td></tr>
+                    </table>   
+                </div>
+                <table class="data publish">
+                    <tr><td>
+                        <h2>Speichern</h2>
+                    </td></tr>
+                    <tr><td>
+                        <button id="saveRoomDimensionsBtn" name="roomToEdit">Speichern</button>
+                        <button type="button" onclick="closeWidgets()">Abbrechen</button>
+                    </td></tr>   
                 </table>
         </div>          
     </div>
@@ -163,6 +223,8 @@ function show_tableGui() {
                 </td>
                 <td>
                     <button type="button" onclick="addTable()" id="newTable">Tisch hinzufügen</button>
+                    <button type="button" onclick="changeRoomDimensions()" id="newTable">Raumabmessungen ändern</button>
+
                 </td>
             </tr>
         </table>
