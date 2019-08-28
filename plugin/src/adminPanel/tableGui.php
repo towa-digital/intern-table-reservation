@@ -185,11 +185,11 @@ function show_tableGui() {
                             <h2>Abmessungen</h2>
                         </td></tr>
                         <tr><td>
-                            <h3 class="inline">Breite</h3><span class="required">*</span>
+                            <h3 class="inline">Breite (in m)</h3><span class="required">*</span>
                             <input type="number" name="roomWidth" id="roomWidth" step="0.01" />
                         </td></tr>
                         <tr><td>
-                            <h3 class="inline">Tiefe</h3><span class="required">*</span>
+                            <h3 class="inline">Tiefe (in m)</h3><span class="required">*</span>
                             <input type="number" name="roomDepth" id="roomDepth" step="0.01" />
                         </td></tr>
                     </table>   
