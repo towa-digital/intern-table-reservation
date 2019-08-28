@@ -131,6 +131,18 @@ const mutations = {
   setTables: (state, tables) => {
     state.allTables = JSON.parse(JSON.stringify(tables));
     state.freeTables = JSON.parse(JSON.stringify(tables));
+
+    for(var singleSelectedTable of state.StepTwo.selectedTables) {
+      var indexOf = -1;
+
+      for(var j in state.freeTables) {
+        if(state.freeTables[j].id == singleSelectedTable.id) {
+          indexOf = j;
+        }
+      }
+
+      if(indexOf != -1) state.freeTables.splice(indexOf, 1);
+    }
   },
   claimTable: (state, tableObj) => {
     // von freeTables entfernen
