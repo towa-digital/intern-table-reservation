@@ -33,7 +33,7 @@ function show_export()
 
 <h1>Reservierungsliste als CSV exportieren</h1>
 <form method="post">
-    <input name="isClicked" type="submit" class="btn" value="neue Liste erstellen"  />
+    <input name="isClicked" type="submit" class="btn" value="Reservierungen als CSV herunterladen"  />
 </form>
 
 
