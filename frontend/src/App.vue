@@ -40,9 +40,7 @@ export default {
 <style>
 
   body {
-    width: 100%;
     font-family: sans-serif;
-
   }
 
 </style>
