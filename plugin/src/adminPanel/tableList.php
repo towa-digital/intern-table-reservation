@@ -73,8 +73,8 @@ function show_tableList()
                 </th>
                 <th style="width: 16.6%" id="m_numberOfSeats">
                     Platzanzahl
-                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
-                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, 'number')"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, 'number')"><i class="fas fa-chevron-down"></i></button>
                 </th>
                 <th style="width: 16.6%" id="m_isDisabled">
                     nicht reservierbar?
