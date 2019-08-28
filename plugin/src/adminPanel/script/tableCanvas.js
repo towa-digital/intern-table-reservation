@@ -180,7 +180,7 @@ function startEditPositioning() {
     $("#mainBar").addClass("hidden"); 
     $("#positioningBarForEdit").removeClass("hidden");
 
-    setWidgetVisibility(false);
+    hideWidgets();
 
     isPositioningActive = true;
     canvas.addEventListener("mousedown", onMouseDown);
@@ -204,17 +204,12 @@ function closeWidgets() {
 }
 
 /**
- * Setzt die Sichtbarkeit der Widgets. Im Unterschied zu closeWidgets() werden die eingegegeben
- * Daten nicht zurückgesetzt und der bearbeitete Tisch auch nicht auf undefined gesetzt.
  * 
- * @param {bool} isVisible 
+ * Versteckt alle Widgets.
  */
-function setWidgetVisibility(isVisible) {
-    if(isVisible) {
-        $(".widget").removeClass("hidden");
-    } else {
-        $(".widget").addClass("hidden");
-    }
+function hideWidgets() {
+    $(".widget").addClass("hidden");
+
 }
 
 /**
@@ -240,7 +235,7 @@ function discardNewPositioning_backToWdiget() {
  * Diese Funktion übernimmt die Änderungen und bringt den Benutzer ins Edit-Widget zurück.
  */
 function saveNewPositioning_backToWidget() {
-    setWidgetVisibility(true);
+    $("#addTable").removeClass("hidden");
     $("#mainBar").removeClass("hidden");
     $("#positioningBarForEdit").addClass("hidden");
 
