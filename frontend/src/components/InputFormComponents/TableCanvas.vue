@@ -10,6 +10,7 @@
               type="button"
               :disabled="selected.length == 0"
               @click="onGetReservation"
+              v-resize="redrawCanvas"
             >Übernehmen</button>
 
             <button type="button" @click="onBack">Abbrechen</button>
@@ -35,7 +36,10 @@
           v-resize="redrawCanvas"
           @mousemove="onMouseMoved"
         >
-          <div class="backgroundImg">
+          <div class="backgroundImgIn" v-if="!isOutside" v-on:resize="redrawCanvas">
+            <canvas ref="chooseTable" />
+          </div>
+          <div class="backgroundImgOut" v-if="isOutside" v-on:resize="redrawCanvas">
             <canvas ref="chooseTable" />
           </div>
         </div>
@@ -48,6 +52,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import resize from 'vue-resize-directive';
+// window.addEventListener("resize", this.redrawCanvas())
 
 export default {
   name: 'TableCanvas',
@@ -116,6 +121,7 @@ export default {
       this.redrawCanvas();
     },
     redrawCanvas() {
+     
       var canvas = this.$refs.chooseTable;
       if (canvas === undefined) return;
 
@@ -183,6 +189,7 @@ export default {
         ctx.font = '25px sans-serif';
 
         var fontSize = 25;
+
         while (ctx.measureText(i.seats + ' Plätze').width > strokeWidth && fontSize >= 10) {
           fontSize -= 5;
           ctx.font = fontSize + 'px sans-serif';
@@ -191,10 +198,15 @@ export default {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        if (i.seats == 1) {
+        if(fontSize < 11){
+          ctx.font = '25px sans-serif'
+           ctx.fillText(i.seats, posX + width / 2, posY + height / 2);
+        } else {
+          if (i.seats == 1) {
           ctx.fillText(i.seats + ' Platz', posX + width / 2, posY + height / 2);
         } else {
           ctx.fillText(i.seats + ' Plätze', posX + width / 2, posY + height / 2);
+        }
         }
       }
     },
@@ -226,6 +238,9 @@ export default {
       }
     },
   },
+  mounted() {
+    window.addEventListener("resize", this.redrawCanvas)
+  },
   computed: {
     ...mapGetters(['freeTables', 'allTables', 'errormessage']),
     tableName() {
@@ -234,23 +249,20 @@ export default {
     numberOfSeats() {
       return this.$store.getters.StepOne.numberOfSeats;
     },
+    isOutside() {
+      return this.$store.getters.StepOne.location == 1;
+    }
   },
   watch: {
-    zoomFactor: function() {
-      this.redrawCanvas();
-    },
-    offsetX: function() {
-      this.redrawCanvas();
-    },
-    offsetY: function() {
-      this.redrawCanvas();
-    },
     contentWidth: function() {
       this.redrawCanvas();
     },
     contentHeight: function() {
       this.redrawCanvas();
     },
+    freeTables: function() {
+      this.redrawCanvas();
+    }
   },
 };
 </script>
@@ -349,11 +361,22 @@ button:hover {
   background: #0a35f5;
 }
 
-.backgroundImg {
+.backgroundImgIn {
   height: 100%;
   width: 100%;
 
   background-image: url(./../../../assets/maxresdefault.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-position: center;
+}
+
+.backgroundImgOut {
+  height: 100%;
+  width: 100%;
+
+  background-image: url(./../../../assets/outside.jpg);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-clip: padding-box;
