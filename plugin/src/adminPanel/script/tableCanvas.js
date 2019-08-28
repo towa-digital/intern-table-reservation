@@ -52,6 +52,12 @@ function isOutside() {
 function redrawCanvas() {
     var io = isOutside();
 
+    if(!io){
+        document.getElementById('backgroundImg').style.backgroundImage = "url(./../../plugin/plugin/src/assets/maxresdefault.jpg)";
+    } else {
+        document.getElementById('backgroundImg').style.backgroundImage = "url(./../../plugin/plugin/src/assets/outside.jpg)";
+    }
+
     canvas.width = canvas.parentElement.offsetWidth;
     canvas.height = canvas.parentElement.offsetHeight;
 

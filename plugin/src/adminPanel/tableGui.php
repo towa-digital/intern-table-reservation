@@ -118,6 +118,10 @@ function show_tableGui() {
              echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
          }
     }
+
+   
+
+
 ?>
 <script>
     const allTables = <?php echo json_encode(getTables());?>;
@@ -125,6 +129,7 @@ function show_tableGui() {
     const depth_inside = <?php echo getDepth("inside");?>;
     const width_outside = <?php echo getWidth("outside");?>;
     const depth_outside = <?php echo getDepth("outside");?>;
+
 </script>
 
 <div id="main">
@@ -242,7 +247,7 @@ function show_tableGui() {
         </div>
     </div>    
     <div class="canvasParent">
-        <div class="backgroundImg">
+        <div class="backgroundImg" id="backgroundImg">
             <canvas id="canvas"></canvas>
         </div>
     </div>
