@@ -18,8 +18,6 @@ function show_tableGui() {
     // Sortierfuntion
     wp_enqueue_script("tableCanvas_script", plugins_url("script/tableCanvas.js", __FILE__));
 
-    var_dump($_POST);
-
 
     /**
      * Bearbeiten der Raumabmessungen
