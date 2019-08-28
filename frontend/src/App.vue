@@ -1,7 +1,7 @@
 <template>
   <div id="app">
    
-    <InputForm v-bind:reservations="reservations" v-on:add-reservation="addReservation"/>
+    <InputForm />
     <!-- <ApiTest /> -->
     
     
@@ -12,6 +12,8 @@
 import InputForm from './components/InputForm.vue'
 // import ApiTest from './components/ApiTest.vue'
 
+import { mapActions } from 'vuex';
+
 
 export default {
   name: 'app',
@@ -19,20 +21,11 @@ export default {
    InputForm,
   //  ApiTest
   },
-  data() {
-    return{
-      reservations: [{
-        name: "Niklas"
-      },
-      {
-        name: "Elias"
-      }]
-    }
-  },
   methods: {
-    addReservation(newReservation) {
-      this.reservations = [...this.reservations, newReservation];
-    }
+    ...mapActions(['loadOptions']),
+  },
+  created: function() {
+    this.loadOptions();
   }
 }
 </script>

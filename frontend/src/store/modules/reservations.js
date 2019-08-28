@@ -10,6 +10,7 @@ const state = {
   allTables: [],
   timeSlots: [],
   holidays: [],
+  options: [],
   StepOne: {
     "date": undefined,
     "from": 0,
@@ -37,14 +38,25 @@ const getters = {
   selectedTables: state => state.StepTwo.selectedTables,
   timeSlots: state => state.timeSlots,
   holidays: state => state.holidays,
-  StepOne: state => state.StepOne
+  StepOne: state => state.StepOne,
+  options: state => state.options,
 }
 
 const actions = {
 
+  loadOptions: () => {
+    axios.get("http://localhost/wordpress/wp-json/tischverwaltung/v1/getoptions", {})
+      .then(response => {
+        state.options = response.data;
+      })
+      .catch(response => {
+        alert("Ein Fehler ist aufgetreten! Versuch es bitte später erneut!");
+      });
+  },
+
   //Post new Reservation to API
 
-  addReservation: ({ commit }) => {
+  addReservation: ({commit}) => {
     state.waitingForAjaxResponse = true;
 
     var selectedTableIds = [];

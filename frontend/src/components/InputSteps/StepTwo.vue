@@ -36,6 +36,8 @@ export default {
       this.$store.commit('decrementStepCounter');
     },
     getTextForCombination(t) {
+      console.log("TEXT OF:");
+      console.log(t);
       var seatsMap = new Map();
 
       for (var singleTable of t) {
@@ -82,68 +84,170 @@ export default {
         this.$store.commit('setError', '');
       }
     },
+    /**
+     * Diese Funktion nimmt zwei Arrays aus Tisch-Objekten als Parameter und überprüft, ob 
+     * die Anzahl an Sitzplätzen für alle Elemente in den Arrays übereinstimmt.
+     * 
+     * Hierbei soll die Reihenfolge nicht beachtet werden.
+     * 
+     * Die Arrays können undefined enthalten.
+     */
+    areTableSeatsEqual(arr1, arr2) {
+      /**
+       * Die Zahl 31 hat keine besondere Bedeutung, die Multiplikation/Addition mit einer Konstanten dient nur 
+       * dazu, dass z.B. zwei Tische mit je einem Sitzplatz nicht denselben Wert ergeben wie ein Tisch mit zwei
+       * Sitzplätzen.
+       */
+      const factor = 31;
+
+      var arr1Val = 0;
+      for(var e of arr1) {
+        if(e === undefined) continue;
+        arr1Val += factor * (e.seats + factor);
+      }
+
+      var arr2Val = 0;
+      for(var e of arr2) {
+        if(e === undefined) continue;
+        arr2Val += factor * (e.seats + factor);
+      }
+
+      return arr1Val === arr2Val;
+    }
   },
   computed: {
-    ...mapGetters(['allTables', 'errormessage']),
+    ...mapGetters(['allTables', 'errormessage', 'step']),
     numberOfSeats() {
       return this.$store.getters.StepOne.numberOfSeats;
     },
     getCombinations() {
+      // die Berechnungen sollen nicht ausgeführt werden, wenn der zweite Schritt gar nicht aktiv ist
+      if(this.step != 2) return [];
+
       // prüfe, ob ein Wert genau passt
       var suitableTables = [];
       for (var t of this.allTables) {
-        if (t.seats >= this.numberOfSeats && t.isFree && !t.isDisabled) suitableTables.push(t);
+        if (t.seats >= this.numberOfSeats && t.isFree && !t.isDisabled) suitableTables.push({
+            "seatsSum": t.seats,
+            "tables": [t]
+          });
       }
 
-      if (suitableTables.length != 0) {
-        suitableTables.sort(function(a, b) {
-          if (a.seats < b.seats) return -1;
-          else if (a.seats == b.seats) return 0;
-        });
+      if(suitableTables.length == 0) {
+        // kein Tisch passt direkt:
+        // Kombinationen müssen gefunden werden
+        var availableTables = [];
+        for (t of this.allTables) {
+          if (t.isFree && !t.isDisabled) availableTables.push(t);
+        }
 
-        return [[suitableTables[0]]];
-      }
+        for (var t1 of availableTables) {
+          for (var t2 of availableTables) {
+            if (t1.id == t2.id) continue;
+            
+            // prüfe, ob bereits mit zwei Tischen eine passende Kombination gefunden wird
+            var sum_t1_t2 = parseInt(t1.seats) + parseInt(t2.seats);
+            if(sum_t1_t2 >= this.numberOfSeats && sum_t1_t2 <= this.numberOfSeats + this.$store.getters.options.maxUnusedSeatsPerReservation) {
+                // diese Tischkombination aus zwei Tischen reicht aus
+                var combination = {
+                  "seatsSum": sum_t1_t2,
+                  "tables": [t1, t2]
+                };
 
-      var availableTables = [];
-      for (t of this.allTables) {
-        if (t.isFree && !t.isDisabled) availableTables.push(t);
-      }
 
-      for (var t1 of this.allTables) {
-        for (var t2 of this.allTables) {
-          if (t1.id == t2.id) continue;
-          for (var t3 of this.allTables) {
-            if (t3.id == t2.id || t3.id == t1.id) {
-              if (!t1.isDisabled && !t2.isDisabled && !t3.isDisabled) {
-                var sumSeats = parseInt(t1.seats) + parseInt(t2.seats) + parseInt(t3.seats);
-                if (sumSeats > this.numberOfSeats) {
-                  var maximumNumberOfSeats = parseInt(this.numberOfSeats + 3);
-                  if (maximumNumberOfSeats > sumSeats) {
-                    suitableTables.push[(t1, t2, t3)];
+                // nun müssen wir prüfen, ob diese Tischkombination bereis eingefügt wurde
+                var canInsert = true;
+                for(var alreadyExistingCombination of suitableTables) {
+                   
+                  if(this.areTableSeatsEqual(alreadyExistingCombination.tables, combination.tables)) {
+                    
+                    // diese Kombination existiert bereits
+                    canInsert = false;
+                  }  
+                }
 
-                    console.log(sumSeats + ' Summe');
-                    console.log(this.numberOfSeats + ' max');
-                    console.log(suitableTables)
+                if(canInsert) {
+                    suitableTables.push(combination);
+                }
+            } else {
+              for (var t3 of availableTables) {
+                if (t3.id == t2.id) continue;
+                var sum_t1_t2_t3 = sum_t1_t2 + parseInt(t3.seats);
+
+                // prüfe, ob die Kombination mit drei Tischen passt
+                if (sum_t1_t2_t3 >= this.numberOfSeats && sum_t1_t2_t3 <= this.numberOfSeats + this.$store.getters.options.maxUnusedSeatsPerReservation) {
+                  // sie passt
+                  var combination = {
+                    "seatsSum": sum_t1_t2_t3,
+                    "tables": [t1, t2, t3]
+                  };
+
+                  // nun müssen wir prüfen, ob diese Tischkombination bereits eingefügt wurde
+                  var canInsert = true;
+                  for(var alreadyExistingCombination of suitableTables) {
+
+                    if(this.areTableSeatsEqual(alreadyExistingCombination.tables, combination.tables)) {
+                      
+                      // diese Kombination existiert bereits
+                      canInsert = false;
+                    }  
+                  }
+                  if(canInsert) {
+                      suitableTables.push(combination);
                   }
                 }
               }
             }
           }
-
-          // if(t1.seats + t2.seats + t3.seats >= ssthis.numberOfSeats
-
-          // && t1.seats + t2.seats + t3.seats < this.numberOfSeats + 4 && !t1.isDisabled && !t2.isDisabled && !t3.isDisabled) suitableTables.push([t1, t2, t3]);
         }
       }
-      return suitableTables;
+
+      if(suitableTables.length == 0) {
+        // es wurde kein passender einzelner Tisch und keine passende Kombination gefunden
+        this.$store.commit('setError', 'Kein Tisch verfügbar!');
+        return [];
+      }
+
+      // sortieren nach Anzahl Sitzplätze
+      suitableTables.sort(function(a, b) {
+          if (a.seatsSum < b.seatsSum) return -1;
+          else if (a.seatsSum == b.seatsSum) return 0;
+      });
+
+      // falls ein einzelner Tisch die passendste Kombination ist, nur diesen zurückgegben
+      if(suitableTables[0].tables.length == 1) {
+        return [[suitableTables[0].tables[0]]];
+      }
+      
+      // ansonsten maximal 4 Kombinationen zurückgeben
+      var combinationsToReturn = [];
+      for(var c of suitableTables) {
+        // Kombinationen, welche mehr als zwei Sitzplätze mehr freilassen als die beste Kombination, nicht anzeigen
+        if(c.seatsSum <= suitableTables[0].seatsSum + 2 && combinationsToReturn.length < 4) {
+          /**
+           * Falls eine Reservierung für z.B. 5 Personen aufgegeben wird, könnten wir in den Kombinationen beispielsweise Tische mit
+           * 2 und 3 Plätzen haben und zusätzlich eine Kombination mit 2, 3 und 2 Plätzen haben. Da allerdings schon die kleinere
+           * ausreicht, ist es nicht notwendig, auch die Kombination mit 3 Tischen anzuzeigen.
+           * 
+           * Bei einem Tisch ist das kein Problem, da in diesem Fall sowieso nur die Kombination mit einem Tisch angezeigt wird.
+           */
+          var s0 = (c.tables[0] === undefined) ? Number.NEGATIVE_INFINITY : parseInt(c.tables[0].seats);
+          var s1 = (c.tables[1] === undefined) ? Number.NEGATIVE_INFINITY : parseInt(c.tables[1].seats);
+          var s2 = (c.tables[2] === undefined) ? Number.NEGATIVE_INFINITY : parseInt(c.tables[2].seats);
+          if(! (((s0 + s1 >= this.numberOfSeats && s2 != Number.NEGATIVE_INFINITY) ||
+              (s1 + s2 >= this.numberOfSeats && s0 != Number.NEGATIVE_INFINITY) ||
+              (s0 + s2 >= this.numberOfSeats && s1 != Number.NEGATIVE_INFINITY)))) {
+            combinationsToReturn.push(c.tables);
+
+          }
+        } else break;
+      }
+
+      return combinationsToReturn;
     },
 
     // return suitableTables;
   },
-
-  // numberOfSeats() {
-  //     return this.$store.getters.StepOne.numberOfSeats;
-  // },
 };
 </script>
 

@@ -87,9 +87,22 @@ add_action("rest_api_init", function () {
         "methods" => "GET",
         "callback" => "rest_getObjects"
     ]);
+    register_rest_route("tischverwaltung/v1", "getoptions", [
+        "methods" => "GET",
+        "callback" => "rest_getOptions"
+    ]);
 });
 
+function rest_getOptions($request) {
+    $response = new WP_REST_Response(array(
+        "maxAmountOfPersons" => getMaxAmountOfPersons(),
+        "maxUnusedSeatsPerReservation" => getMaxUnusedSeatsPerReservation()
+    ));
+    $response->set_status(200);
 
+    return $response;
+
+}
 
 function rest_getObjects($request) {
     $isOutside = $request["isOutside"];
