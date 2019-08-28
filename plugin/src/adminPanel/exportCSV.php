@@ -2,7 +2,7 @@
 require_once(__DIR__."/../queryDatabase.php");
 require_once(__DIR__."/../csv.php");
 
-if($_GET["page"] == "exportreservations" && isset($_POST["isClicked"])) {
+if($_GET["page"] == "exportcsv" && isset($_POST["isClicked"])) {
     add_action('init', 'downloadCsv');
     function downloadCsv() {
         $str = getCsvAsString();
@@ -12,7 +12,7 @@ if($_GET["page"] == "exportreservations" && isset($_POST["isClicked"])) {
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
         header('Content-Type: text/plain');
         header('Content-Length: ' . strlen($str));
-        header("Content-Disposition: attachment;filename=reservations.csv ");
+        header("Content-Disposition: attachment;filename=reservationss.csv ");
         header('Connection: close');
         
         echo $str;
