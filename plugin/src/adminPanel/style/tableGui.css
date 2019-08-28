@@ -1,7 +1,18 @@
 .canvasParent {
     width: 100%;
     /* 32px Wordpress-Admin-Header-Bar + 32px eigene Headerbar + 6px Abstand nach unten*/
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px);    
+}
+.backgroundImg{
+    /* margin-top: 5px; */
+    height: 100%;
+    width: 100%; 
+    /* height: calc(100vh - 100px);    */
+    background-image: url(./../../assets/maxresdefault.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-position: center;
 }
 
 .overlay {

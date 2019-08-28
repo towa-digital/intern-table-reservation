@@ -1,6 +1,10 @@
 <template>
 <div>
     <TableCanvas ></TableCanvas>
+
+
+
+    
     <!-- <table v-show="step == 2">
       <tr>
         <td colspan="2">
