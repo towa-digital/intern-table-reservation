@@ -18,7 +18,6 @@ require_once("initCpt.php");
 require_once("initAcf.php");
 
 require("adminPanel/addReservation.php");
-require("adminPanel/addTable.php");
 require("adminPanel/reservationList.php");
 require("adminPanel/tableList.php");
 require("adminPanel/tableGui.php");
@@ -47,9 +46,6 @@ function setup_admin_menu()
 
     $tableGui = add_menu_page("Tische grafisch verwalten", "Tische grafisch verwalten", "tv_viewTables", "managetablesgui", "show_tableGui");
     add_action("admin_print_styles-".$tableGui, "applyStyle_tableGui");
-
-    $addTable = add_submenu_page("managetables", "Neuen Tisch erstellen", "Neuen Tisch erstellen", "tv_addTables", "addtable", "show_addTable");
-    add_action("admin_print_styles-".$addTable, "applyStyle_addTable");
 
     $optionsPage = add_menu_page("Tischverwaltung Konfiguration", "Tischverwaltung Konfiguration", "tv_editOptions", "config", "show_optionsPage");
     add_action("admin_print_styles-".$optionsPage, "applyStyle_optionsPage");

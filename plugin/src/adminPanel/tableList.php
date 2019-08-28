@@ -57,7 +57,7 @@ function show_tableList()
 
 <div id="main">
     <h1 class="inline">Alle Tische</h1>
-    <?php if(current_user_can("tv_addTables")) echo '<a href="admin.php?page=addtable" class="btn">Neuen Tisch erstellen</a>' ?>
+    <?php if(current_user_can("tv_addTables")) echo '<a href="admin.php?page=managetablesgui" class="btn">Neuen Tisch erstellen</a>' ?>
     <form method="post">
         <table class="content">
             <tr id="head">
