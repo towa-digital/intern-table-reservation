@@ -173,10 +173,10 @@ export default {
 
         ctx.font = '20px sans-serif';
 
-        var fontSize = 20;
-        while (ctx.measureText(i.seats + " Plätze").width > width) {
+        var fontSize = 25;
+        while (ctx.measureText(i.seats + " Plätze").width > strokeWidth && fontSize > 10) {
 
-          fontSize -= 10;
+          fontSize -= 5;
           ctx.font = fontSize + 'px sans-serif';
         }
 
