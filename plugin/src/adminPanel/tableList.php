@@ -83,18 +83,26 @@ function show_tableList()
                 </th>
                 <?php
                     if(current_user_can("tv_editTables")) {
-                        echo "<th>
-                                Position X
+                        echo '<th id="m_posX">
+                        Position X
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, \'number\')"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, \'number\')"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th>
+                    <th id="m_posY">
                         Position Y
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, \'number\')"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, \'number\')"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th>
-                        Breite 
+                    <th id="m_width">
+                        Breite
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, \'number\')"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, \'number\')"><i class="fas fa-chevron-down"></i></button> 
                     </th>
-                    <th>
+                    <th id="m_height">
                         Höhe
-                    </th>";
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, \'number\')"><i class="fas fa-chevron-up"></i></button>
+                        <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, \'number\')"><i class="fas fa-chevron-down"></i></button>
+                    </th>';
                     }
                 ?>
                 <th style="width: 10%"></th>

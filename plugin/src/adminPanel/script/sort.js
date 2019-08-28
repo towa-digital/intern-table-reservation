@@ -10,6 +10,10 @@
  * von welchem Typ die Daten sind, welche sortiert werden sollen
  */
 function sort(sortBtn, tableObj, sortAscending, sortType) {
+    console.log("sort called: ");
+    console.log(sortBtn);
+    console.log(tableObj);
+    console.log(sortAscending);
     if(sortType === undefined) sortType = "string";
 
     var id = sortBtn.parentNode.id;
@@ -17,6 +21,7 @@ function sort(sortBtn, tableObj, sortAscending, sortType) {
     Array.prototype.slice.call(tableObj.getElementsByClassName("toSort"))
         .map(function (x) { return tableObj.removeChild(x); })
         .sort(function (xRow, yRow) { 
+            console.log("INSIDE SORT");
             var x = xRow.getElementsByClassName(id)[0];
             var y = yRow.getElementsByClassName(id)[0];
 
@@ -27,6 +32,9 @@ function sort(sortBtn, tableObj, sortAscending, sortType) {
             } else if (sortType === "number") {
                 xVal = parseFloat(x.innerHTML);
                 yVal = parseFloat(y.innerHTML);
+
+                if(isNaN(xVal)) xVal = -1;
+                if(isNaN(yVal)) yVal = -1;
             } else if(sortType === "date") {
                 xVal = getDateFromAustrianString(x.innerHTML).getTime();
                 yVal = getDateFromAustrianString(y.innerHTML).getTime();
@@ -35,9 +43,9 @@ function sort(sortBtn, tableObj, sortAscending, sortType) {
             }
 
 
-            if(x === undefined || y === undefined || x.innerHTML === y.innerHTML) return 0;
-            if(x.innerHTML > y.innerHTML) return sortAscending ? -1 : 1;
-            else return sortAscending ? 1 : -1;
+            if(x === undefined || y === undefined || xVal === yVal) return 0;
+            if(xVal > yVal) return sortAscending ? 1 : -1;
+            else return sortAscending ? -1 : 1;
         })
         .forEach(function (x) { tableObj.appendChild(x); });
 }
