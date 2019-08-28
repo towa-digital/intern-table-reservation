@@ -7,12 +7,12 @@
         </td>
       </tr>
       <tr>
-        <td class="formElem">
+        <td>
           Vorname
           <a>*</a>
           <InputFormPersons msg="Max" title="firstname" v-model="firstname" />
         </td>
-        <td class="formElem">
+        <td>
           Nachname
           <a>*</a>
           <InputFormPersons msg="Mustermann" title="lastname" v-model="lastname" />

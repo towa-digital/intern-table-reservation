@@ -7,7 +7,7 @@
         </td>
       </tr>
       <tr class="text">
-        <td colspan="2" class="formElem">
+        <td colspan="2">
           <span class="inputLabel">Personenanzahl <a>*</a></span>
           <InputFormNumberOfPersons v-model="numberOfSeats" />
         </td>
