@@ -240,11 +240,13 @@ function show_tableGui() {
             <button type="button" class="buttonNewTable" onclick="discardNewPositioning_backToWdiget()">Abbrechen</button>
             <button type="button" class="buttonNewTable" onclick="saveNewPositioning_backToWidget()">Übernehmen</button>
         </div>
-    </div>
+    </div>    
     <div class="canvasParent">
+        <div class="backgroundImg">
             <canvas id="canvas"></canvas>
         </div>
-        </form>
+    </div>
+</form>
 </div>
 
 

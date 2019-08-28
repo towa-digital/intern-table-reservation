@@ -10,6 +10,7 @@
               type="button"
               :disabled="selected.length == 0"
               @click="onGetReservation"
+              v-resize="redrawCanvas"
             >Übernehmen</button>
 
             <button type="button" @click="onBack">Abbrechen</button>
@@ -27,8 +28,20 @@
             </span>
           </div>
         </div>
-        <div class="content" ref="content" @click="useTable" v-resize="redrawCanvas" @mousemove="onMouseMoved">
-          <canvas ref="chooseTable" />
+
+        <div
+          class="content"
+          ref="content"
+          @click="useTable"
+          v-resize="redrawCanvas"
+          @mousemove="onMouseMoved"
+        >
+          <div class="backgroundImgIn" v-if="!isOutside" v-on:resize="redrawCanvas">
+            <canvas ref="chooseTable" />
+          </div>
+          <div class="backgroundImgOut" v-if="isOutside" v-on:resize="redrawCanvas">
+            <canvas ref="chooseTable" />
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +52,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import resize from 'vue-resize-directive';
+// window.addEventListener("resize", this.redrawCanvas())
 
 export default {
   name: 'TableCanvas',
@@ -49,16 +63,16 @@ export default {
     return {
       selected: [],
       offset: {
-        "x": -1,
-        "y": -1
-      }
+        x: -1,
+        y: -1,
+      },
     };
   },
   methods: {
     onMouseMoved(event) {
       this.offset.x = event.offsetX;
       this.offset.y = event.offsetY;
-      document.body.style.cursor = "default";
+      document.body.style.cursor = 'default';
 
       this.redrawCanvas();
     },
@@ -89,26 +103,25 @@ export default {
         var height = table.position.height * canvas.height;
 
         if (x >= posX && x <= posX + width && y >= posY && y <= posY + height) {
-
-          if(that.isTableFree(table)) {
+          if (that.isTableFree(table)) {
             that.selected.push(table);
-            that.$store.commit("claimTable", table);
+            that.$store.commit('claimTable', table);
           } else {
             var indexOf = -1;
-            for(var i in that.selected) {
-              if(that.selected[i].id == table.id) indexOf = i;
+            for (var i in that.selected) {
+              if (that.selected[i].id == table.id) indexOf = i;
             }
             that.selected.splice(indexOf, 1);
 
-            that.$store.commit("freeTable", table);
+            that.$store.commit('freeTable', table);
           }
         }
       });
 
-
       this.redrawCanvas();
     },
     redrawCanvas() {
+     
       var canvas = this.$refs.chooseTable;
       if (canvas === undefined) return;
 
@@ -147,20 +160,24 @@ export default {
         ctx.strokeStyle = '#606361';
         ctx.strokeRect(posX, posY, width, height);
 
-        var isHovered = this.offset.x >= posX && this.offset.x <= posX + width && this.offset.y >= posY && this.offset.y <= posY + height;
-       
+        var isHovered =
+          this.offset.x >= posX &&
+          this.offset.x <= posX + width &&
+          this.offset.y >= posY &&
+          this.offset.y <= posY + height;
+
         if (!i.isFree) {
           ctx.strokeStyle = '#FF0000'; // green
           ctx.fillStyle = '#FF0000';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
-        } else if (!this.isTableFree(i) || i == this.selected || isHovered){
+        } else if (!this.isTableFree(i) || i == this.selected || isHovered) {
           ctx.strokeStyle = '#0a35f5'; //blue
           ctx.fillStyle = '#0a35f5';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
-          if(isHovered){
-            document.body.style.cursor = "pointer";
+          if (isHovered) {
+            document.body.style.cursor = 'pointer';
           }
         } else {
           ctx.strokeStyle = '#1d8708'; //red
@@ -169,13 +186,11 @@ export default {
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
         }
 
-        
-
         ctx.font = '25px sans-serif';
 
         var fontSize = 25;
-        while (ctx.measureText(i.seats + " Plätze").width > strokeWidth && fontSize >= 10) {
 
+        while (ctx.measureText(i.seats + ' Plätze').width > strokeWidth && fontSize >= 10) {
           fontSize -= 5;
           ctx.font = fontSize + 'px sans-serif';
         }
@@ -183,10 +198,15 @@ export default {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        if(i.seats == 1){
-          ctx.fillText(i.seats + " Platz", posX + width / 2, posY + height / 2);
+        if(fontSize < 11){
+          ctx.font = '25px sans-serif'
+           ctx.fillText(i.seats, posX + width / 2, posY + height / 2);
         } else {
-          ctx.fillText(i.seats + " Plätze", posX + width / 2, posY + height / 2);
+          if (i.seats == 1) {
+          ctx.fillText(i.seats + ' Platz', posX + width / 2, posY + height / 2);
+        } else {
+          ctx.fillText(i.seats + ' Plätze', posX + width / 2, posY + height / 2);
+        }
         }
       }
     },
@@ -213,36 +233,36 @@ export default {
       } else if (tooMuchTablesForPersons_error) {
         this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
       } else {
-            this.$store.commit('incrementStepCounter');
-            this.$store.commit('setError', '');
-          }
-        }
+        this.$store.commit('incrementStepCounter');
+        this.$store.commit('setError', '');
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("resize", this.redrawCanvas)
   },
   computed: {
-    ...mapGetters(['freeTables', 'allTables', "errormessage"]),
+    ...mapGetters(['freeTables', 'allTables', 'errormessage']),
     tableName() {
-      return "";
+      return '';
     },
     numberOfSeats() {
-          return this.$store.getters.StepOne.numberOfSeats;
+      return this.$store.getters.StepOne.numberOfSeats;
     },
+    isOutside() {
+      return this.$store.getters.StepOne.location == 1;
+    }
   },
   watch: {
-    zoomFactor: function() {
-      this.redrawCanvas();
-    },
-    offsetX: function() {
-      this.redrawCanvas();
-    },
-    offsetY: function() {
-      this.redrawCanvas();
-    },
     contentWidth: function() {
       this.redrawCanvas();
     },
     contentHeight: function() {
       this.redrawCanvas();
     },
+    freeTables: function() {
+      this.redrawCanvas();
+    }
   },
 };
 </script>
@@ -339,5 +359,27 @@ button:hover {
   width: 10px;
   height: 10px;
   background: #0a35f5;
+}
+
+.backgroundImgIn {
+  height: 100%;
+  width: 100%;
+
+  background-image: url(./../../../assets/maxresdefault.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-position: center;
+}
+
+.backgroundImgOut {
+  height: 100%;
+  width: 100%;
+
+  background-image: url(./../../../assets/outside.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-position: center;
 }
 </style>
