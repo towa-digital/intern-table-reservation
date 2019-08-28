@@ -53,9 +53,10 @@ export default {
 .switch {
   position: relative;
   height: 32px;
-  margin: 20px auto;
   background: #f2f2f2;
   border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 
   width: 100%;
 }

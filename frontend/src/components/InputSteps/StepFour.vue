@@ -1,5 +1,5 @@
 <template>
-  <div v-if="step == 4" class="centered">
+  <div class="centered">
     <table>
       <tr>
         <td colspan="2">

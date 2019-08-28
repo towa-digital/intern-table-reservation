@@ -1,5 +1,5 @@
 <template>
-  <div v-show="step == 1">
+  <div>
     <table>
       <tr>
         <td colspan="2">
@@ -7,34 +7,20 @@
         </td>
       </tr>
       <tr class="text">
-        <td colspan="2">
-          Personenanzahl
-          <a>*</a>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
+        <td colspan="2" class="formElem">
+          <span class="inputLabel">Personenanzahl <a>*</a></span>
           <InputFormNumberOfPersons v-model="numberOfSeats" />
         </td>
       </tr>
       <tr class="text">
-        <td colspan="2">
-          Datum
-          <a>*</a>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
+        <td colspan="2" class="formElem">
+          <span class="inputLabel"> Datum <a>*</a></span>
           <InputFormDate v-model="date" @input="makeTimestamp" />
         </td>
       </tr>
-      <br />
-      <br />
       <tr class="text">
-        <td colspan="2">Wo soll sich Ihr Tisch befinden?</td>
-      </tr>
-      <tr>
-        <td>
+        <td colspan="2" class="formElem">
+          <span class="inputLabel">Wo soll sich Ihr Tisch befinden?</span>
           <InputFormToggle v-model="location"/>
         </td>
       </tr>

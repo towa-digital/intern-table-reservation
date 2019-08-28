@@ -1,56 +1,39 @@
 <template>
   <div>
-    <table v-show="step == 3">
+    <table>
       <tr>
         <td colspan="2">
           <h2>Kontaktdaten</h2>
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="formElem">
           Vorname
           <a>*</a>
-        </td>
-        <td>
-          Nachname
-          <a>*</a>
-        </td>
-      </tr>
-      <tr>
-        <td>
           <InputFormPersons msg="Max" title="firstname" v-model="firstname" />
         </td>
-        <td>
+        <td class="formElem">
+          Nachname
+          <a>*</a>
           <InputFormPersons msg="Mustermann" title="lastname" v-model="lastname" />
         </td>
       </tr>
       <tr class="text">
-        <td>
+        <td class="formElem" colspan="2">
           Telefonnummer
           <a>*</a>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
           <InputFormPhonenumber v-model="phonenumber" />
         </td>
       </tr>
-      <tr>
-        <td class="text">
+      <tr class="text">
+        <td class="formElem" colspan="2">
           E-Mail
           <a>*</a>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
           <InputFormEmail v-model="mail" />
         </td>
       </tr>
-      <tr>
-        <td class="text">Anmerkungen</td>
-      </tr>
-      <tr>
-        <td colspan="2">
+      <tr class="text">
+        <td class="formElem" colspan="2">Anmerkungen
           <InputFormTextarea v-model="remarks" />
         </td>
       </tr>

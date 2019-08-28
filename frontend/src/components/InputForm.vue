@@ -2,7 +2,7 @@
   <div class="wrapper">
     <!-- Step 1 -->
 
-    <StepOne />
+    <StepOne v-show="step === 1" />
 
     <!--Step 2 -->
 
@@ -12,11 +12,11 @@
 
     <!-- Step 3 -->
 
-    <StepThree />
+    <StepThree v-show="step === 3" />
 
     <!-- Completed -->
 
-    <StepFour />
+    <StepFour v-if="step === 4" />
   </div>
 </template> 
 
@@ -46,45 +46,40 @@ export default {
 </script>
 
 <style>
+
+input, select, textarea {
+  width: 100%;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 15px !important;
+  -webkit-appearance: none;
+
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  margin-bottom: 13.5px !important;
+  border-bottom: 2px solid #da3743;
+}
+
 input {
   border: none;
   border-bottom: 0.5px solid lightgrey;
-  width: 100%;
   font-size: 15px;
-  padding-bottom: 3%;
-  padding-top: 2%;
-  margin-bottom: 2%;
 
-  -webkit-appearance: none;
 }
 
 select {
-  width: 100%;
-
   border-left: none;
   border-top: none;
   border-right: none;
   border-bottom: 0.5px solid lightgrey;
 
   font-size: 15px;
-
-  padding-bottom: 4.9%;
-  padding-top: 2%;
-
-  -webkit-appearance: none;
+  padding-top: 0;
 }
 
-input,
-select,
-textarea {
-  margin-bottom: 10px !important;
-}
-
-input:hover,
-select:hover {
-  margin-bottom: 8.5px !important;
-  border-bottom: 2px solid #da3743;
-}
 
 .btn {
   margin-top: 3%;
@@ -112,6 +107,10 @@ table {
 table {
   width: 25%;
   margin-left: 35%;
+}
+
+td.formElem {
+  padding-top: 7.5px;
 }
 
 @media only screen and (max-width: 1200px) {
