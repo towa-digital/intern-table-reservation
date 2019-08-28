@@ -93,18 +93,19 @@ function redrawCanvas() {
         ctx.lineWidth = 2;
         ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
 
-        ctx.font = '20px sans-serif';
+        ctx.font = '25px sans-serif';
 
-        var fontSize = 20;
-        while (table.title + " (" + table.seats + ")".width > width) {
+        var fontSize = 25;
+        while (ctx.measureText(table.title + " (" + table.seats + ")").width > strokeWidth && fontSize > 15) {
 
-          fontSize -= 10;
+          fontSize -= 2.5;
           ctx.font = fontSize + 'px sans-serif';
         }
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
+        ctx.fillStyle = "#000000";
         ctx.fillText(table.title + " (" + table.seats + ")", posX + width / 2, posY + height / 2);
     }
 
