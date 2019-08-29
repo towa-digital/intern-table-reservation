@@ -81,8 +81,10 @@
 }
 
 .error {
-    width: 97.7%;
+    
     padding: 10px;
+    /* margin-bottom: 5px; */
+    margin-right: 20px !important;
 
     background-color: orange;
     color: white;
