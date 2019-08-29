@@ -85,7 +85,9 @@ export default {
     }
   },
   created: function() {
-    this.$store.dispatch("getTimeSlots");
+    this.$store.dispatch("getTimeSlots", function(msg) {
+      console.error(msg);
+    });
 
     // set today's date as default value for the date input field
     this.dateFieldValue = new Date().toJSON().slice(0, 10);

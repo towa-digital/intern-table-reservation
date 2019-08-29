@@ -64,6 +64,7 @@ export default {
   },
   data() {
     return {
+      errormessage: "",
       offset: {
         x: -1,
         y: -1,
@@ -199,7 +200,6 @@ export default {
       }
     },
     onBack() {
-      this.$store.commit('setError', '');
       this.$store.commit('decrementStepCounter');
     },
     onGetReservation() {
@@ -226,12 +226,12 @@ export default {
 
 
       if (availableSeats < this.numberOfSeats) {
-        this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
+        this.errormessage = 'Zu wenig Tische für alle Gäste ausgewählt!';
       } else if (tooMuchTablesForPersons_error) {
-        this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
+        this.errormessage = 'Du hast zu viele Tische ausgewählt!';
       } else {
         this.$store.commit('incrementStepCounter');
-        this.$store.commit('setError', '');
+        this.errormessage = "";
       }
     },
   },
@@ -239,7 +239,7 @@ export default {
     window.addEventListener("resize", this.redrawCanvas)
   },
   computed: {
-    ...mapGetters(['freeTables', 'allTables', 'errormessage', 'selectedTables']),
+    ...mapGetters(['freeTables', 'allTables', 'selectedTables']),
     tableName() {
       return '';
     },

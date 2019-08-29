@@ -1,9 +1,6 @@
 import axios from 'axios'
 
 const state = {
-  error: {
-    errormessage: '',
-  },
   step: 1,
   waitingForAjaxResponse: false,
   freeTables: [],
@@ -32,7 +29,6 @@ const state = {
 
 const getters = {
   step: state => state.step,
-  errormessage: state => state.error.errormessage,
   waitingForAjaxResponse: state => state.waitingForAjaxResponse,
 
   allTables: state => state.allTables,
@@ -60,7 +56,7 @@ const actions = {
 
   //Post new Reservation to API
 
-  addReservation: ({commit}) => {
+  addReservation: ({commit}, errorCallback) => {
     state.waitingForAjaxResponse = true;
 
     var tableArray = (state.StepTwo.automaticallySelectedTables.length == 0) ? state.StepTwo.selectedTables : state.StepTwo.automaticallySelectedTables;
@@ -90,15 +86,15 @@ const actions = {
       })
       .catch(error => {
         state.waitingForAjaxResponse = false;
-        commit('reservationDenied', error.response.data.message)
+        errorCallback(error.response.data.message);
       })
   },
 
   // Get all Tables from API
 
-  fetchTables: ({ commit }, time) => {
+  fetchTables: ({ commit }, payload) => {
     state.waitingForAjaxResponse = true;
-    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + time.time.from + '/' + time.time.numberOfSeats + '/' + state.StepOne.location
+    axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/freetables/' + payload.time.from + '/' + payload.time.numberOfSeats + '/' + payload.time.location
     )
       .then((response) => {
         state.waitingForAjaxResponse = false;
@@ -109,11 +105,10 @@ const actions = {
       })
       .catch(error => {
         state.waitingForAjaxResponse = false;
-
-        commit('reservationDenied', error.response.data.message)
+        payload.errorCallback(error.response.data.message);
       })
   },
-  getTimeSlots: ({ commit }) => {
+  getTimeSlots: ({ commit }, errorCallback) => {
     state.waitingForAjaxResponse = true;
     axios.get('http://localhost/wordpress/wp-json/tischverwaltung/v1/gettimeslots')
       .then((response) => {
@@ -121,7 +116,7 @@ const actions = {
         commit("onTimeSlotLoad", response.data);
       }).catch(error => {
         state.waitingForAjaxResponse = false;
-        commit('reservationDenied', error.response.data.message)
+        errorCallback(error.response.data.message);
       });
   },
 
@@ -142,9 +137,6 @@ const mutations = {
     for (var h of data.holidays) {
       state.holidays.push(new Date(h * 1000));
     }
-  },
-  reservationDenied: (state, data) => {
-    state.error.errormessage = data;
   },
   setTables: (state, tables) => {
     state.allTables = JSON.parse(JSON.stringify(tables));
@@ -207,9 +199,6 @@ const mutations = {
     }
 
     if(index != -1) state.StepTwo.selectedTables.splice(index, 1);
-  },
-  setError: (state, errorMsg) => {
-    state.error.errormessage = errorMsg;
   },
   setStepOne: (state, payload) => {
     state.StepOne = payload;

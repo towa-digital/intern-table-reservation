@@ -28,12 +28,14 @@ export default {
   name: 'StepTwo',
   components: {},
   data() {
-    return {};
+    return {
+      errormessage: "",
+    };
   },
   methods: {
     onBack() {
-      this.$store.commit('setError', '');
       this.$store.commit('decrementStepCounter');
+      this.errormessage = "";
     },
     getTextForCombination(t) {
       console.log("TEXT OF:");
@@ -72,16 +74,16 @@ export default {
       }
 
       if (availableSeats < this.numberOfSeats) {
-        this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
+        this.errormessage = 'Zu wenig Tische für alle Gäste ausgewählt!';
       } else if (tooMuchTablesForPersons_error) {
-        this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
+        this.errormessage = 'Du hast zu viele Tische ausgewählt!';
       } else {
         for (var n of selectedTables) {
           this.$store.commit('claimTableAutomatically', n);
         }
 
         this.$store.commit('incrementStepCounter');
-        this.$store.commit('setError', '');
+        this.errormessage = "";
       }
     },
     /**
@@ -116,7 +118,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allTables', 'errormessage', 'step']),
+    ...mapGetters(['allTables', 'step']),
     numberOfSeats() {
       return this.$store.getters.StepOne.numberOfSeats;
     },
@@ -127,11 +129,18 @@ export default {
       // prüfe, ob ein Wert genau passt
       var suitableTables = [];
       for (var t of this.allTables) {
+        console.log(this.$store);
+        console.log(t.seats + " " + this.numberOfSeats);
         if (t.seats >= this.numberOfSeats && t.isFree && !t.isDisabled) suitableTables.push({
             "seatsSum": t.seats,
             "tables": [t]
           });
       }
+
+      console.log("all tables:");
+      console.log(this.allTables);
+      console.log("suitable tables");
+      console.log(suitableTables);
 
       if(suitableTables.length == 0) {
         // kein Tisch passt direkt:
@@ -204,7 +213,7 @@ export default {
 
       if(suitableTables.length == 0) {
         // es wurde kein passender einzelner Tisch und keine passende Kombination gefunden
-        this.$store.commit('setError', 'Kein Tisch verfügbar!');
+        this.errormessage = 'Kein Tisch verfügbar!';
         return [];
       }
 

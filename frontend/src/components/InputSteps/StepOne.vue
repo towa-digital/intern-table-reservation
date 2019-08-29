@@ -62,10 +62,11 @@ export default {
     InputFormToggle,
   },
   computed: {
-    ...mapGetters(['errormessage', 'step', 'waitingForAjaxResponse']),
+    ...mapGetters(['step', 'waitingForAjaxResponse']),
   },
   data() {
     return {
+      errormessage: '',
       numberOfSeats: '',
       date: '',
       from: '',
@@ -75,17 +76,27 @@ export default {
   methods: {
     ...mapActions(['fetchTables']),
     onFindTable() {
+      var that = this;
+
       if (this.date === '') {
-        this.$store.commit('setError', 'Bitte geben Sie ein gültiges Datum an.');
+        this.errormessage = 'Bitte geben Sie ein gültiges Datum an.';
       } else if (this.numberOfSeats === '') {
-        this.$store.commit('setError', 'Bitte geben Sie die Anzahl an Personen an.');
+        this.errormessage = 'Bitte geben Sie die Anzahl an Personen an.';
       } else if (parseInt(this.numberOfSeats) != this.numberOfSeats || this.numberOfSeats <= 0) {
-        this.$store.commit('setError', 'Die Anzahl der Personen muss eine ganzzahlige Zahl größer als 0 sein.');
+        this.errormessage = 'Die Anzahl der Personen muss eine ganzzahlige Zahl größer als 0 sein.';
       } else {
-        this.$store.commit('setError', '');
-        this.$store.commit('setStepOne', this);
-        // this.$store.commit("incrementStepCounter")
+        this.errormessage = "";
+        this.$store.commit('setStepOne', {
+          numberOfSeats: that.numberOfSeats,
+          date: that.date,
+          from: that.from,
+          location: that.location
+        });
+
         this.fetchTables({
+          errorCallback: function(msg) {
+            that.errormessage = msg;
+          },
           time: this,
         });
       }

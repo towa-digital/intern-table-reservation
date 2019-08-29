@@ -98,6 +98,7 @@ export default {
   },
   data() {
     return {
+      errormessage: '',
       firstname: '',
       lastname: '',
       mail: '',
@@ -112,20 +113,29 @@ export default {
       // Check if there is a Input (Step 3)
 
       if (this.firstname == '' || this.lastname == '' || this.mail == '' || this.phonenumber == '') {
-        this.$store.commit('setError', 'Bitte fülle alle Pflichtfelder (mit <a>*</a> markiert) aus.');
+        this.errormessage = 'Bitte fülle alle Pflichtfelder (mit <a>*</a> markiert) aus.';
       } else {
-        this.$store.commit('setStepThree', this);
-        this.$store.commit('setError', '');
-        this.addReservation();
+        var that = this;
+        this.$store.commit('setStepThree', {
+          firstname: that.firstname,
+          lastname: that.lastname,
+          mail: that.mail,
+          phonenumber: that.phonenumber,
+          remarks: that.remarks
+        });
+
+        this.errormessage = "";
+        this.addReservation(function(msg) {
+          that.errormessage = msg;
+        });
       }
     },
     onBack() {
-      this.$store.commit('setError', '');
       this.$store.commit('decrementStepCounter');
     },
   },
   computed: {
-    ...mapGetters(['errormessage', 'step', 'waitingForAjaxResponse']),
+    ...mapGetters(['step', 'waitingForAjaxResponse']),
   },
 };
 </script>
