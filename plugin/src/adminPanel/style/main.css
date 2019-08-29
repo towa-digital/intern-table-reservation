@@ -81,5 +81,9 @@
 }
 
 .error {
-    
+    width: 97.7%;
+    padding: 10px;
+
+    background-color: orange;
+    color: white;
 }
