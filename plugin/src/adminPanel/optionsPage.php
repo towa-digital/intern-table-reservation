@@ -61,7 +61,7 @@ function show_optionsPage()
         if (! $empty) {
             echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"], $_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
         } else {
-            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+            echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
         }
     } ?>
 <div id="main">

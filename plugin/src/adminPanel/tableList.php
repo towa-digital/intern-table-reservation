@@ -30,7 +30,7 @@ function show_tableList()
 
     if (current_user_can("tv_editTables") && isset($_POST["tableToEdit"]) && isset($_POST["title"]) && isset($_POST["numberOfSeats"])) {
         if (empty($_POST["tableToEdit"]) || empty($_POST["title"]) || empty($_POST["numberOfSeats"])) {
-            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+            echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
         } else {
             $id = $_POST["tableToEdit"];
             $title = $_POST["title"];
@@ -50,7 +50,7 @@ function show_tableList()
             if ($errorMsg === null) {
                 addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $id);
             } else {
-                echo '<p class="formError">'.$errorMsg.'</p>';
+                echo '<p class="error">'.$errorMsg.'</p>';
             }
         }
     } ?>

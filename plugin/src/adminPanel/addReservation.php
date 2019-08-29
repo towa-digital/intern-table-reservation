@@ -45,7 +45,7 @@ function show_addReservation()
             $useDefaultEndTime = $_POST["useDefaultEndTime"] === null ? false : true;
 
             if (! $useDefaultEndTime && ! isset($_POST["to"])) {
-                echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+                echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
             }
 
             $to = $useDefaultEndTime ? $from + (getDefaultReservationDuration() * 60) : strtotime($_POST["to"]);
@@ -62,10 +62,10 @@ function show_addReservation()
             if ($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks);
             } else {
-                echo '<p class="formError">'.$errorMsg.'</p>';
+                echo '<p class="error">'.$errorMsg.'</p>';
             }
         } else {
-            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+            echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
         }
     } ?>
 <script>
@@ -74,7 +74,7 @@ function show_addReservation()
 </script>
 
 <div id="main">
-    <p id="jsError" class="hidden"></p>
+    <p id="jsError" class="hidden error"></p>
     <h1>Reservierung hinzufügen</h1>
     <form method="post" class="flexForm">
         <div class="formContent">

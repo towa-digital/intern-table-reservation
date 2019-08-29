@@ -46,35 +46,7 @@ function show_tableGui() {
         $_POST = array();
     }
 
-    /**
-     * Bearbeiten eines Tisches
-     */
-    /*if (current_user_can("tv_editTables") && isset($_POST["tableToEdit"]) && isset($_POST["title"]) && isset($_POST["numberOfSeats"])) {
-        if (empty($_POST["tableToEdit"]) || empty($_POST["title"]) || empty($_POST["numberOfSeats"])) {
-            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
-        } else {
-            $id = $_POST["tableToEdit"];
-            $title = $_POST["title"];
-            $isOutside = $_POST["isOutside"] === null ? false : true;
-            $numberOfSeats = ($_POST["numberOfSeats"] === null) ? 0 : $_POST["numberOfSeats"];
-            $isDisabled = $_POST["isDisabled"] === null ? false : true;
-            $posX = ($_POST["posX"] === null) ? 0 : $_POST["posX"];
-            $posY = ($_POST["posY"] === null) ? 0 : $_POST["posY"];
-            $width = ($_POST["width"] === null) ? 0 : $_POST["width"];
-            $height = ($_POST["height"] === null) ? 0 : $_POST["height"];
 
-
-
-
-
-            $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $id);
-            if ($errorMsg === null) {
-                addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $id);
-            } else {
-                echo '<p class="formError">'.$errorMsg.'</p>';
-            }
-        }
-    }*/
 
     /**
      * Erzeugen/Bearbeiten eines Tisches
@@ -112,10 +84,10 @@ function show_tableGui() {
              if ($errorMsg === null) {
                  addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $tableToEdit);
              } else {
-                 echo '<p class="formError">'.$errorMsg.'</p>';
+                 echo '<p class="error">'.$errorMsg.'</p>';
              }
          } else {
-             echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+             echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
          }
     }
 
@@ -137,7 +109,7 @@ function show_tableGui() {
     <div id="addTable" class="hidden overlay widget">
     <div class="overlayContent">
     <h1>Tisch hinzufügen</h1>
-    <p id="jsError" class="hidden"></p>
+    <p class="hidden error jsError"></p>
         <div class="flexForm">
                 <div class="formContent">
                    <div class="titleData">
@@ -182,7 +154,7 @@ function show_tableGui() {
     <div id="changeRoomDimensions" class="hidden overlay widget">
     <div class="overlayContent">
     <h1>Raumabmessungen ändern</h1>
-    <p id="jsError" class="hidden"></p>
+    <p class="hidden error jsError"></p>
         <div class="flexForm">
                 <div class="formContent">
                     <table class="data formData">

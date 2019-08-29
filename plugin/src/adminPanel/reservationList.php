@@ -72,10 +72,10 @@ function show_reservationList()
             if ($errorMsg === null) {
                 addReservation($tables, $from, $to, $numberOfSeats, $firstname, $lastname, $mail, $phonenumber, $remarks, $id);
             } else {
-                echo '<p class="formError">'.$errorMsg.'</p>';
+                echo '<p class="error">'.$errorMsg.'</p>';
             }
         } else {
-            echo '<p class="formError">Bitte fülle alle Pflichtfelder aus!</p>';
+            echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
         }
     }
 

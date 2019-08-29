@@ -129,33 +129,33 @@ function addTable() {
  * neuen Tisches drückt.
  */
 function startPositioningOfNewTable() {
-    $("#jsError").removeClass("hidden");
+    $(".jsError").removeClass("hidden");
 
 
     if(document.getElementById("title").value == "") {
-        $("#jsError").text("Bitte gib einen Tischnamen ein!");
+        $(".jsError").text("Bitte gib einen Tischnamen ein!");
         return;
     }
 
     for(table of allTables) {
         if(table.title == document.getElementById("title").value) {
-            $("#jsError").text("Dieser Tischname ist bereits vorhanden!");
+            $(".jsError").text("Dieser Tischname ist bereits vorhanden!");
             return;
         }
     }
 
     var numberOfSeats = document.getElementById("numberOfSeats").value;
     if(parseInt(numberOfSeats) != numberOfSeats) {
-        $("#jsError").text("Die Anzahl Plätze muss eine gültige Ganzzahl sein!");
+        $(".jsError").text("Die Anzahl Plätze muss eine gültige Ganzzahl sein!");
         return;
     }
 
     if(numberOfSeats <= 0) {
-        $("#jsError").text("Die Anzahl Plätze muss größer gleich 1 sein.");
+        $(".jsError").text("Die Anzahl Plätze muss größer gleich 1 sein.");
         return;
     }
 
-    $("#jsError").addClass("hidden");
+    $(".jsError").addClass("hidden");
 
 
     closeWidgets();
@@ -189,7 +189,7 @@ function startEditPositioning() {
  * auf undefined gesetzt.
  */
 function closeWidgets() {
-    $("#jsError").addClass("hidden");
+    $(".jsError").addClass("hidden");
 
     $(".widget").addClass("hidden");
     
