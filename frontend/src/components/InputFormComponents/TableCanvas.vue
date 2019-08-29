@@ -3,7 +3,7 @@
     <div class="overlay">
       <div class="popup">
         <div class="header">
-          <h4 v-html="errormessage"></h4>
+         <!-- <h4 v-html="errormessage"></h4>-->
 
           <div class="buttons">
             <button
@@ -17,15 +17,18 @@
           </div>
 
           <div class="legend">
-            <span>
-              <span class="available"></span> = verfügbar
-            </span>
-            <span>
-              <span class="not-available"></span> = nicht verfügbar
-            </span>
-            <span>
-              <span class="picked"></span> = ausgewählt
-            </span>
+            <p class="canvasError" v-html="errormessage"></p>
+            <div class="quadratParent">
+              <span>
+                <span class="quadrat" style="background: #1d8708"></span> = verfügbar
+              </span>
+              <span>
+                <span class="quadrat" style="background: #ff0000"></span> = nicht verfügbar
+              </span>
+              <span>
+                <span class="quadrat" style="background: #0a35f5"></span> = ausgewählt
+              </span>
+            </div>
           </div>
         </div>
 
@@ -336,30 +339,23 @@ button:hover {
 
   margin-left: 14px;
   margin-top: 2px;
+
+  height: 100%;
 }
 
-.available {
+.quadratParent {
+  font-size: 12.5px;
+  position: relative;
+  left: 0px;
+  bottom: 0px;
+}
+
+.quadrat {
   display: inline-block;
   width: 10px;
   height: 10px;
-  background: #1d8708;
 }
 
-.not-available {
-  margin-left: 15px;
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: #ff0000;
-}
-
-.picked {
-  margin-left: 15px;
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: #0a35f5;
-}
 
 .backgroundImgIn {
   height: 100%;
@@ -381,5 +377,19 @@ button:hover {
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-position: center;
+}
+
+.canvasError {
+  margin: 0;
+  font-size: 20px;
+  color: darkred;
+  white-space: nowrap;
+  line-height: 35px;
+}
+
+.canvasError:after {
+  content:"";
+  display:inline-block;
+  width:0px;
 }
 </style>
