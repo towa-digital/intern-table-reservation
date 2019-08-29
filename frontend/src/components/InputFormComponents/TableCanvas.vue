@@ -8,12 +8,12 @@
           <div class="buttons">
             <button
               type="button"
-              :disabled="selected.length == 0"
+              :disabled="selectedTables.length == 0"
               @click="onGetReservation"
               v-resize="redrawCanvas"
-            >Übernehmen</button>
+            >Weiter</button>
 
-            <button type="button" @click="onBack">Abbrechen</button>
+            <button type="button" @click="onBack">Zurück</button>
           </div>
 
           <div class="legend">
@@ -64,7 +64,6 @@ export default {
   },
   data() {
     return {
-      selected: [],
       offset: {
         x: -1,
         y: -1,
@@ -107,15 +106,8 @@ export default {
 
         if (x >= posX && x <= posX + width && y >= posY && y <= posY + height) {
           if (that.isTableFree(table)) {
-            that.selected.push(table);
             that.$store.commit('claimTable', table);
           } else {
-            var indexOf = -1;
-            for (var i in that.selected) {
-              if (that.selected[i].id == table.id) indexOf = i;
-            }
-            that.selected.splice(indexOf, 1);
-
             that.$store.commit('freeTable', table);
           }
         }
@@ -140,22 +132,13 @@ export default {
         var width = i.position['width'] * canvas.width;
         var height = i.position['height'] * canvas.height;
 
-        var strokeX;
-        var strokeY;
-        var strokeWidth;
-        var strokeHeight;
+        const innerDistance = 5;
+        var strokeX = posX + innerDistance;
+        var strokeY = posY + innerDistance;
+        var strokeWidth = width - (2 * innerDistance);
+        var strokeHeight = height - (2 * innerDistance);
 
-        if (i.position['width'] < 0.15 && i.position['height'] < 0.15) {
-          strokeX = i.position['posX'] * canvas.width + i.position['height'] * 0.15 * canvas.height;
-          strokeY = i.position['posY'] * canvas.height + i.position['height'] * 0.15 * canvas.height;
-          strokeWidth = i.position['width'] * canvas.width - i.position['height'] * 0.3 * canvas.height;
-          strokeHeight = i.position['height'] * canvas.height - i.position['height'] * 0.3 * canvas.height;
-        } else {
-          strokeX = i.position['posX'] * canvas.width + 0.005 * canvas.width;
-          strokeY = i.position['posY'] * canvas.height + 0.005 * canvas.width;
-          strokeWidth = i.position['width'] * canvas.width - 0.01 * canvas.width;
-          strokeHeight = i.position['height'] * canvas.height - 0.01 * canvas.width;
-        }
+        ctx.setLineDash([]);
 
         ctx.fillStyle = '#f5f7f5';
         ctx.fillRect(posX, posY, width, height);
@@ -169,12 +152,14 @@ export default {
           this.offset.y >= posY &&
           this.offset.y <= posY + height;
 
+
         if (!i.isFree) {
           ctx.strokeStyle = '#FF0000'; // green
           ctx.fillStyle = '#FF0000';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
-        } else if (!this.isTableFree(i) || i == this.selected || isHovered) {
+        } else if (!this.isTableFree(i) || isHovered) {
+          if(isHovered && this.isTableFree(i)) ctx.setLineDash([2, 2]);
           ctx.strokeStyle = '#0a35f5'; //blue
           ctx.fillStyle = '#0a35f5';
           ctx.lineWidth = 2;
@@ -222,7 +207,15 @@ export default {
       var tooMuchTablesForPersons_error = false;
       var tooMuchTablesForPersons_flag = false;
 
-      for (var n of this.selected) {
+      /*
+       * Array der ausgewählten Tische sortieren, damit im Anschluss daran korrekt geprüft werden kann,
+       * ob zu viele Tische ausgewählt werden können.
+       */
+      this.selectedTables.sort(function(a, b) {
+        return b.seats - a.seats;
+      });
+
+      for (var n of this.selectedTables) {
         if (tooMuchTablesForPersons_flag) tooMuchTablesForPersons_error = true;
 
         var nosOnTable = n.seats == '' ? 0 : parseInt(n.seats);
@@ -230,6 +223,7 @@ export default {
 
         if (availableSeats >= this.numberOfSeats) tooMuchTablesForPersons_flag = true;
       }
+
 
       if (availableSeats < this.numberOfSeats) {
         this.$store.commit('setError', 'Zu wenig Tische für alle Gäste ausgewählt!');
@@ -245,7 +239,7 @@ export default {
     window.addEventListener("resize", this.redrawCanvas)
   },
   computed: {
-    ...mapGetters(['freeTables', 'allTables', 'errormessage']),
+    ...mapGetters(['freeTables', 'allTables', 'errormessage', 'selectedTables']),
     tableName() {
       return '';
     },
@@ -285,17 +279,17 @@ export default {
   /* margin: 10px; */
   background-color: white;
   /* border-radius: 10px; */
-  width: calc(100%);
-  height: calc(100%);
+  width: 100%;
+  height: 100%;
 }
 
 .header {
-  height: 50px;
+  height: 52px;
   border-bottom: 2px solid lightgrey;
 }
 
 .content {
-  height: calc(100% - 50px);
+  height: calc(100% - 62px);
 }
 
 h4 {
@@ -315,6 +309,7 @@ h4 {
 }
 
 button {
+  width: 100px;
   margin-top: 10px;
   padding: 8px;
   border: none;
@@ -325,6 +320,14 @@ button {
 
   margin-left: 10px;
   margin-right: 10px;
+
+   -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 button:hover {
@@ -348,6 +351,13 @@ button:hover {
   position: relative;
   left: 0px;
   bottom: 0px;
+   -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 .quadrat {
@@ -385,11 +395,13 @@ button:hover {
   color: darkred;
   white-space: nowrap;
   line-height: 35px;
+  font-weight: bolder;
 }
 
 .canvasError:after {
   content:"";
   display:inline-block;
   width:0px;
+  
 }
 </style>

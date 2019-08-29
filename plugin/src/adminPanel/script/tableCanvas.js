@@ -53,9 +53,9 @@ function redrawCanvas() {
     var io = isOutside();
 
     if(!io){
-        document.getElementById('backgroundImg').style.backgroundImage = "url(./../../plugin/plugin/src/assets/maxresdefault.jpg)";
+        document.getElementById('backgroundImg').style.backgroundImage = "./../../assets/maxresdefault.jpg";
     } else {
-        document.getElementById('backgroundImg').style.backgroundImage = "url(./../../plugin/plugin/src/assets/outside.jpg)";
+        document.getElementById('backgroundImg').style.backgroundImage = "./../../assets/outside.jpg";
     }
 
     canvas.width = canvas.parentElement.offsetWidth;
@@ -71,22 +71,11 @@ function redrawCanvas() {
         var width = (table.position["width"]) * canvas.width;
         var height = (table.position["height"]) * canvas.height;
 
-        var strokeX;
-        var strokeY;
-        var strokeWidth;
-        var strokeHeight;
-
-        if (table.position['width'] < 0.15 && table.position['height'] < 0.15) {
-          strokeX = table.position['posX'] * canvas.width + table.position['height'] * 0.15 * canvas.height;
-          strokeY = table.position['posY'] * canvas.height + table.position['height'] * 0.15 * canvas.height;
-          strokeWidth = table.position['width'] * canvas.width - table.position['height'] * 0.3 * canvas.height;
-          strokeHeight = table.position['height'] * canvas.height - table.position['height'] * 0.3 * canvas.height;
-        } else {
-          strokeX = table.position['posX'] * canvas.width + 0.005 * canvas.width;
-          strokeY = table.position['posY'] * canvas.height + 0.005 * canvas.width;
-          strokeWidth = table.position['width'] * canvas.width - 0.01 * canvas.width;
-          strokeHeight = table.position['height'] * canvas.height - 0.01 * canvas.width;
-        }
+        const innerDistance = 5;
+        var strokeX = posX + innerDistance;
+        var strokeY = posY + innerDistance;
+        var strokeWidth = width - (2 * innerDistance);
+        var strokeHeight = height - (2 * innerDistance);
 
         ctx.fillStyle = '#f5f7f5';
         ctx.fillRect(posX, posY, width, height);
@@ -284,6 +273,8 @@ function submitNewTable() {
         "width": click2.x - click1.x,
         "height": click2.y - click1.y
     }
+
+    $("body").css("overflowY", "hidden");
     var elemsToAppend = "<input type='number' name='posX' step='0.01' class='hidden' value='"+click1.x+"' />";
     elemsToAppend += "<input type='number' name='posY' step='0.01' class='hidden' value='"+click1.y+"' />";
     elemsToAppend += "<input type='number' name='width' step='0.01' class='hidden' value='"+dimensions.width+"' />";
@@ -292,6 +283,7 @@ function submitNewTable() {
 
 
     $("#main form").append(elemsToAppend);
+    
 }
 
 

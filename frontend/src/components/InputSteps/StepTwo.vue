@@ -77,7 +77,7 @@ export default {
         this.$store.commit('setError', 'Du hast zu viele Tische ausgewählt!');
       } else {
         for (var n of selectedTables) {
-          this.$store.commit('claimTable', n);
+          this.$store.commit('claimTableAutomatically', n);
         }
 
         this.$store.commit('incrementStepCounter');

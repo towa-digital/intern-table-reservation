@@ -125,6 +125,25 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     }
 
 
+    /**
+     * dazugehörige table-Objekte zum tables-Array laden
+     */
+    $tableObjects = [];
+    foreach($tables as $id) {
+        array_push($tableObjects, getTableById($id));
+    }
+
+
+    /**
+     * Das tables-Array muss sortiert werden, damit die darauf folgende Prüfung, ob zu viele Sitze reserviert wurden,
+     * korrekt stattfinden kann.
+     */
+    usort($tableObjects, function($a, $b) {
+        return intval($b["seats"]) - intval($a["seats"]);
+    });
+
+
+
     // zähle die Sitzplätze an allen Tischen und prüfe, ob die Reservierung für mehr Leute gedacht ist
     /**
      * Ferner müssen wir ausschließen, dass eine Reservierung für zwei Personen z.B. zwei Tische mit zwei und einem
@@ -138,12 +157,11 @@ function verifyReservation(array $tables, int $from, int $to, int $numberOfSeats
     $tooManyTablesForPersons_error = false;
     $tooMuchTablesForPersons_flag = false;
     $availableSeats = 0;
-    foreach($tables as $t) {
+    foreach($tableObjects as $t) {
         if($tooMuchTablesForPersons_flag) $tooManyTablesForPersons_error = true;
 
-        $tableById = getTableById($t);
-        $availableSeats += $tableById["seats"];
-        $cannotReserveTable |= $tableById["isDisabled"];
+        $availableSeats += $t["seats"];
+        $cannotReserveTable |= $t["isDisabled"];
 
         if($availableSeats >= $numberOfSeats) $tooMuchTablesForPersons_flag = true;
     }

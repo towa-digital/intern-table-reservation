@@ -18,7 +18,8 @@ const state = {
     "numberOfSeats": 0
   },
   StepTwo: {
-    "selectedTables": []
+    "selectedTables": [],
+    "automaticallySelectedTables": []
   },
   StepThree: {
     "firstname": "",
@@ -33,9 +34,12 @@ const getters = {
   step: state => state.step,
   errormessage: state => state.error.errormessage,
   waitingForAjaxResponse: state => state.waitingForAjaxResponse,
+
   allTables: state => state.allTables,
   freeTables: state => state.freeTables,
   selectedTables: state => state.StepTwo.selectedTables,
+  automaticallySelectedTables: state => state.StepTwo.automaticallySelectedTables,
+
   timeSlots: state => state.timeSlots,
   holidays: state => state.holidays,
   StepOne: state => state.StepOne,
@@ -59,8 +63,10 @@ const actions = {
   addReservation: ({commit}) => {
     state.waitingForAjaxResponse = true;
 
+    var tableArray = (state.StepTwo.automaticallySelectedTables.length == 0) ? state.StepTwo.selectedTables : state.StepTwo.automaticallySelectedTables;
+
     var selectedTableIds = [];
-    for(var tableObj of state.StepTwo.selectedTables) {
+    for(var tableObj of tableArray) {
       selectedTableIds.push(tableObj.id);
     }
 
@@ -142,9 +148,15 @@ const mutations = {
   },
   setTables: (state, tables) => {
     state.allTables = JSON.parse(JSON.stringify(tables));
-    state.freeTables = JSON.parse(JSON.stringify(tables));
+    state.freeTables = [];
 
-    for(var singleSelectedTable of state.StepTwo.selectedTables) {
+    for(var t of tables) {
+      if(t.isFree && !t.isDisabled) state.freeTables.push(t);
+    }
+
+    var a = state.StepTwo.selectedTables.length;
+    while(a--) {
+      var singleSelectedTable = state.StepTwo.selectedTables[a];
       var indexOf = -1;
 
       for(var j in state.freeTables) {
@@ -154,9 +166,20 @@ const mutations = {
       }
 
       if(indexOf != -1) state.freeTables.splice(indexOf, 1);
+      else state.StepTwo.selectedTables.splice(a, 1);
     }
   },
-  claimTable: (state, tableObj) => {
+  claimTableAutomatically: (state, tableObj) => {
+    state.StepTwo.automaticallySelectedTables.push(tableObj);
+  },
+  clearAutomaticallyClaimedTables: (state) => {
+    state.StepTwo.automaticallySelectedTables = [];
+  },
+  claimTable: function(state, tableObj) {
+    // clear automaticallyClaimedTables
+    state.StepTwo.automaticallySelectedTables = [];
+
+
     // von freeTables entfernen
     var index = -1;
     for (var i in state.freeTables) {
@@ -169,7 +192,10 @@ const mutations = {
     // zu selectedTables hinzufügen
     state.StepTwo.selectedTables.push(tableObj);
   },
-  freeTable: (state, tableObj) => {
+  freeTable: function(state, tableObj) {
+    // clear automaticallyClaimedTables
+    state.StepTwo.automaticallySelectedTables = [];
+
     // zu freeTables hinzufügen
     state.freeTables.push(tableObj);
 
@@ -188,9 +214,6 @@ const mutations = {
   setStepOne: (state, payload) => {
     state.StepOne = payload;
   },
-  // setStepTwo: (state, payload) => {
-  //  // state.StepTwo = payload;
-  // },
   setStepThree: (state, payload) => {
     state.StepThree = payload;
   }
