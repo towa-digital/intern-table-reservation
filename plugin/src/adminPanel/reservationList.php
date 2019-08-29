@@ -112,7 +112,7 @@ function show_reservationList()
         <form method="post">
             <table class="content">
                 <tr id="head">
-                    <th style="width: 13%; max-width: 13%">
+                    <th style="width: 8%; max-width: 8%">
                         Tische
                     </th>
                     <th style="width: 10%" id="m_from_current">
@@ -125,8 +125,8 @@ function show_reservationList()
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, 'date')"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, 'date')"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_numberOfSeats_current">
-                        Anzahl Plätze
+                    <th style="width: 11.5%" id="m_numberOfSeats_current">
+                        Personenzahl
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, 'number')"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, 'number')"><i class="fas fa-chevron-down"></i></button>
                     </th>
@@ -135,7 +135,7 @@ function show_reservationList()
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_lastname_current">
+                    <th style="width: 11%" id="m_lastname_current">
                         Nachname
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
@@ -145,12 +145,12 @@ function show_reservationList()
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_phonenumber_current">
-                        Telefonnummer
+                    <th style="width: 12%" id="m_phonenumber_current">
+                        Tel.-Nummer
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 12.5%" id="m_remarks_current">
+                    <th style="width: 12%" id="m_remarks_current">
                         Anmerkungen
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
@@ -207,7 +207,7 @@ function show_reservationList()
         <form method="post">
             <table class="content">
             <tr id="head">
-                    <th style="width: 13%; max-width: 13%">
+                    <th style="width: 8%; max-width: 8%">
                         Tische
                     </th>
                     <th style="width: 10%" id="m_from_past">
@@ -220,28 +220,28 @@ function show_reservationList()
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, 'date')"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, 'date')"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_numberOfSeats_past">
-                        Anzahl Plätze
+                    <th style="width: 12%" id="m_numberOfSeats_past">
+                        Personenzahl
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true, 'number')"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false, 'number')"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_firstname_past">
+                    <th style="width: 11%" id="m_firstname_past">
                         Vorname
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_lastname_past">
+                    <th style="width: 11%" id="m_lastname_past">
                         Nachname
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_mail_past">
+                    <th style="width: 12.5%" id="m_mail_past">
                         E-Mail
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
-                    <th style="width: 10%" id="m_phonenumber_past">
-                        Telefonnummer
+                    <th style="width: 12%" id="m_phonenumber_past">
+                        Tel.-Nummer
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, true)"><i class="fas fa-chevron-up"></i></button>
                         <button type="button" class="sortButton" onclick="sort(this, this.parentNode.parentNode.parentNode, false)"><i class="fas fa-chevron-down"></i></button>
                     </th>
