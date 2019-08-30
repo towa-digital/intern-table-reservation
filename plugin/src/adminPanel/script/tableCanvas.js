@@ -52,10 +52,12 @@ function isOutside() {
 function redrawCanvas() {
     var io = isOutside();
 
-    if(!io){
-        document.getElementById('backgroundImg').style.backgroundImage = "./../../assets/maxresdefault.jpg";
+    if(io){
+        document.getElementById('backgroundImg').classList.remove("inside");
+        document.getElementById('backgroundImg').classList.add("outside");
     } else {
-        document.getElementById('backgroundImg').style.backgroundImage = "./../../assets/outside.jpg";
+        document.getElementById('backgroundImg').classList.add("inside");
+        document.getElementById('backgroundImg').classList.remove("outside");
     }
 
     canvas.width = canvas.parentElement.offsetWidth;

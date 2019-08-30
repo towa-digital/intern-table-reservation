@@ -8,7 +8,6 @@
     height: 100%;
     width: 100%; 
     /* height: calc(100vh - 100px);    */
-    background-image: url(./../../assets/maxresdefault.jpg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-clip: padding-box;
@@ -145,4 +144,14 @@ h2 {
     float: right;
     margin-top: 5px;
     padding-top: 7px;
+}
+
+.inside {
+    background-image: url(./../../assets/maxresdefault.jpg);
+
+}
+
+.outside {
+    background-image: url(./../../assets/outside.jpg);
+
 }
