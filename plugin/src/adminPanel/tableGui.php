@@ -39,11 +39,16 @@ function show_tableGui() {
     /**
      * Löschen eines Tisches
      */
-    if (isset($_POST["tableToDelete"]) && current_user_can("tv_deleteTables")) {
-        deleteTable($_POST["tableToDelete"]);
+    if (isset($_POST["tableToDelete"])) {
+        if(current_user_can("tv_deleteTables")) {
+            deleteTable($_POST["tableToDelete"]);
 
-        // POST-Array zurückzusetzen, damit kein neuer Tisch angelegt wird
-        $_POST = array();
+            // POST-Array zurückzusetzen, damit kein neuer Tisch angelegt wird
+            $_POST = array();
+        } else {
+            echo '<p class="error">Du hast nicht die notwendigen Rechte, um diesen Vorgang abzuschließen.</p>';
+        }
+        
     }
 
 
@@ -80,12 +85,17 @@ function show_tableGui() {
              $height = round($_POST["height"], 2);
              $tableToEdit = isset($_POST["tableToEdit"]) ? $_POST["tableToEdit"] : 0;
  
-             $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $tableToEdit);
-             if ($errorMsg === null) {
-                 addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $tableToEdit);
+             if(($tableToEdit == 0 && current_user_can("tv_addTables")) || ($tableToEdit != 0 && current_user_can("tv_editTables"))) {
+                $errorMsg = verifyTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $tableToEdit);
+                if ($errorMsg === null) {
+                    addTable($title, $isOutside, $numberOfSeats, $isDisabled, $posX, $posY, $width, $height, $tableToEdit);
+                } else {
+                    echo '<p class="error">'.$errorMsg.'</p>';
+                }
              } else {
-                 echo '<p class="error">'.$errorMsg.'</p>';
+                 echo '<p class="error">Du hast nicht die notwendigen Rechte, um diesen Vorgang abzuschließen.</p>';
              }
+
          } else {
              echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
          }
@@ -106,83 +116,90 @@ function show_tableGui() {
 
 <div id="main">
 <form method="post">
-    <div id="addTable" class="hidden overlay widget">
-    <div class="overlayContent">
-    <h1>Tisch hinzufügen</h1>
-    <p class="hidden error jsError"></p>
-        <div class="flexForm">
-                <div class="formContent">
-                   <div class="titleData">
-                        <input type="text" name="title" class="title" id="title" placeholder="Bezeichnung des Tisches" />
-                    </div>
-                    <table class="data formData">
-                        <tr><td>
-                            <h2>Tischdaten</h2>
-                        </td></tr>
-                        <tr><td>
-                            <h3 class="inline">Anzahl Sitzplätze</h3><span class="required">*</span>
-                            <input type="number" name="numberOfSeats" id="numberOfSeats" />
-                        </td></tr>
-                        <tr><td>
-                            <input type="checkbox" name="isDisabled" id="isDisabled" /><label for="isDisabled">Tisch nicht reservierbar</label>
-                        </td></tr>
-                    </table>   
-                </div>
-                <table id="addTable_publish" class="data publish multiplePublish hidden">
-                    <tr><td>
-                        <h2>Speichern</h2>
-                    </td></tr>
-                    <tr><td>
-                        <button type="button" onclick="startPositioningOfNewTable()">Positionieren</button>
-                        <button type="reset" onclick="closeWidgets()">Abbrechen</button>
-                    </td></tr>   
-                </table>
-                <table id="editTable_publish" class="data publish multiplePublish hidden">
-                    <tr><td>
-                        <h2>Aktionen</h2>
-                    </td></tr>
-                    <tr><td>
-                        <button type="submit" name="tableToEdit" id="editTable_saveBtn" onclick="submitNewTable()">Speichern</button>
-                        <button type="button" onclick="startEditPositioning()">Neu positionieren</button>
-                        <button type="submit" name="tableToDelete" id="editTable_deleteBtn" onclick="return confirm('Willst du diesen Eintrag wirklich löschen?')">Löschen</button>
-                        <button type="reset" onclick="closeWidgets(); mouseUp = undefined; mouseDown = undefined;">Abbrechen</button>
-                    </td></tr>  
-                </table>
-        </div>          
-    </div>
-    </div>
-    <div id="changeRoomDimensions" class="hidden overlay widget">
-    <div class="overlayContent">
-    <h1>Raumabmessungen ändern</h1>
-    <p class="hidden error jsError"></p>
-        <div class="flexForm">
-                <div class="formContent">
-                    <table class="data formData">
-                        <tr><td>
-                            <h2>Abmessungen</h2>
-                        </td></tr>
-                        <tr><td>
-                            <h3 class="inline">Breite (in m)</h3><span class="required">*</span>
-                            <input type="number" name="roomWidth" id="roomWidth" step="0.01" />
-                        </td></tr>
-                        <tr><td>
-                            <h3 class="inline">Tiefe (in m)</h3><span class="required">*</span>
-                            <input type="number" name="roomDepth" id="roomDepth" step="0.01" />
-                        </td></tr>
-                    </table>   
-                </div>
-                <table class="data publish">
-                    <tr><td>
-                        <h2>Speichern</h2>
-                    </td></tr>
-                    <tr><td>
-                        <button id="saveRoomDimensionsBtn" name="roomToEdit">Speichern</button>
-                        <button type="button" onclick="closeWidgets()">Abbrechen</button>
-                    </td></tr>   
-                </table>
-        </div>          
-    </div>
-    </div>
+
+        <div id="addTable" class="hidden overlay widget">
+            <div class="overlayContent">
+            <h1>Tisch hinzufügen</h1>
+            <p class="hidden error jsError"></p>
+                <div class="flexForm">
+                        <div class="formContent">
+                        <div class="titleData">
+                                <input type="text" name="title" class="title" id="title" placeholder="Bezeichnung des Tisches" <?php if(! (current_user_can("tv_addTables") || current_user_can("tv_editTables"))) echo "disabled";?>/>
+                            </div>
+                            <table class="data formData">
+                                <tr><td>
+                                    <h2>Tischdaten</h2>
+                                </td></tr>
+                                <tr><td>
+                                    <h3 class="inline">Anzahl Sitzplätze</h3><span class="required">*</span>
+                                    <input type="number" name="numberOfSeats" id="numberOfSeats" <?php if(! (current_user_can("tv_addTables") || current_user_can("tv_editTables"))) echo "disabled";?>/>
+                                </td></tr>
+                                <tr><td>
+                                    <input type="checkbox" name="isDisabled" id="isDisabled" <?php if(! (current_user_can("tv_addTables") || current_user_can("tv_editTables"))) echo "disabled";?>/><label for="isDisabled">Tisch nicht reservierbar</label>
+                                </td></tr>
+                            </table>   
+                        </div>
+                        <table id="addTable_publish" class="data publish multiplePublish hidden">
+                            <tr><td>
+                                <h2>Speichern</h2>
+                            </td></tr>
+                            <tr><td>
+                                <button type="button" onclick="startPositioningOfNewTable()">Positionieren</button>
+                                <button type="reset" onclick="closeWidgets()">Abbrechen</button>
+                            </td></tr>   
+                        </table>
+                        <table id="editTable_publish" class="data publish multiplePublish hidden">
+                            <tr><td>
+                                <h2>Aktionen</h2>
+                            </td></tr>
+                            <tr><td>
+                                <?php if(current_user_can("tv_editTables")) {?>
+                                    <button type="submit" name="tableToEdit" id="editTable_saveBtn" onclick="submitNewTable()">Speichern</button>
+                                    <button type="button" onclick="startEditPositioning()">Neu positionieren</button>
+                                <?php } ?>
+                                <?php if(current_user_can("tv_deleteTablesTables")) {?>
+                                    <button type="submit" name="tableToDelete" id="editTable_deleteBtn" onclick="return confirm('Willst du diesen Eintrag wirklich löschen?')">Löschen</button>
+                                <?php } ?>
+                                <button type="reset" onclick="closeWidgets(); mouseUp = undefined; mouseDown = undefined;">Abbrechen</button>
+                            </td></tr>  
+                        </table>
+                </div>          
+            </div>
+        </div>
+    <?php if(current_user_can("tv_editOptions")) { ?>
+        <div id="changeRoomDimensions" class="hidden overlay widget">
+            <div class="overlayContent">
+            <h1>Raumabmessungen ändern</h1>
+            <p class="hidden error jsError"></p>
+                <div class="flexForm">
+                        <div class="formContent">
+                            <table class="data formData">
+                                <tr><td>
+                                    <h2>Abmessungen</h2>
+                                </td></tr>
+                                <tr><td>
+                                    <h3 class="inline">Breite (in m)</h3><span class="required">*</span>
+                                    <input type="number" name="roomWidth" id="roomWidth" step="0.01" />
+                                </td></tr>
+                                <tr><td>
+                                    <h3 class="inline">Tiefe (in m)</h3><span class="required">*</span>
+                                    <input type="number" name="roomDepth" id="roomDepth" step="0.01" />
+                                </td></tr>
+                            </table>   
+                        </div>
+                        <table class="data publish">
+                            <tr><td>
+                                <h2>Speichern</h2>
+                            </td></tr>
+                            <tr><td>
+                                <button id="saveRoomDimensionsBtn" name="roomToEdit">Speichern</button>
+                                <button type="button" onclick="closeWidgets()">Abbrechen</button>
+                            </td></tr>   
+                        </table>
+                </div>          
+            </div>
+        </div>
+    <?php } ?>
     <div id="mainBar">
 
         <h2>
@@ -197,8 +214,12 @@ function show_tableGui() {
                     </select>   
                 </td>
                 <td>
-                    <button type="button" onclick="addTable()" id="newTable">Tisch hinzufügen</button>
-                    <button type="button" onclick="changeRoomDimensions()" id="newTable">Raumabmessungen ändern</button>
+                    <?php if(current_user_can("tv_addTables")) { ?>
+                        <button type="button" onclick="addTable()" id="newTable">Tisch hinzufügen</button>
+                    <?php } ?>
+                    <?php if(current_user_can("tv_editOptions")) { ?>
+                        <button type="button" onclick="changeRoomDimensions()" id="newTable">Raumabmessungen ändern</button>
+                    <?php } ?>
 
                 </td>
             </tr>
