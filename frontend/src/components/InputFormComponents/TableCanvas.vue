@@ -155,7 +155,7 @@ export default {
 
 
         if (!i.isFree) {
-          ctx.strokeStyle = '#FF0000'; // green
+          ctx.strokeStyle = '#FF0000'; // red
           ctx.fillStyle = '#FF0000';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
@@ -169,7 +169,7 @@ export default {
             document.body.style.cursor = 'pointer';
           }
         } else {
-          ctx.strokeStyle = '#1d8708'; //red
+          ctx.strokeStyle = '#1d8708'; //green
           ctx.fillStyle = '#1d8708';
           ctx.lineWidth = 2;
           ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
