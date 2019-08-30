@@ -41,11 +41,6 @@ export default {
   computed: {
     ...mapGetters(['errormessage', 'step', 'allTables', 'selectedTables']),
   },
-  watch: {
-    $mq: function(newValue, oldValue) {
-      console.warn("Media type has changed from " + oldValue + " to " +newValue);
-    }
-  }
   // props: ['reservations'],
 };
 </script>
