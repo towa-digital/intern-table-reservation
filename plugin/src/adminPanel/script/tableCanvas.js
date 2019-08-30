@@ -85,7 +85,7 @@ function redrawCanvas() {
         ctx.strokeStyle = '#606361';
         ctx.strokeRect(posX, posY, width, height);
 
-        ctx.strokeStyle = '#ff7e05'; // orange
+        ctx.strokeStyle = (table.isDisabled) ? '#FF0000' : '#1d8708'; // red/green
         ctx.fillStyle = '#ff7e05';
         ctx.lineWidth = 2;
         ctx.strokeRect(strokeX, strokeY, strokeWidth, strokeHeight);
