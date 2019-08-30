@@ -8,7 +8,7 @@ In the input-form, you can always go back by pushing the "zurück"-Button. Items
 
 ## 1 - Step One
 
-In this step, you have to enter how many seats (1) you need and when (2) you want to reserve for. To do so you have to input the Number of Persons and the Date.
+In this step, you have to enter how many seats (1) you need, when (2) you want to reserve for and if the table should be inside or outside. To do so you have to input the Number of Persons, the Date and the location.
 
 !["title"](./../../assets/stepone.png)
 
@@ -18,13 +18,13 @@ InputFormDate.vue InputFormNumberOfPersons.vue
 
 ## 2 - Step Two
 
-At the second step, you can choose between different possible tables. We filter the tables before they appear on the site, so you can only choose tables which are possible for the number of people and the time.
+At the second step, you can choose between different possible tables. We filter the tables before they appear on the site, so you can only choose tables which are possible for the number of people and the time. The green ones are the available seats, the blue ones the ones wich you picked. The red ones are not vailable
 
-!["title"](./../../assets/step2.1.png)
+!["title"](./../../assets/steptwodesktop.png)
 
-When you want to reserve more than one table, you have the option to add a table (2). You can reserve up to three tables.
+On mobile devices you can choose betwenn suggested combinations.
 
-!["title"](./../../assets/step2.2.png)
+!["title"](./../../assets/steptwomobile.png)
 
 ### Component used
 
