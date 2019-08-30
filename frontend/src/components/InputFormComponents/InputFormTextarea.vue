@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <div>
     <textarea
       rows="1"
       cols="80"
@@ -8,7 +8,7 @@
       ref="input"
       placeholder="Anlässe, Wünsche usw."
     ></textarea>
-  </form>
+  </div>
 </template>
 
 <script>

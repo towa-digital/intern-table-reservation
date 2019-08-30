@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <div>
     <input
       id="today"
       ref="date"
@@ -29,7 +29,7 @@
       >nicht geöffnet</option>
       <option v-for="t in timeSlotsForCurrentWeekday" v-bind:key="t.display">{{t.display}}</option>
     </select>
-  </form>
+  </div>
 </template>
 
 <script>

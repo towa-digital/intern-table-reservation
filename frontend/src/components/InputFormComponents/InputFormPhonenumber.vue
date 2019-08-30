@@ -1,7 +1,7 @@
 <template>
-    <form>
+    <div>
         <input ref="input" type="tel" name="phone-number" placeholder="Telefonnummer" :value="value" @input="updateValue">
-    </form>  
+    </div>  
 </template>
 
 <script>

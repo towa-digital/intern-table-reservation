@@ -39,7 +39,7 @@ export default {
     StepFour,
   },
   computed: {
-    ...mapGetters(['errormessage', 'step', 'allTables', 'selectedTables']),
+    ...mapGetters(['step', 'allTables', 'selectedTables']),
   },
   // props: ['reservations'],
 };

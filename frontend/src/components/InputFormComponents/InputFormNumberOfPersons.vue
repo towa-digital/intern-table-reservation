@@ -1,5 +1,5 @@
 <template>
-  <form class="quantity">
+  <div>
     <input
       ref="input"
       type="number"
@@ -8,7 +8,7 @@
       :value="value"
       @input="updateValue"
     />
-  </form>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <div>
     <input
       ref="input"
       type="text"
@@ -8,7 +8,7 @@
       :value="value"
       @input="updateValue"
     />
-  </form>
+  </div>
 </template>
 
 <script>

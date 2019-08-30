@@ -1,11 +1,11 @@
 <template>
-  <form>
+  <div>
     <select ref="input" :value="value" @change="updateValue">
       <option disabled selected value>Bitte Tisch auswählen</option>
       <option v-if="selected !== undefined" v-bind:value="selected.id">{{ selected.title }} ({{selected.seats}} Plätze) </option>
       <option v-for="table in freeTables" v-bind:key="table.id" v-bind:value="table.id">{{ table.title }} ({{table.seats}} Plätze) </option>
     </select>
-  </form>
+  </div>
 </template>
 
 <script>
