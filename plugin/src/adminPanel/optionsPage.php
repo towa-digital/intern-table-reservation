@@ -59,14 +59,17 @@ function show_optionsPage()
 
     if ($isset) {
         if (! $empty) {
-            echo storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"], $_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
+            $errorMsg = storeOptions($_POST["defaultReservationDuration"], $_POST["maxAmountOfPersons"], $_POST["maxUnusedSeatsPerReservation"], $_POST["canReservateInMinutes"], $_POST["tooManyPersonsError"], $_POST["noFreeTablesError"], $_POST["userConfirmationMail"], $_POST["adminConfirmationMail"], $_POST["adminAddress"], $_POST["openingHours"], $_POST["holidays"]);
+            if($errorMsg != null) {
+                echo '<p class="error">'.$errorMsg.'</p>';
+            }
         } else {
             echo '<p class="error">Bitte fülle alle Pflichtfelder aus!</p>';
         }
     } ?>
 <div id="main">
     <h1>Tischverwaltung</h1>
-    <form method="post">
+    <form method="post" class="flexForm">
         <div class="formContent">
 
             <table class="data formData">
@@ -119,6 +122,7 @@ function show_optionsPage()
                 </td></tr>
                 <tr><td>
                     <h3 class="inline">E-Mail, an die die Admin-Bestätigungsmail gesendet wird</h3>
+                    <p>wenn dieses Feld leer ist, wird keine Bestätigungsmail gesendet</p>
                     <input type="mail" name="adminAddress" value="<?php echo esc_attr(getAdminAddress()); ?>" />                
                 </td></tr>
             </table>
@@ -175,7 +179,7 @@ function show_optionsPage()
                 </td></tr>
             </table>
         </div>
-        <table class="data" id="publish">
+        <table class="data publish">
             <tr><td>
                 <h2>Speichern</h2>
             </td></tr>
