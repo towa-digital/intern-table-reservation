@@ -1,5 +1,10 @@
 <template>
   <table>
+    <tr>
+        <td colspan="2">
+          <h2>Tisch wählen</h2>
+        </td>
+    </tr>
     <tr v-if="errormessage != ''">
       <td colspan="2">
         <div class="centered">
@@ -41,17 +46,18 @@ export default {
       var seatsMap = new Map();
 
       for (var singleTable of t) {
-        if (seatsMap.has(singleTable)) {
-          var old = parseInt(seatsMap.get(singleTable));
-          seatsMap.set(singleTable, old++);
+        if (seatsMap.has(singleTable.seats)) {
+          var old = parseInt(seatsMap.get(singleTable.seats));
+          old++;
+          seatsMap.set(singleTable.seats, old);
         } else {
-          seatsMap.set(singleTable, 1);
+          seatsMap.set(singleTable.seats, 1);
         }
       }
 
       var toReturn = '<ul>';
       for (var entry of seatsMap) {
-        if (entry[0] != undefined) toReturn += '<li>' + entry[1] + ' x ' + entry[0].seats + ' Plätze</li>';
+        if (entry[0] != undefined) toReturn += '<li>' + entry[1] + ' x ' + entry[0] + ' Plätze</li>';
       }
       toReturn += '</ul>';
 
@@ -208,6 +214,24 @@ export default {
         this.errormessage = 'Kein Tisch verfügbar!';
         return [];
       }
+
+      // zufällig sortieren, damit nicht immer die gleichen Kombinationen ausgegeben werden
+      // Fisher-Yate-Algorithmus
+      /*	var currentIndex = suitableTables.length;
+        var temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = suitableTables[currentIndex];
+          suitableTables[currentIndex] = suitableTables[randomIndex];
+          suitableTables[randomIndex] = temporaryValue;
+        }*/
+
 
       // sortieren nach Anzahl Sitzplätze
       suitableTables.sort(function(a, b) {
