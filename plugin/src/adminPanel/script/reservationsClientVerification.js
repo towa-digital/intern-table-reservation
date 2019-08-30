@@ -116,7 +116,6 @@ function updateDropdownMenus() {
     // entferne alle option-Tags aus den Dropdown-Menüs
     $(".selectTable").empty();
 
-    console.log(freeTables);
 
     // iteriere über alle Dropdown-Menüs
     for(var i = 0; i < allSelectElems.length; i++) {

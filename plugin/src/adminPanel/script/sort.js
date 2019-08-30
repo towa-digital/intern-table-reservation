@@ -10,10 +10,6 @@
  * von welchem Typ die Daten sind, welche sortiert werden sollen
  */
 function sort(sortBtn, tableObj, sortAscending, sortType) {
-    console.log("sort called: ");
-    console.log(sortBtn);
-    console.log(tableObj);
-    console.log(sortAscending);
     if(sortType === undefined) sortType = "string";
 
     var id = sortBtn.parentNode.id;
@@ -21,7 +17,6 @@ function sort(sortBtn, tableObj, sortAscending, sortType) {
     Array.prototype.slice.call(tableObj.getElementsByClassName("toSort"))
         .map(function (x) { return tableObj.removeChild(x); })
         .sort(function (xRow, yRow) { 
-            console.log("INSIDE SORT");
             var x = xRow.getElementsByClassName(id)[0];
             var y = yRow.getElementsByClassName(id)[0];
 

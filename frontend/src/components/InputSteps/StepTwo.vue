@@ -38,8 +38,6 @@ export default {
       this.errormessage = "";
     },
     getTextForCombination(t) {
-      console.log("TEXT OF:");
-      console.log(t);
       var seatsMap = new Map();
 
       for (var singleTable of t) {
@@ -129,18 +127,12 @@ export default {
       // prüfe, ob ein Wert genau passt
       var suitableTables = [];
       for (var t of this.allTables) {
-        console.log(this.$store);
-        console.log(t.seats + " " + this.numberOfSeats);
         if (t.seats >= this.numberOfSeats && t.isFree && !t.isDisabled) suitableTables.push({
             "seatsSum": t.seats,
             "tables": [t]
           });
       }
 
-      console.log("all tables:");
-      console.log(this.allTables);
-      console.log("suitable tables");
-      console.log(suitableTables);
 
       if(suitableTables.length == 0) {
         // kein Tisch passt direkt:

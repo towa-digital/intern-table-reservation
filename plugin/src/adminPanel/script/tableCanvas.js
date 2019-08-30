@@ -300,7 +300,6 @@ function onMouseDown(event) {
         "y": event.offsetY
     }
     mouseUp = undefined;
-    console.log("DISABLED PROPERTY SET TO TRUE");
     $("#submitTableButton").prop("disabled", true);
 }
 
