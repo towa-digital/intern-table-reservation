@@ -3,14 +3,14 @@
     margin-bottom: 1% !important;
     vertical-align: middle !important;
     border: none !important;
-    background: #da3743 !important;
+    background: #81181f !important;
     color: #fff !important;
     margin-top: 0.5%;
 
 }
 
 .tabLinkContainer button, .activeTabBtn {
-    background: #da3743 !important;
+    background: #81181f !important;
     border: none !important;
     cursor: pointer !important;
     color: #fff;
@@ -18,6 +18,6 @@
 }
 
 .tabLinkContainer button:hover {
-    background: #e15b64 !important;
+    background: #ac2029 !important;
     border: none !important;
 }
