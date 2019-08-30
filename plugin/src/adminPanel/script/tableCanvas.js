@@ -364,7 +364,7 @@ function startEdit(tableObject) {
 
     $("#title").val(tableObject.title);
     $("#numberOfSeats").val(tableObject.seats);
-    $("#isDisabled").val(tableObject.isDisabled);
+    $("#isDisabled").prop("checked", tableObject.isDisabled);
 
     $("#editTable_saveBtn").val(tableObject.id);
     $("#editTable_deleteBtn").val(tableObject.id);
